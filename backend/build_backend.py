@@ -62,7 +62,8 @@ def build(target_platform: str):
         sys.exit(1)
 
     # Nuitka-Befehl zusammenstellen
-    cmd = [
+    # Windows: skip dependency walker check (handled in CI via depends.exe)
+    nuitka_opts = [
         sys.executable, "-m", "nuitka",
         "--standalone",
         "--nofollow-import-to=tkinter",
@@ -71,14 +72,25 @@ def build(target_platform: str):
         "--include-package=fotoerp_backend",
         "--output-dir=" + str(output_dir),
         "--output-filename=fotoerp-backend",
-        str(entry_point),
     ]
 
+    # On Windows, skip dependency walker (use --mode=compiled instead)
+    if target_platform == "windows":
+        nuitka_opts.append("--windows-icon-from-ico=icons/icon.ico")
+
+    nuitka_opts.append(str(entry_point))
+
     print(f"Building for {target_platform}...")
-    print(f"Command: {' '.join(cmd)}")
+    print(f"Command: {' '.join(nuitka_opts)}")
     print()
 
-    result = subprocess.run(cmd, cwd=str(backend_dir))
+    # On Windows, inject depends.exe path if available
+    env = os.environ.copy()
+    depends_exe = os.path.join(str(Path.home()), ".nuitka", "depends.exe")
+    if target_platform == "windows" and os.path.exists(depends_exe):
+        env["NUITKA_DEPENDENCY_WALKER"] = depends_exe
+
+    result = subprocess.run(nuitka_opts, cwd=str(backend_dir), env=env)
     if result.returncode != 0:
         print(f"\nERROR: Build failed with exit code {result.returncode}")
         sys.exit(1)
