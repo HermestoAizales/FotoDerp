@@ -1,6 +1,6 @@
 # FotoDerp
 
-Open-Source KI-gestützte Fotoverwaltung — ähnlich wie FotoDerp, aber besser.
+Open-Source KI-gestützte Fotoverwaltung für professionelle Fotografen.
 
 ## Features (geplant)
 

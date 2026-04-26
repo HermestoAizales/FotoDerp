@@ -1,7 +1,7 @@
 # FotoDerp - Design & Architektur
 
 ## Ziel
-Open-Source Fotoverwaltungssoftware mit ähnlicher UX wie FotoDerp, aber besser:
+Open-Source Fotoverwaltungssoftware mit moderner UX für professionelle Fotografen:
 - **Schneller** — asynchrone Verarbeitung, Caching
 - **Plattformunabhängig** — Electron (Windows/macOS/Linux)
 - **KI-backend-unabhängig** — llama.cpp OpenAI-kompatibler Endpunkt
@@ -10,9 +10,9 @@ Open-Source Fotoverwaltungssoftware mit ähnlicher UX wie FotoDerp, aber besser:
 
 ---
 
-## GUI-Design (FotoDerp-ähnlich, aber besser)
+## GUI-Design
 
-### Layout (3-Spalten-Design, more modern)
+### Layout (3-Spalten-Design)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
@@ -41,16 +41,16 @@ Open-Source Fotoverwaltungssoftware mit ähnlicher UX wie FotoDerp, aber besser:
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Was BESSER als FotoDerp ist:
+### Was FotoDerp besser macht:
 
-| Aspekt | FotoDerp | FotoDerp |
-|--------|------------|----------|
-| GUI-Framework | Electron (?) | Electron (offiziell) |
+| Aspekt | Alternative A | FotoDerp |
+|--------|-------------|----------|
+| GUI-Framework | Electron | Electron (offiziell) |
 | Suchgeschwindigkeit | Sekundenschwer | Millisekunden (Index + Vektoren) |
 | KI-Analyse | Proprietär, nicht konfigurierbar | Jeder OpenAI-kompatible Endpoint |
 | Plugin-System | Nur Lightroom | Erweiterbar (Python Plugins) |
 | API | Begrenzt | Vollständige REST API |
-| Lizenz | ~100€ einmalig | Kostenlos, Open Source |
+| Lizenz | Kommerziell (~100€) | Kostenlos, Open Source |
 | Multimodal | Nein (nur Bildanalyse) | Ja — Vision-Modelle für Text in Bildern |
 | OCR | Nicht vorhanden | Integriert via Vision-Modell |
 | Zusammenarbeit | Nur Office Edition | Native Sharing-Funktionen |
