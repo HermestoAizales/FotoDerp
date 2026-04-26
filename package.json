@@ -1,7 +1,7 @@
 {
   "name": "fotoerp",
   "version": "0.1.0",
-  "description": "Open-Source KI-gestützte Fotoverwaltung für professionelle Fotografen",
+  "description": "Open-source AI-powered photo management for professional photographers",
   "main": "electron/main.js",
   "scripts": {
     "start": "concurrently \"npm run start:backend\" \"wait-on http://localhost:8765/health && electron .\"",
