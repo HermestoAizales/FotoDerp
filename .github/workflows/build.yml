@@ -79,26 +79,26 @@ jobs:
         run: npm ci || npm install
       - name: Install Nuitka
         run: pip install nuitka
-      - name: Download Dependency Walker (Windows only)
+      - name: Download Dependencies (Windows only)
         if: matrix.platform == 'win'
         shell: pwsh
         run: |
           $dir = "$env:USERPROFILE\.nuitka"
           New-Item -ItemType Directory -Force -Path $dir | Out-Null
-          $urls = @(
-            "https://www.dependencywalker.com/depends22_portable.zip",
-            "https://github.com/nickcraver/DependencyWalker/releases/download/v2.2/depends22.zip"
-          )
-          foreach ($url in $urls) {
-            try {
-              Invoke-WebRequest -Uri $url -OutFile "$dir\dw.zip" -ErrorAction Stop
-              Expand-Archive -Path "$dir\dw.zip" -DestinationPath $dir -Force -ErrorAction SilentlyContinue
-              if (Test-Path "$dir\depends.exe") { break }
-              Remove-Item "$dir\dw.zip" -ErrorAction SilentlyContinue
-            } catch { continue }
-          }
-          if (-not (Test-Path "$dir\depends.exe")) {
-            Write-Error "Could not download Dependency Walker"
+          $url = "https://github.com/lucasg/Dependencies/releases/download/v1.11.1/Dependencies_x64_Release.zip"
+          try {
+            Invoke-WebRequest -Uri $url -OutFile "$dir\deps.zip" -ErrorAction Stop
+            Expand-Archive -Path "$dir\deps.zip" -DestinationPath $dir -Force -ErrorAction SilentlyContinue
+            $exe = Get-ChildItem -Path $dir -Recurse -Filter "Dependencies.exe" | Select-Object -First 1
+            if ($exe) {
+              Copy-Item $exe.FullName "$dir\Dependencies.exe" -Force
+              Write-Host "Dependencies.exe found at $($exe.FullName)"
+            } else {
+              Write-Error "Could not find Dependencies.exe in archive"
+              exit 1
+            }
+          } catch {
+            Write-Error "Failed to download Dependencies: $_"
             exit 1
           }
       - name: Build backend
