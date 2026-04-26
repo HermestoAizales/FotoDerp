@@ -74,12 +74,9 @@ def build(target_platform: str):
         "--output-filename=fotoerp-backend",
     ]
 
-    # Windows: use auto-dll-import-inject plugin instead of Dependency Walker
+    # Windows: icon handled separately (Dependency Walker not available in CI)
     if target_platform == "windows":
-        nuitka_opts.extend([
-            "--enable-plugin=auto-dll-import-inject",
-            "--windows-icon-from-ico=icons/icon.ico",
-        ])
+        nuitka_opts.append("--windows-icon-from-ico=icons/icon.ico")
 
     nuitka_opts.append(str(entry_point))
 
