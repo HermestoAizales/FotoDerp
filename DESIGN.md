@@ -1,64 +1,64 @@
-# FotoDerp - Design & Architektur
+# FotoDerp - Design & Architecture
 
-## Ziel
-Open-Source Fotoverwaltungssoftware mit moderner UX für professionelle Fotografen:
-- **Schneller** — asynchrone Verarbeitung, Caching
-- **Plattformunabhängig** — Electron (Windows/macOS/Linux)
-- **KI-backend-unabhängig** — llama.cpp OpenAI-kompatibler Endpunkt
-- **Modular** — Python Backend + Electron Frontend
-- **Transparent** — Open Source, keine Blackbox-KI
+## Goal
+Open-source photo management software with modern UX for professional photographers:
+- **Faster** — asynchronous processing, caching
+- **Cross-platform** — Electron (Windows/macOS/Linux)
+- **AI-backend-independent** — llama.cpp OpenAI-compatible endpoint
+- **Modular** — Python backend + Electron frontend
+- **Transparent** — Open source, no black-box AI
 
 ---
 
-## GUI-Design
+## GUI Design
 
-### Layout (3-Spalten-Design)
+### Layout (3-Column Design)
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│  Toolbar: Suche | Filter | Ansicht | Import | Analyse       │
+│  Toolbar: Search | Filter | View | Import | Analyze         │
 ├──────────┬──────────────────────────┬───────────────────────┤
 │          │                          │                       │
-│ NAV      │  HAUPTANSICHT            │  DETAIL/PREVIEW       │
+│ NAV      │  MAIN VIEW               │  DETAIL/PREVIEW       │
 │          │                          │                       │
-│ Bibliothek│ ┌──┐ ┌──┐ ┌──┐ ┌──┐   │ Bild vorschau         │
-│          │ │📷│ │📷│ │📷│ │📷│   │                         │
-│ Ordner   │ ├──┤ ├──┤ ├──┤ ├──┤   │ Metadaten               │
-│          │ │📷│ │📷│ │📷│ │📷│   │ ──────────────────      │
-│ Stichworte│ └──┘ └──┘ └──┘ └──┘   │ Tags: [Hund][Strand]  │
+│ Library  │ ┌──┐ ┌──┐ ┌──┐ ┌──┐     │ Image preview         │
+│          │ │📷│ │📷│ │📷│ │📷│     │                       │
+│ Folders  │ ├──┤ ├──┤ ├──┤ ├──┤     │ Metadata              │
+│          │ │📷│ │📷│ │📷│ │📷│     │ ──────────────────    │
+│ Keywords │ └──┘ └──┘ └──┘ └──┘     │ Tags: [Dog][Beach]  │
 │          │                          │                       │
-│ Personen │ ┌──┐ ┌──┐ ┌──┐         │ KI-Tags:             │
-│          │ 👤│ 👤│ 👤│           │ - Hund, golden       │
-│          └──┘ └──┘ └──┘           │ - Strand, Tag        │
-│          │                          │ - Weitwinkel         │
-│ Culling  │ ┌──┐ ┌──┐             │                       │
-│          │ 🗑│ ⭐│               │ Ähnliche Bilder:     │
-│          └──┘ └──┘               │ ┌──┐ ┌──┐           │
-│ Analytics│                        │ │📷│ │📷│           │
+│ People   │ ┌──┐ ┌──┐ ┌──┐           │ AI Tags:             │
+│          │ 👤│ 👤│ 👤│             │ - Dog, golden       │
+│          └──┘ └──┘ └──┘            │ - Beach, Day        │
+│          │                          │ - Wide-angle        │
+│ Culling  │ ┌──┐ ┌──┐               │ Similar Images:     │
+│          │ 🗑│ ⭐│                 │ ┌──┐ ┌──┐           │
+│          └──┘ └──┘                 │ │📷│ │📷│           │
+│ Analytics│                         │ └──┘ └──┘           │
 │          │                          │ └──┘ └──┘           │
 ├──────────┴──────────────────────────┴───────────────────────┤
-│ Status: 12.847 Bilder | 3.214 Stichwörter | KI: bereit      │
+│ Status: 12,847 images | 3,214 keywords | AI: ready          │
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Was FotoDerp besser macht:
+### What makes FotoDerp better:
 
-| Aspekt | Alternative A | FotoDerp |
+| Aspect | Alternative A | FotoDerp |
 |--------|-------------|----------|
-| GUI-Framework | Electron | Electron (offiziell) |
-| Suchgeschwindigkeit | Sekundenschwer | Millisekunden (Index + Vektoren) |
-| KI-Analyse | Proprietär, nicht konfigurierbar | Jeder OpenAI-kompatible Endpoint |
-| Plugin-System | Nur Lightroom | Erweiterbar (Python Plugins) |
-| API | Begrenzt | Vollständige REST API |
-| Lizenz | Kommerziell (~100€) | Kostenlos, Open Source |
-| Multimodal | Nein (nur Bildanalyse) | Ja — Vision-Modelle für Text in Bildern |
-| OCR | Nicht vorhanden | Integriert via Vision-Modell |
-| Zusammenarbeit | Nur Office Edition | Native Sharing-Funktionen |
-| Performance | Single-threaded Analyse | Async, parallele Verarbeitung |
+| GUI Framework | Electron | Electron (official) |
+| Search Speed | Second-heavy | Milliseconds (index + vectors) |
+| AI Analysis | Proprietary, not configurable | Any OpenAI-compatible endpoint |
+| Plugin System | Only Lightroom | Extensible (Python plugins) |
+| API | Limited | Full REST API |
+| License | Commercial (~$100) | Free, Open Source |
+| Multimodal | No (image analysis only) | Yes — Vision models for text in images |
+| OCR | Not available | Integrated via Vision model |
+| Collaboration | Only Office Edition | Native sharing features |
+| Performance | Single-threaded analysis | Async, parallel processing |
 
 ---
 
-## Architektur
+## Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
@@ -75,8 +75,8 @@ Open-Source Fotoverwaltungssoftware mit moderner UX für professionelle Fotograf
 │                            │ IPC                              │
 │  ┌─────────────────────────▼────────────────────────────┐    │
 │  │              Main Process (main.js)                   │    │
-│  │  - Fenster-Management                                │    │
-│  │  - Backend-Start/Stop                                │    │
+│  │  - Window Management                                 │    │
+│  │  - Backend Start/Stop                                │    │
 │  │  - IPC Bridge                                        │    │
 │  └─────────────────────────┬────────────────────────────┘    │
 ├────────────────────────────┼─────────────────────────────────┤
@@ -91,17 +91,17 @@ Open-Source Fotoverwaltungssoftware mit moderner UX für professionelle Fotograf
 │  │       │              │                   │            │    │
 │  │  ┌────▼──────────────▼───────────────────▼─────────┐  │    │
 │  │  │              Core Engine                        │  │    │
-│  │  │  - Bild-Import & Metadaten                       │  │    │
-│  │  │  - Vorschau-Generierung                          │  │    │
-│  │  │  - KI-Analyse-Pipeline                           │  │    │
-│  │  │  - Index-Verwaltung                              │  │    │
+│  │  │  - Image Import & Metadata                       │  │    │
+│  │  │  - Preview Generation                            │  │    │
+│  │  │  - AI Analysis Pipeline                          │  │    │
+│  │  │  - Index Management                              │  │    │
 │  │  └─────────────────────┬───────────────────────────┘  │    │
 │  └────────────────────────┼──────────────────────────────┘    │
 │                           │                                   │
 │  ┌────────────────────────▼──────────────────────────────┐    │
-│  │              KI Backend Adapter                       │    │
+│  │              AI Backend Adapter                       │    │
 │  │  ┌──────────────────────────────────────────────┐     │    │
-│  │  │  llama.cpp OpenAI-kompatibler Endpunkt        │     │    │
+│  │  │  llama.cpp OpenAI-compatible Endpoint         │     │    │
 │  │  │  /v1/chat/completions                         │     │    │
 │  │  │  /v1/embeddings                               │     │    │
 │  │  └──────────────────────────────────────────────┘     │    │
@@ -116,42 +116,42 @@ Open-Source Fotoverwaltungssoftware mit moderner UX für professionelle Fotograf
 
 ---
 
-## Kernkomponenten
+## Core Components
 
-### 1. Bild-Import & Metadaten
-- Rekursiver Scan von Verzeichnissen
-- EXIF/IPTC/XMP Extraktion (exifread, Pillow)
-- RAW-Unterstützung (rawpy/libraw)
-- Deduplizierung via Perceptual Hash (pHash)
+### 1. Image Import & Metadata
+- Recursive directory scanning
+- EXIF/IPTC/XMP extraction (exifread, Pillow)
+- RAW support (rawpy/libraw)
+- Deduplication via Perceptual Hash (pHash)
 
-### 2. Vorschau-Generierung
-- Thumbnail (150x150), Preview (1200px breit), Original
-- Asynchrone Generierung im Hintergrund
-- Adaptive Qualität basierend auf Hardware
+### 2. Preview Generation
+- Thumbnail (150x150), Preview (1200px wide), Original
+- Asynchronous background generation
+- Adaptive quality based on hardware
 
-### 3. KI-Analyse-Pipeline
+### 3. AI Analysis Pipeline
 ```
-Bild → [Metadaten] → [Vorschau] → [KI-Analyse] → [Index]
-                              │
-                    ┌─────────▼──────────┐
-                    │  llama.cpp Endpoint │
-                    │                      │
-                    │  - Objekterkennung   │
-                    │  - Szenenerkennung   │
-                    │  - Gesichtserkennung │
-                    │  - Ästhetik-Rating   │
-                    │  - Text/OCR          │
-                    │  - Embeddings        │
-                    └──────────────────────┘
+Image → [Metadata] → [Preview] → [AI Analysis] → [Index]
+                          │
+                  ┌─────────▼──────────┐
+                  │  llama.cpp Endpoint │
+                  │                      │
+                  │  - Object Detection   │
+                  │  - Scene Recognition  │
+                  │  - Face Recognition   │
+                  │  - Aesthetic Rating   │
+                  │  - Text/OCR           │
+                  │  - Embeddings         │
+                  └──────────────────────┘
 ```
 
-### 4. Such-Engine
-- **Textsuche**: Volltextindex (SQLite FTS5)
-- **Vektorsuche**: Embeddings für semantische Suche
-- **Filter**: Kombination aus Metadaten + KI-Tags + Gesichtern
-- **Ähnlichkeitssuche**: Cosine-Similarity über Embeddings
+### 4. Search Engine
+- **Text Search**: Full-text index (SQLite FTS5)
+- **Vector Search**: Embeddings for semantic search
+- **Filter**: Combination of metadata + AI tags + faces
+- **Similarity Search**: Cosine similarity over embeddings
 
-### 5. Datenbank-Schema (vereinfacht)
+### 5. Database Schema (simplified)
 ```sql
 photos: id, path, filename, width, height, format, size,
         captured_at, gps_lat, gps_lon, phash, preview_path,
@@ -175,33 +175,33 @@ collections: id, name, photo_ids (JSONB), created_at
 
 ---
 
-## Phase-Planung
+## Phase Planning
 
-### Phase 1 — MVP (Kernfunktionalität) ✅
-- [x] Electron Grundgerüst
-- [x] Python Backend mit FastAPI
-- [x] Basis-Web-UI (Bildergalerie, Detailansicht)
-- [x] EXIF-Metadaten-Extraktion
-- [x] Vorschau-Generierung
-- [x] Basic-Suche (Dateiname, Datum, Ort)
-- [ ] KI-Backend-Anbindung (llama.cpp)
+### Phase 1 — MVP (Core Functionality) ✅
+- [x] Electron skeleton
+- [x] Python backend with FastAPI
+- [x] Basic web UI (photo gallery, detail view)
+- [x] EXIF metadata extraction
+- [x] Preview generation
+- [x] Basic search (filename, date, location)
+- [ ] AI backend integration (llama.cpp)
 
-### Phase 2 — KI-Features
-- [ ] Automatisches Tagging via KI
-- [ ] Gesichtserkennung & Personenerkennung
-- [ ] Ähnlichkeitssuche (Embeddings)
-- [ ] Semantische Freitextsuche
-- [ ] Ästhetik-Bewertung
+### Phase 2 — AI Features
+- [ ] Automatic AI tagging
+- [ ] Face & person recognition
+- [ ] Similarity search (embeddings)
+- [ ] Semantic free-text search
+- [ ] Aesthetic rating
 
-### Phase 3 — Workflow-Tools
-- [ ] Culling-Workflow
-- [ ] Duplikat-Erkennung
-- [ ] Batch-Operationen (Tags, Umbenennung, Export)
-- [ ] Collections/Sammlungen
+### Phase 3 — Workflow Tools
+- [ ] Culling workflow
+- [ ] Duplicate detection
+- [ ] Batch operations (tags, renaming, export)
+- [ ] Collections
 
-### Phase 4 — Erweitertes
-- [ ] OCR/Texterkennung in Bildern
-- [ ] Analytics-Dashboard
-- [ ] Plugin-System
-- [ ] API für Dritte
-- [ ] Multi-User & Sharing
+### Phase 4 — Advanced
+- [ ] OCR/text recognition in images
+- [ ] Analytics dashboard
+- [ ] Plugin system
+- [ ] Third-party API
+- [ ] Multi-user & sharing
