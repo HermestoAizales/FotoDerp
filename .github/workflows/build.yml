@@ -66,6 +66,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set GitHub token for electron-builder
+        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
