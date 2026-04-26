@@ -30,3 +30,10 @@ fotoerp.db
 
 # Env
 .env
+
+# Nuitka build output
+backend/dist/
+backend/*.spec
+
+# Icons (placeholder — actual icons need to be added)
+icons/.gitkeep

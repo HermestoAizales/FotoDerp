@@ -127,13 +127,48 @@ class AnalyticsOverview(BaseModel):
     recent_activity: List[dict]
 
 
+# --- Model Configuration ---
+
+class ModelConfig(BaseModel):
+    """Konfiguration eines KI-Modells"""
+    id: str
+    name: str
+    type: str = "vision"       # vision | text | embedding
+    endpoint: str = ""          # Leer = lokaler llama.cpp Server
+    model_name: str = ""        # Modell-ID für API
+    quantization: Optional[str] = None
+    context_length: int = 4096
+    is_active: bool = False
+    description: str = ""
+
+
+class ModelListResponse(BaseModel):
+    models: List[ModelConfig]
+    active_model_id: Optional[str] = None
+
+
+class DownloadStatus(BaseModel):
+    model_id: str
+    status: str          # "downloading", "ready", "error"
+    progress: float = 0.0   # 0.0 - 1.0
+    downloaded_mb: float = 0.0
+    total_mb: float = 0.0
+    error: Optional[str] = None
+
+
 # --- Settings Models ---
 
 class AppSettings(BaseModel):
+    active_model_id: Optional[str] = None
     llama_endpoint: str = "http://127.0.0.1:8080/v1"
     analysis_batch_size: int = 10
     preview_quality: int = 85
     auto_tag_enabled: bool = True
+    gpu_layers: int = -1          # -1 = all to GPU
+    n_ctx: int = 4096
+    n_threads: int = 0            # 0 = auto
+    flash_attn: bool = True
+    embedding_enabled: bool = True
 
 
 # --- Import Models ---

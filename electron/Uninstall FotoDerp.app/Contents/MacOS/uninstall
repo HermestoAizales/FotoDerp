@@ -1,0 +1,19 @@
+#!/bin/bash
+# Wrapper: Oeffnet Terminal und fuehrt uninstall-mac.sh aus
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+BASE_DIR="$(dirname "$SCRIPT_DIR")/.."
+
+# Entpacktes Skript suchen (electron-builder kopiert es nach Resources)
+UNINSTALL_SCRIPT=""
+if [ -f "$BASE_DIR/Resources/uninstall-mac.sh" ]; then
+    UNINSTALL_SCRIPT="$BASE_DIR/Resources/uninstall-mac.sh"
+elif [ -f "$SCRIPT_DIR/uninstall-mac.sh" ]; then
+    UNINSTALL_SCRIPT="$SCRIPT_DIR/uninstall-mac.sh"
+fi
+
+if [ -n "$UNINSTALL_SCRIPT" ]; then
+    open -a Terminal.app --args -c "bash '$UNINSTALL_SCRIPT'"
+else
+    echo "Error: uninstall-mac.sh not found"
+    exit 1
+fi

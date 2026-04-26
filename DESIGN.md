@@ -80,13 +80,14 @@ Open-source photo management software with modern UX for professional photograph
 │  │  - IPC Bridge                                        │    │
 │  └─────────────────────────┬────────────────────────────┘    │
 ├────────────────────────────┼─────────────────────────────────┤
-│                             │ HTTP / WebSocket               │
+│                             │ HTTP                            │
 │                     FOTO DERP BACKEND                      │
 │  ┌──────────────────────────────────────────────────────┐    │
-│  │              FastAPI (Python)                        │    │
+│  │  Nuitka-compiled Binary (native executable)           │    │
+│  │                                                      │    │
 │  │  ┌──────────┐ ┌──────────────┐ ┌──────────────────┐  │    │
-│  │  │  API     │ │  Worker      │ │  Scheduler       │  │    │
-│  │  │  Routes  │ │  Queue       │ │  (asyncio)       │  │    │
+│  │  │  API     │ │  AI          │ │  Image           │  │    │
+│  │  │  Routes  │ │  Adapter     │ │  Processor       │  │    │
 │  │  └────┬─────┘ └──────┬───────┘ └────────┬─────────┘  │    │
 │  │       │              │                   │            │    │
 │  │  ┌────▼──────────────▼───────────────────▼─────────┐  │    │
@@ -94,7 +95,7 @@ Open-source photo management software with modern UX for professional photograph
 │  │  │  - Image Import & Metadata                       │  │    │
 │  │  │  - Preview Generation                            │  │    │
 │  │  │  - AI Analysis Pipeline                          │  │    │
-│  │  │  - Index Management                              │  │    │
+│  │  │  - SQLite Index (FTS5 + Vectors)                 │  │    │
 │  │  └─────────────────────┬───────────────────────────┘  │    │
 │  └────────────────────────┼──────────────────────────────┘    │
 │                           │                                   │
@@ -107,10 +108,9 @@ Open-source photo management software with modern UX for professional photograph
 │  │  └──────────────────────────────────────────────┘     │    │
 │  └────────────────────────────────────────────────────────┘    │
 ├──────────────────────────────────────────────────────────────┤
-│  ┌────────────┐  ┌────────────┐                             │
-│  │ SQLite     │  │ Redis      │                             │
-│  │ (Index)    │  │ (Cache)    │                             │
-│  └────────────┘  └────────────┘                             │
+│  ┌────────────┐                                             │
+│  │ SQLite     │  (Index + FTS5 + Embeddings)                │
+│  └────────────┘                                             │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -151,26 +151,34 @@ Image → [Metadata] → [Preview] → [AI Analysis] → [Index]
 - **Filter**: Combination of metadata + AI tags + faces
 - **Similarity Search**: Cosine similarity over embeddings
 
-### 5. Database Schema (simplified)
+### 5. Database Schema (SQLite)
+
 ```sql
+-- photos (haupttable)
 photos: id, path, filename, width, height, format, size,
         captured_at, gps_lat, gps_lon, phash, preview_path,
         status (pending/analyzing/done/error), rating
 
+-- Volltextsuche (FTS5 virtual table, auto-sync via triggers)
+photos_fts: filename, format, captured_at, phash
+
+-- Gesichter & Personen
 faces: id, photo_id, person_id, x, y, width, height, confidence
+persons: id, name, embedding (BLOB), face_count, unknown
 
-persons: id, name, embedding, face_count
-
+-- Tags (M:N via photo_tags)
 tags: id, name, category, usage_count
+photo_tags: photo_id, tag_id (composite PK)
 
-photo_tags: photo_id, tag_id
-
-analyses: id, photo_id, type (object/scene/aesthetic/ocr),
+-- KI-Analyse-Ergebnisse
+analyses: id, photo_id, type (object/scene/aesthetic/ocr/face),
           data (JSON), confidence, model_version
 
-embeddings: photo_id, vector (embedding)
+-- Embeddings (Cosine Similarity Search)
+embeddings: photo_id (PK), vector (BLOB = packed float32[])
 
-collections: id, name, photo_ids (JSONB), created_at
+-- Sammlungen
+collections: id, name, photo_ids (JSON array), created_at
 ```
 
 ---
@@ -179,11 +187,14 @@ collections: id, name, photo_ids (JSONB), created_at
 
 ### Phase 1 — MVP (Core Functionality) ✅
 - [x] Electron skeleton
-- [x] Python backend with FastAPI
+- [x] Python backend with FastAPI → Nuitka-compiled binary
+- [x] SQLite database (no ORM, no PostgreSQL, no Redis)
 - [x] Basic web UI (photo gallery, detail view)
 - [x] EXIF metadata extraction
 - [x] Preview generation
-- [x] Basic search (filename, date, location)
+- [x] Basic search (FTS5 full-text)
+- [ ] Nuitka backend build pipeline
+- [ ] electron-builder installer (NSIS/dmg/AppImage)
 - [ ] AI backend integration (llama.cpp)
 
 ### Phase 2 — AI Features

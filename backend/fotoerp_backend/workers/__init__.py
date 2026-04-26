@@ -1,1 +1,0 @@
-"""FotoDerp Backend — Workers Package"""
