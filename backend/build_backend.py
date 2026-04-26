@@ -14,6 +14,7 @@ Output: dist/fotoerp-backend/<platform>/fotoerp-backend (executable)
 """
 
 import argparse
+import os
 import platform as plat
 import subprocess
 import sys
