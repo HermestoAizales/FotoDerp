@@ -82,9 +82,13 @@ jobs:
       - name: Build backend
         shell: bash
         run: cd backend && python3 build_backend.py --target ${{ matrix.platform }}
+      - name: Temporarily move icons dir (prevents app-builder panic)
+        run: mv icons icons.bak || true
       - name: Build Electron
         shell: bash
         run: npm run build:${{ matrix.platform }}
+      - name: Restore icons dir
+        run: mv icons.bak icons || true
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

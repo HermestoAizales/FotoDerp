@@ -76,7 +76,7 @@ def build(target_platform: str):
 
     # Windows: icon handled separately (Dependency Walker not available in CI)
     if target_platform == "windows":
-        nuitka_opts.append("--windows-icon-from-ico=icons/icon.ico")
+        nuitka_opts.append("--windows-icon-from-ico=../icons/icon.ico")
 
     nuitka_opts.append(str(entry_point))
 
