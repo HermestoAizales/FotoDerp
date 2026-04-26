@@ -63,20 +63,31 @@ def build(target_platform: str):
         sys.exit(1)
 
     # Nuitka-Befehl zusammenstellen
-    nuitka_opts = [
-        sys.executable, "-m", "nuitka",
-        "--standalone",
-        "--nofollow-import-to=tkinter",
-        "--nofollow-import-to=pytest",
-        "--python-flag=-OO",
-        "--include-package=fotoerp_backend",
-        "--output-dir=" + str(output_dir),
-        "--output-filename=fotoerp-backend",
-    ]
-
-    # Windows: icon handled separately (Dependency Walker not available in CI)
+    # Windows: use onefile mode (no Dependency Walker needed)
+    # Linux/macOS: use standalone mode (directory-based)
     if target_platform == "windows":
-        nuitka_opts.append("--windows-icon-from-ico=../icons/icon.ico")
+        nuitka_opts = [
+            sys.executable, "-m", "nuitka",
+            "--onefile",
+            "--nofollow-import-to=tkinter",
+            "--nofollow-import-to=pytest",
+            "--python-flag=-OO",
+            "--include-package=fotoerp_backend",
+            "--windows-icon-from-ico=../icons/icon.ico",
+            "--output-dir=" + str(output_dir),
+            "--output-filename=fotoerp-backend.exe",
+        ]
+    else:
+        nuitka_opts = [
+            sys.executable, "-m", "nuitka",
+            "--standalone",
+            "--nofollow-import-to=tkinter",
+            "--nofollow-import-to=pytest",
+            "--python-flag=-OO",
+            "--include-package=fotoerp_backend",
+            "--output-dir=" + str(output_dir),
+            "--output-filename=fotoerp-backend",
+        ]
 
     nuitka_opts.append(str(entry_point))
 
@@ -91,24 +102,33 @@ def build(target_platform: str):
         sys.exit(1)
 
     # Binary ins richtige Verzeichnis verschieben
-    compiled_dir = output_dir / "fotoerp-backend.dist"
-    if compiled_dir.exists():
-        # Nuitka --standalone erstellt ein .dist-Verzeichnis
-        binary = compiled_dir / "fotoerp-backend"
-        if not binary.exists():
-            # Unter Windows heißt es .exe
-            binary = compiled_dir / "fotoerp-backend.exe"
-
-        if binary.exists():
-            dest = output_dir / "fotoerp-backend"
-            if target_platform == "windows":
-                dest = output_dir / "fotoerp-backend.exe"
-            shutil.move(str(binary), str(dest))
-            print(f"\nBinary: {dest}")
+    if target_platform == "windows":
+        # onefile mode: single exe directly in output dir
+        exe = output_dir / "fotoerp-backend.exe"
+        if exe.exists():
+            print(f"\nBinary: {exe}")
         else:
-            print(f"\nWARNING: Expected binary not found in {compiled_dir}")
+            # Check .dist directory (sometimes created even for onefile)
+            dist_dir = output_dir / "fotoerp-backend.dist"
+            if dist_dir.exists():
+                exe = dist_dir / "fotoerp-backend.exe"
+                if exe.exists():
+                    shutil.move(str(exe), str(output_dir / "fotoerp-backend.exe"))
+                    print(f"\nBinary: {output_dir / 'fotoerp-backend.exe'}")
     else:
-        print(f"\nWARNING: .dist directory not found at {compiled_dir}")
+        compiled_dir = output_dir / "fotoerp-backend.dist"
+        if compiled_dir.exists():
+            binary = compiled_dir / "fotoerp-backend"
+            if not binary.exists():
+                binary = compiled_dir / "fotoerp-backend.exe"
+            if binary.exists():
+                dest = output_dir / "fotoerp-backend"
+                shutil.move(str(binary), str(dest))
+                print(f"\nBinary: {dest}")
+            else:
+                print(f"\nWARNING: Expected binary not found in {compiled_dir}")
+        else:
+            print(f"\nWARNING: .dist directory not found at {compiled_dir}")
 
     # Abhängigkeiten kopieren (Pillow, exifread etc.)
     # Nuitka --standalone sollte alles automatisch kopieren
