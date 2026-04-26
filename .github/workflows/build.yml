@@ -4,6 +4,18 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to build (leave empty for all)'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - linux
+          - macos-dmg
+          - macos-zip
+          - windows
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -32,39 +44,141 @@ jobs:
       - name: Compile check
         run: find backend -name "*.py" -not -path "*/__pycache__/*" | xargs python3 -m py_compile
 
-  build-app:
-    name: Build ${{ matrix.name }} (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 30
+  build-linux:
+    name: Build Linux AppImage
+    runs-on: ubuntu-24.04
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      github.event.inputs.platform == '' ||
+      github.event.inputs.platform == 'linux'
     needs: backend-check
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: Linux AppImage
-            os: ubuntu-24.04
-            platform: linux
-            artifact_name: fotoerp-linux-appimage
-            artifact_path: dist/FotoDerp*.AppImage
-          - name: macOS dmg
-            os: macos-14
-            platform: mac
-            artifact_name: fotoerp-macos-dmg
-            artifact_path: dist/FotoDerp*.dmg
-          - name: macOS zip
-            os: macos-14
-            platform: mac
-            artifact_name: fotoerp-macos-zip
-            artifact_path: dist/FotoDerp*.zip
-          - name: Windows NSIS
-            os: windows-2025
-            platform: win
-            artifact_name: fotoerp-windows-nsis
-            artifact_path: dist/FotoDerp Setup *.exe
-
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-      - name: Set GitHub token for electron-builder
+      - name: Set GitHub token
+        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install npm packages
+        run: npm ci || npm install
+      - name: Install Nuitka
+        run: pip install nuitka
+      - name: Build backend
+        shell: bash
+        run: cd backend && python3 build_backend.py --target linux
+      - name: Temporarily move icons dir
+        run: mv icons icons.bak || true
+      - name: Build Electron
+        shell: bash
+        run: npm run build:linux
+      - name: Restore icons dir
+        run: mv icons.bak icons || true
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fotoerp-linux-appimage
+          path: dist/FotoDerp*.AppImage
+          retention-days: 14
+
+  build-macos-dmg:
+    name: Build macOS DMG
+    runs-on: macos-14
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      github.event.inputs.platform == '' ||
+      github.event.inputs.platform == 'macos-dmg'
+    needs: backend-check
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set GitHub token
+        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install npm packages
+        run: npm ci || npm install
+      - name: Install Nuitka
+        run: pip install nuitka
+      - name: Build backend
+        shell: bash
+        run: cd backend && python3 build_backend.py --target mac
+      - name: Temporarily move icons dir
+        run: mv icons icons.bak || true
+      - name: Build Electron (DMG)
+        shell: bash
+        run: npm run build:mac -- --dir dmg
+      - name: Restore icons dir
+        run: mv icons.bak icons || true
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fotoerp-macos-dmg
+          path: dist/FotoDerp*.dmg
+          retention-days: 14
+
+  build-macos-zip:
+    name: Build macOS ZIP
+    runs-on: macos-14
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      github.event.inputs.platform == '' ||
+      github.event.inputs.platform == 'macos-zip'
+    needs: backend-check
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set GitHub token
+        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      - name: Install npm packages
+        run: npm ci || npm install
+      - name: Install Nuitka
+        run: pip install nuitka
+      - name: Build backend
+        shell: bash
+        run: cd backend && python3 build_backend.py --target mac
+      - name: Temporarily move icons dir
+        run: mv icons icons.bak || true
+      - name: Build Electron (ZIP)
+        shell: bash
+        run: npm run build:mac -- --dir zip
+      - name: Restore icons dir
+        run: mv icons.bak icons || true
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fotoerp-macos-zip
+          path: dist/FotoDerp*.zip
+          retention-days: 14
+
+  build-windows:
+    name: Build Windows NSIS
+    runs-on: windows-2025
+    if: >-
+      github.event_name != 'workflow_dispatch' ||
+      github.event.inputs.platform == '' ||
+      github.event.inputs.platform == 'windows'
+    needs: backend-check
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set GitHub token
         run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
       - uses: actions/setup-node@v4
         with:
@@ -78,7 +192,6 @@ jobs:
       - name: Install Nuitka
         run: pip install nuitka
       - name: Download Dependencies (Windows only)
-        if: matrix.platform == 'win'
         shell: pwsh
         run: |
           $dir = "$env:USERPROFILE\.nuitka"
@@ -89,7 +202,10 @@ jobs:
             Expand-Archive -Path "$dir\deps.zip" -DestinationPath $dir -Force -ErrorAction SilentlyContinue
             $exe = Get-ChildItem -Path $dir -Recurse -Filter "Dependencies.exe" | Select-Object -First 1
             if ($exe) {
-              Copy-Item $exe.FullName "$dir\Dependencies.exe" -Force
+              $dest = "$dir\Dependencies.exe"
+              if ($exe.FullName -ne $dest) {
+                Copy-Item $exe.FullName $dest -Force
+              }
               Write-Host "Dependencies.exe found at $($exe.FullName)"
             } else {
               Write-Error "Could not find Dependencies.exe in archive"
@@ -101,17 +217,17 @@ jobs:
           }
       - name: Build backend
         shell: bash
-        run: cd backend && python3 build_backend.py --target ${{ matrix.platform }}
-      - name: Temporarily move icons dir (prevents app-builder panic)
+        run: cd backend && python3 build_backend.py --target win
+      - name: Temporarily move icons dir
         run: mv icons icons.bak || true
       - name: Build Electron
         shell: bash
-        run: npm run build:${{ matrix.platform }}
+        run: npm run build:win
       - name: Restore icons dir
         run: mv icons.bak icons || true
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.artifact_name }}
-          path: ${{ matrix.artifact_path }}
+          name: fotoerp-windows-nsis
+          path: dist/FotoDerp Setup *.exe
           retention-days: 14
