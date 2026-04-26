@@ -13,11 +13,9 @@ name: Build FotoDerp
 on:
   push:
     branches: [main, develop]
+    tags: ['v*']
   pull_request:
     branches: [main]
-  # Trigger full release builds on tags
-  push:
-    tags: ['v*']
 
 # Cancel in-progress runs for same branch
 concurrency:
@@ -122,9 +120,7 @@ jobs:
 
       # --- Install Node dependencies ---
       - name: Install npm packages
-        run: npm ci --ignore-scripts || npm install --ignore-scripts
-        env:
-          ELECTRON_SKIP_BINARY_DOWNLOAD: true
+        run: npm ci || npm install
 
       # --- Build Nuitka backend ---
       - name: Install Nuitka
@@ -152,7 +148,7 @@ jobs:
 
       # --- macOS notarization (optional, skip for forks) ---
       - name: Notarize macOS dmg (if secrets available)
-        if: matrix.platform == 'mac' && secrets.APPLE_ID != ''
+        if: ${{ matrix.platform == 'mac' && secrets.APPLE_ID != '' }}
         env:
           APPLE_ID: ${{ secrets.APPLE_ID }}
           APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
