@@ -1,0 +1,19 @@
+# FotoDerp Dependencies
+# Use pyproject.toml for development (pip install -e .[dev])
+# Pin versions for production:
+
+fastapi>=0.115
+uvicorn[standard]>=0.34
+sqlalchemy>=2.0
+alembic>=1.14
+psycopg2-binary>=2.9
+redis>=5.2
+celery>=5.4
+pillow>=11.0
+exifread>=3.0
+rawpy>=0.21
+python-multipart>=0.0.18
+pydantic>=2.10
+pydantic-settings>=2.7
+rich>=14.0
+click>=8.1

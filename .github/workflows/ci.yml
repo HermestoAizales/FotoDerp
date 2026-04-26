@@ -1,0 +1,84 @@
+name: FotoDerp CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # --- Python Backend Tests ---
+  backend-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install -e .[dev]
+      
+      - name: Run linter
+        run: |
+          cd backend
+          ruff check fotoerp_backend/
+      
+      - name: Run tests
+        run: |
+          cd backend
+          pytest tests/ -v
+
+  # --- Electron Build ---
+  electron-build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Electron app
+        run: npm run build -- --${{ matrix.os == 'ubuntu-latest' && 'linux' || matrix.os == 'macos-latest' && 'mac' || 'win' }}
+      
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: fotoerp-${{ matrix.os }}
+          path: dist/
+
+  # --- Type Checking ---
+  type-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -e .[dev]
+      
+      - name: Run mypy
+        run: |
+          cd backend
+          mypy fotoerp_backend/

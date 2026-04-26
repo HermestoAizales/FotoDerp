@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+  <title>FotoDerp</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <button id="btn-import" title="Fotos importieren">📁 Import</button>
+      <button id="btn-analyze" title="KI-Analyse starten">🤖 Analysieren</button>
+    </div>
+    <div class="toolbar-center">
+      <input type="text" id="search-input" placeholder="Suche... (z.B. 'Hund am Strand')">
+    </div>
+    <div class="toolbar-right">
+      <select id="view-toggle">
+        <option value="grid">Grid</option>
+        <option value="list">Liste</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+    <!-- Left Sidebar -->
+    <aside class="sidebar-left">
+      <div class="sidebar-section">
+        <h3>Bibliotheken</h3>
+        <ul class="nav-list">
+          <li class="nav-item active" data-view="all">Alle Bilder</li>
+          <li class="nav-item" data-view="favorites">⭐ Favoriten</li>
+          <li class="nav-item" data-view="recent">Neueste</li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Stichwörter</h3>
+        <ul id="tags-list" class="nav-list">
+          <li class="nav-item tag-item" data-tag="Hund">🐕 Hund (12)</li>
+          <li class="nav-item tag-item" data-tag="Strand">🏖️ Strand (8)</li>
+          <li class="nav-item tag-item" data-tag="Natur">🌿 Natur (24)</li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Personen</h3>
+        <ul id="persons-list" class="nav-list">
+          <li class="nav-item person-item" data-person="unknown">Unbekannt (5)</li>
+        </ul>
+      </div>
+      
+      <div class="sidebar-section">
+        <h3>Culling</h3>
+        <ul class="nav-list">
+          <li class="nav-item" data-view="culling">🗂️ Culling-Projekte</li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Center: Photo Grid -->
+    <main class="photo-grid-container">
+      <div id="photo-grid" class="photo-grid">
+        <!-- Placeholder photos -->
+        <div class="photo-placeholder">
+          <div class="placeholder-icon">📷</div>
+          <span>Keine Bilder importiert</span>
+        </div>
+      </div>
+      
+      <div class="pagination">
+        <button id="prev-page" disabled>← Zurück</button>
+        <span id="page-info">Seite 1 von 1</span>
+        <button id="next-page" disabled>Weiter →</button>
+      </div>
+    </main>
+
+    <!-- Right Sidebar: Preview -->
+    <aside class="sidebar-right">
+      <div id="preview-panel" class="preview-panel">
+        <div class="preview-placeholder">
+          <span>Wähle ein Bild aus</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="status-bar">
+    <span id="status-left">Bereit</span>
+    <span id="status-right">0 Bilder | KI: bereit</span>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

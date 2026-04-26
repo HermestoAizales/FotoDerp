@@ -1,0 +1,59 @@
+{
+  "name": "fotoerp",
+  "version": "0.1.0",
+  "description": "Open-Source KI-gestützte Fotoverwaltung — ähnlich wie FotoDerp, aber besser",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"wait-on http://localhost:8765/health && electron .\"",
+    "start:backend": "cd backend && python3 -m uvicorn fotoerp_backend.main:app --host 0.0.0.0 --port 8765 --reload",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "build:linux": "electron-builder --linux",
+    "build:mac": "electron-builder --mac",
+    "build:win": "electron-builder --win"
+  },
+  "build": {
+    "appId": "com.fotoerp.app",
+    "productName": "FotoDerp",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**/*",
+      "frontend/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "backend",
+        "to": "backend",
+        "filter": ["**/*"]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.photography",
+      "target": ["dmg", "zip"]
+    },
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "linux": {
+      "target": ["AppImage", "deb"]
+    }
+  },
+  "keywords": [
+    "photo",
+    "management",
+    "ai",
+    "electron"
+  ],
+  "author": "FotoDerp Contributors",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^33.0.0",
+    "electron-builder": "^25.0.0",
+    "concurrently": "^9.0.0",
+    "wait-on": "^8.0.0"
+  },
+  "dependencies": {}
+}
