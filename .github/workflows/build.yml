@@ -77,15 +77,6 @@ jobs:
         run: npm ci || npm install
       - name: Install Nuitka
         run: pip install nuitka
-      - name: Download Dependency Walker (Windows only)
-        if: matrix.platform == 'win'
-        shell: pwsh
-        run: |
-          $dir = "$env:USERPROFILE\.nuitka"
-          New-Item -ItemType Directory -Force -Path $dir | Out-Null
-          Invoke-WebRequest -Uri "https://www.dependencywalker.com/depends22_portable.zip" -OutFile "$dir\depends.zip"
-          Expand-Archive -Path "$dir\depends.zip" -DestinationPath $dir -Force
-          Remove-Item "$dir\depends.zip"
       - name: Build backend
         shell: bash
         run: cd backend && python3 build_backend.py --target ${{ matrix.platform }}
