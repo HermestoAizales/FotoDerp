@@ -35,7 +35,7 @@
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x86_64"]
+          "arch": ["x64"]
         }
       ],
       "icon": "icons/",
@@ -72,23 +72,23 @@
       ]
     },
     "win": {
+      "icon": "icons/icon.ico",
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": ["x64"],
+          "nsis": {
+            "oneClick": false,
+            "allowToChangeInstallationDirectory": true,
+            "createDesktopShortcut": true,
+            "createStartMenuShortcut": true,
+            "shortcutName": "FotoDerp",
+            "uninstallDisplayName": "FotoDerp",
+            "license": "LICENSE",
+            "include": "electron/uninstaller.nsh"
+          }
         }
-      ],
-      "icon": "icons/icon.ico",
-      "nsis": {
-        "oneClick": false,
-        "allowToChangeInstallationDirectory": true,
-        "createDesktopShortcut": true,
-        "createStartMenuShortcut": true,
-        "shortcutName": "FotoDerp",
-        "uninstallDisplayName": "FotoDerp",
-        "license": "LICENSE",
-        "include": "electron/uninstaller.nsh"
-      }
+      ]
     }
   },
   "keywords": [
