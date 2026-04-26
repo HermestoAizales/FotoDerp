@@ -1,23 +1,23 @@
 # FotoDerp
 
-Open-Source KI-gestützte Fotoverwaltung für professionelle Fotografen.
+Open-source AI-powered photo management for professional photographers.
 
-## Features (geplant)
+## Planned Features
 
-- Automatische KI-Tagging und Gesichtserkennung
-- Semantische Freitextsuche ("Hund am Strand bei Sonnenuntergang")
-- Ähnlichkeitssuche (finde visuelle Duplikate und ähnliche Bilder)
-- Culling-Workflow für schnelle Bildauswahl
-- Ästhetik-Bewertung per KI
-- OCR — Texterkennung in Fotos
+- Automatic AI tagging and face recognition
+- Semantic free-text search ("dog on the beach at sunset")
+- Similarity search (find visual duplicates and similar images)
+- Culling workflow for fast image selection
+- Aesthetic rating via AI
+- OCR — text recognition in photos
 - Cross-platform (Web UI + CLI)
-- KI-backend-unabhängig: llama.cpp OpenAI-kompatibler Endpunkt
+- AI-backend-independent: llama.cpp OpenAI-compatible endpoint
 
 ## Tech Stack
 
 - **Backend**: Python 3.11+, FastAPI
-- **KI**: llama.cpp `/v1/chat/completions` + `/v1/embeddings`
-- **Datenbank**: PostgreSQL (mit pgvector für Vektorsuche)
+- **AI**: llama.cpp `/v1/chat/completions` + `/v1/embeddings`
+- **Database**: PostgreSQL (with pgvector for vector search)
 - **Frontend**: React / Svelte (Web UI)
 - **CLI**: Python (rich)
 
@@ -30,22 +30,22 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Erste Schritte
+## Getting Started
 
 ```bash
-# Datenbank initialisieren
+# Initialize database
 fotoerp db init
 
-# Bilderverzeichnis importieren
-fotoerp import /pfad/zu/fotos
+# Import photo directory
+fotoerp import /path/to/photos
 
-# KI-Analyse starten
+# Start AI analysis
 fotoerp analyze --start
 
-# Web UI starten
+# Start web UI
 fotoerp serve
 ```
 
-## Lizenz
+## License
 
 MIT — Open Source
