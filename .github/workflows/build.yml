@@ -73,27 +73,35 @@ jobs:
           # Download depends.exe directly to the location Nuitka expects
           mkdir -p ~/.nuitka
           cd ~/.nuitka
+          
           # Try to download from multiple sources
-          curl -L -o depends22_x64.zip "https://web.archive.org/web/2023/https://dependencywalker.com/depends22_x64.zip" || \
-          curl -L -o depends22_x64.zip "https://github.com/hfiref0x/WinDepends/releases/download/170724/WinDepends.zip" || \
-          echo "WARNING: Could not download dependency tool"
-          if [ -f depends22_x64.zip ]; then
-            unzip -o depends22_x64.zip -d .
-            # Find the exe file (might be in a subdirectory)
-            find . -name "*.exe" -type f | grep -i "depends\|depend" | head -1 > depends_path.txt
-            DEPS_EXE=$(cat depends_path.txt)
-            if [ -n "$DEPS_EXE" ]; then
-              cp "$DEPS_EXE" ~/.nuitka/depends.exe
-              echo "Downloaded dependency tool: $DEPS_EXE"
+          if [ ! -f depends.exe ]; then
+            # Try WinDepends first
+            curl -L -o depends.zip "https://github.com/hfiref0x/WinDepends/releases/download/170724/WinDepends.zip" && unzip -o depends.zip -d . || true
+            
+            # Find depends.exe recursively
+            DEPS_EXE=$(find . -name "depends.exe" -o -name "Depends.exe" -o -name "WinDepends.exe" | head -1)
+            
+            if [ -n "$DEPS_EXE" ] && [ ! -f depends.exe ]; then
+              cp "$DEPS_EXE" depends.exe
+              echo "Copied $DEPS_EXE to depends.exe"
+            fi
+            
+            # Fallback to dependencywalker.com if needed
+            if [ ! -f depends.exe ]; then
+              cd ~/.nuitka
+              curl -L -o depends22_x64.zip "https://web.archive.org/web/2023/https://dependencywalker.com/depends22_x64.zip" && unzip -o depends22_x64.zip -d .
             fi
           fi
+          
           # Verify depends.exe exists
           if [ -f ~/.nuitka/depends.exe ]; then
             echo "depends.exe found at ~/.nuitka/depends.exe"
           else
-            echo "WARNING: depends.exe not found, Nuitka might fail"
+            echo "WARNING: depends.exe not found, Nuitka will try to download it automatically"
           fi
-          # Build with Nuitka - use --assume-yes-for-downloads to auto-download if needed
+          
+          # Build with Nuitka
           cd ${{ github.workspace }}/backend
           python3 -m nuitka --onefile --assume-yes-for-downloads --nofollow-import-to=tkinter --nofollow-import-to=pytest fotoerp_backend/main.py
       - name: Temporarily move icons dir
