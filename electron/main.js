@@ -15,38 +15,52 @@ const BACKEND_HOST = '127.0.0.1';
 
 function getBackendBinary() {
   // In bundled mode: electron-builder packt backend/dist/<platform>/fotoerp-backend
-  // ins App-Verzeichnis. Pfad je nach Plattform:
-  const appPath = app.getAppPath();
+  // nach resources/backend (via extraResources in electron-builder.yml)
+  // In Dev-Modus: backend/dist/<platform>/fotoerp-backend
   const platform = process.platform;
+  const resourcesPath = process.resourcesPath;
+  const appPath = app.getAppPath();
+
+  // Kandidaten-Pfade: erst resourcesPath (gepackt), dann appPath (dev)
+  const candidates = [];
 
   if (platform === 'win32') {
-    const candidates = [
+    // Windows: .exe benötigt
+    candidates.push(
+      path.join(resourcesPath, 'backend', 'windows', 'fotoerp-backend.exe'),
+      path.join(resourcesPath, 'backend', 'fotoerp-backend.exe'),
       path.join(appPath, 'backend', 'windows', 'fotoerp-backend.exe'),
       path.join(appPath, 'backend', 'fotoerp-backend.exe'),
-    ];
-    for (const c of candidates) {
-      if (fs.existsSync(c)) return c;
-    }
+    );
   } else if (platform === 'darwin') {
-    const candidates = [
+    // macOS: unterschiedliche Architekturen
+    candidates.push(
+      path.join(resourcesPath, 'backend', 'darwin-arm64', 'fotoerp-backend'),
+      path.join(resourcesPath, 'backend', 'darwin-x86_64', 'fotoerp-backend'),
+      path.join(resourcesPath, 'backend', 'fotoerp-backend'),
       path.join(appPath, 'backend', 'darwin-arm64', 'fotoerp-backend'),
       path.join(appPath, 'backend', 'darwin-x86_64', 'fotoerp-backend'),
       path.join(appPath, 'backend', 'fotoerp-backend'),
-    ];
-    for (const c of candidates) {
-      if (fs.existsSync(c)) return c;
-    }
+    );
   } else {
-    const candidates = [
+    // Linux
+    candidates.push(
+      path.join(resourcesPath, 'backend', 'linux', 'fotoerp-backend'),
+      path.join(resourcesPath, 'backend', 'fotoerp-backend'),
       path.join(appPath, 'backend', 'linux', 'fotoerp-backend'),
       path.join(appPath, 'backend', 'fotoerp-backend'),
-    ];
-    for (const c of candidates) {
-      if (fs.existsSync(c)) return c;
+    );
+  }
+
+  for (const c of candidates) {
+    if (fs.existsSync(c)) {
+      console.log(`[FotoDerp] Found backend binary: ${c}`);
+      return c;
     }
   }
 
-  // Fallback: Dev-Modus — python3 + uvicorn
+  // Fallback: Dev-Modus — python + uvicorn
+  console.log('[FotoDerp] No bundled backend found, falling back to Python mode');
   return null;
 }
 
