@@ -243,7 +243,7 @@ jobs:
         shell: pwsh
         run: |
           $dir = "$env:USERPROFILE\.nuitka"
-          New-Item -ItemType Directory -Force -Path $dir | OutNull
+          New-Item -ItemType Directory -Force -Path $dir | Out-Null
           $url = "https://github.com/lucasg/Dependencies/releases/download/v1.11.1/Dependencies_x64_Release.zip"
           try {
             Invoke-WebRequest -Uri $url -OutFile "$dir\deps.zip" -ErrorAction Stop
