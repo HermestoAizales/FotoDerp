@@ -242,13 +242,18 @@ jobs:
         run: |
           cd backend
           pip install nuitka
-          # Download Dependencies.exe
+          # Download WinDepends (modern replacement for Dependency Walker)
           mkdir -p ~/.nuitka
-          curl -L -o ~/.nuitka/deps.zip "https://github.com/lucasg/Dependencies/releases/download/v1.11.1/Dependencies_x64_Release.zip"
-          unzip -o ~/.nuitka/deps.zip -d ~/.nuitka
-          cp ~/.nuitka/x64/Dependencies.exe ~/.nuitka/Dependencies.exe 2>/dev/null || true
+          curl -L -o ~/.nuitka/windepends.zip "https://github.com/hfiref0x/WinDepends/releases/download/170724/WinDepends.zip"
+          unzip -o ~/.nuitka/windepends.zip -d ~/.nuitka
+          DEPS_EXE=$(find ~/.nuitka -name "WinDepends.exe" -o -name "Depends.exe" | head -1)
+          if [ -z "$DEPS_EXE" ]; then
+            echo "WARNING: WinDepends not found, trying Dependencies.exe"
+            DEPS_EXE=$(find ~/.nuitka -name "Dependencies.exe" | head -1)
+          fi
+          echo "Using dependency tool: $DEPS_EXE"
           # Build with Nuitka
-          python3 -m nuitka --onefile --nofollow-import-to=tkinter --nofollow-import-to=pytest --dependency-tool-path=~/.nuitka/Dependencies.exe fotoerp_backend/main.py
+          python3 -m nuitka --onefile --nofollow-import-to=tkinter --nofollow-import-to=pytest --dependency-tool-path="$DEPS_EXE" fotoerp_backend/main.py
       - name: Temporarily move icons dir
         shell: pwsh
         run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
