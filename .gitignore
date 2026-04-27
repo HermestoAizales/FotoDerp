@@ -43,3 +43,9 @@ icons/.gitkeep
 .a5c/creds.env.tmp.*
 .a5c/logs/
 # --- end babysitter managed ---
+
+# Lokale Projektinfos (nicht auf GitHub)
+LOCAL.md
+*.local.*
+FotoDerpTest/
+

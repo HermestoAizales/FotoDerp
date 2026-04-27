@@ -266,7 +266,7 @@ jobs:
       - name: Build backend
         shell: bash
         env:
-          PATH: $env:USERPROFILE\.nuitka;$env:PATH
+          PATH: /c/Users/runneradmin/.nuitka:$PATH
         run: |
           cd backend
           python3 build_simple.py
