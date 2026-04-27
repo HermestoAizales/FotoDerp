@@ -77,23 +77,24 @@ jobs:
           New-Item -ItemType Directory -Force -Path $nuitkaDir | Out-Null
           
           if (-not (Test-Path "$nuitkaDir\depends.exe")) {
-            Write-Host "Downloading Dependency Walker..."
+            Write-Host "Downloading Dependency Walker (depends.exe)..."
             $url = "https://dependencywalker.com/depends22_x64.zip"
-            $zipPath = "$nuitkaDir\deps.zip"
+            $zipPath = "$nuitkaDir\depends22_x64.zip"
             try {
               Invoke-WebRequest -Uri $url -OutFile $zipPath -ErrorAction Stop
               Expand-Archive -Path $zipPath -DestinationPath $nuitkaDir -Force
               $exe = Get-ChildItem -Path $nuitkaDir -Recurse -Filter "depends.exe" | Select-Object -First 1
               if ($exe) {
                 Copy-Item $exe.FullName "$nuitkaDir\depends.exe" -Force
-                Write-Host "Dependency Walker downloaded to $nuitkaDir\depends.exe"
+                Write-Host "depends.exe downloaded to $nuitkaDir\depends.exe"
+              } else {
+                Write-Host "WARNING: depends.exe not found in zip"
               }
             } catch {
               Write-Host "WARNING: Could not download Dependency Walker: $_"
-              Write-Host "Nuitka will try to download it automatically"
             }
           } else {
-            Write-Host "depends.exe already exists"
+            Write-Host "depends.exe already exists at $nuitkaDir\depends.exe"
           }
       
       - name: Build with npm (includes backend and Electron)
