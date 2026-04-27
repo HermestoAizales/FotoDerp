@@ -11,7 +11,7 @@
     "build": "npm run build:backend && electron-builder",
     "build:linux": "npm run build:backend && electron-builder --linux",
     "build:mac": "npm run build:backend && electron-builder --mac",
-    "build:win": "npm run build:backend && electron-builder --win"
+    "build:win": "npm run build:backend && electron-builder --win --publish never"
   },
   "build": {
     "appId": "com.fotoerp.app",
