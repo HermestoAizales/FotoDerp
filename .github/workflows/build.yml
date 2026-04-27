@@ -266,11 +266,10 @@ jobs:
       - name: Build backend
         shell: bash
         env:
-          NUITKA_ASSUME_YES: 1
           PATH: $env:USERPROFILE\.nuitka;$env:PATH
         run: |
           cd backend
-          python3 build_backend.py --target win
+          python3 build_simple.py
       - name: Temporarily move icons dir
         shell: pwsh
         run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
