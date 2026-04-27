@@ -7,7 +7,7 @@
     "start": "concurrently \"npm run start:backend\" \"wait-on http://localhost:8765/health && electron .\"",
     "start:backend": "cd backend && python3 -m uvicorn fotoerp_backend.main:app --host 0.0.0.0 --port 8765",
     "dev": "NODE_ENV=development electron .",
-    "build:backend": "cd backend && python3 build_backend.py",
+    "build:backend": "cd backend && [ -f .venv/bin/activate ] && (. .venv/bin/activate && python3 build_backend.py) || python3 build_backend.py",
     "build": "npm run build:backend && electron-builder",
     "build:linux": "npm run build:backend && electron-builder --linux",
     "build:mac": "npm run build:backend && electron-builder --mac",

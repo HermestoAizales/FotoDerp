@@ -8,8 +8,8 @@ import hashlib
 import os
 from typing import List, Dict, Optional
 
-from .import_ import scan_directory
-from ..database import get_photo, set_photo_status
+from fotoerp_backend.services.import_ import scan_directory
+from fotoerp_backend.database import get_photo, set_photo_status
 
 
 class CullingService:

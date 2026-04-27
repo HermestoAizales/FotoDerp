@@ -162,3 +162,39 @@ Die Notarization wird automatisch nach dem dmg Build ausgefuehrt.
 ### Backend startet nicht in bundled mode
 - Binary executable permissions pruefen: `chmod +x dist/*/fotoerp-backend`
 - Fehlenede Shared Libraries: `ldd dist/linux/fotoerp-backend` (Linux)
+
+### Nuitka-compiled binary exits immediately (exit code 0, no output)
+**Known issue on ARM64 Linux with Python 3.13 + Nuitka 2.8.x**
+
+Symptoms:
+- Binary starts but exits immediately with exit code 0
+- No error output, no server logs
+- Dev mode (`uvicorn`) works fine
+
+Workarounds:
+1. **Test on x86_64 first**: Use GitHub Actions Windows runner — the issue may be ARM64-specific
+2. **Dev mode for testing**: Set `NODE_ENV=development` to use uvicorn instead of Nuitka binary
+3. **Fallback**: Ship Python venv as runtime (`python -m fotoerp_backend.main`) instead of compiled binary
+
+**Current status** (2025-04-27):
+- ✅ Dev mode works on all platforms
+- ❌ Nuitka 2.8.10 onefile crashes on ARM64 Linux
+- ⏳ Testing on Windows x86_64 via GitHub Actions CI
+
+## Disk Space Management
+
+**Max 10GB project size on build machines.**
+
+Cleanup steps after builds:
+```bash
+# Nuitka build artifacts
+rm -rf backend/dist/linux/main.*
+rm -rf backend/dist/win/main.*
+rm -rf backend/dist/darwin*/main.*
+
+# Electron node_modules
+rm -rf node_modules
+
+# Python cache
+find . -name __pycache__ -type d -exec rm -rf {} + 2>/dev/null || true
+```

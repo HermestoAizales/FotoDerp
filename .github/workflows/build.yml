@@ -25,7 +25,32 @@ env:
   NODE_VERSION: '20'
   PYTHON_VERSION: '3.12'
 
+# Disk space helpers
 jobs:
+  cleanup-space:
+    name: Free Disk Space
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      freed: ${{ steps.cleanup.outputs.freed }}
+    steps:
+      - name: Free disk space
+        id: cleanup
+        shell: bash
+        run: |
+          # GitHub Actions runners have ~14GB free, but we want to be conservative
+          BEFORE=$(df -h / | tail -1 | awk '{print $4}')
+          
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo rm -rf /opt/ghc
+          sudo rm -rf ~/.cache/pip
+          sudo rm -rf /usr/local/.ghcup
+          sudo apt-get clean
+          
+          AFTER=$(df -h / | tail -1 | awk '{print $4}')
+          echo "freed=${BEFORE} -> ${AFTER}" >> $GITHUB_OUTPUT
+
   backend-check:
     name: Backend Check
     runs-on: ubuntu-latest
@@ -40,7 +65,7 @@ jobs:
         run: |
           cd backend
           pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -r requirements.txt nuitka
       - name: Compile check
         run: find backend -name "*.py" -not -path "*/__pycache__/*" | xargs python3 -m py_compile
 
@@ -66,11 +91,12 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install npm packages
         run: npm ci || npm install
-      - name: Install Nuitka
-        run: pip install nuitka
       - name: Build backend
         shell: bash
-        run: cd backend && python3 build_backend.py --target linux
+        run: |
+          cd backend
+          pip install nuitka
+          python3 build_backend.py --target linux
       - name: Temporarily move icons dir
         run: mv icons icons.bak || true
       - name: Build Electron
@@ -78,6 +104,13 @@ jobs:
         run: npm run build:linux
       - name: Restore icons dir
         run: mv icons.bak icons || true
+      - name: Cleanup disk space
+        shell: bash
+        run: |
+          rm -rf node_modules
+          rm -rf backend/.venv
+          rm -rf backend/dist/linux/main.*
+          df -h /
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -107,11 +140,12 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install npm packages
         run: npm ci || npm install
-      - name: Install Nuitka
-        run: pip install nuitka
       - name: Build backend
         shell: bash
-        run: cd backend && python3 build_backend.py --target mac
+        run: |
+          cd backend
+          pip install nuitka
+          python3 build_backend.py --target mac
       - name: Temporarily move icons dir
         run: mv icons icons.bak || true
       - name: Build Electron (DMG)
@@ -119,6 +153,12 @@ jobs:
         run: npm run build:mac -- --dir dmg
       - name: Restore icons dir
         run: mv icons.bak icons || true
+      - name: Cleanup disk space
+        shell: bash
+        run: |
+          rm -rf node_modules
+          rm -rf backend/.venv
+          df -h /
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -148,11 +188,12 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install npm packages
         run: npm ci || npm install
-      - name: Install Nuitka
-        run: pip install nuitka
       - name: Build backend
         shell: bash
-        run: cd backend && python3 build_backend.py --target mac
+        run: |
+          cd backend
+          pip install nuitka
+          python3 build_backend.py --target mac
       - name: Temporarily move icons dir
         run: mv icons icons.bak || true
       - name: Build Electron (ZIP)
@@ -160,6 +201,12 @@ jobs:
         run: npm run build:mac -- --dir zip
       - name: Restore icons dir
         run: mv icons.bak icons || true
+      - name: Cleanup disk space
+        shell: bash
+        run: |
+          rm -rf node_modules
+          rm -rf backend/.venv
+          df -h /
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -190,6 +237,7 @@ jobs:
       - name: Install npm packages
         run: npm ci || npm install
       - name: Install Nuitka
+        shell: pwsh
         run: pip install nuitka
       - name: Download Dependencies (Windows only)
         shell: pwsh
@@ -217,14 +265,25 @@ jobs:
           }
       - name: Build backend
         shell: bash
-        run: cd backend && python3 build_backend.py --target win
+        run: |
+          cd backend
+          python3 build_backend.py --target win
       - name: Temporarily move icons dir
-        run: mv icons icons.bak || true
+        shell: pwsh
+        run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
       - name: Build Electron
         shell: bash
         run: npm run build:win
       - name: Restore icons dir
-        run: mv icons.bak icons || true
+        shell: pwsh
+        run: git checkout -- icons/ 2>$null; if (-not (Test-Path icons)) { git restore icons/ }
+      - name: Cleanup disk space
+        shell: pwsh
+        run: |
+          Remove-Item node_modules -Recurse -Force -ErrorAction SilentlyContinue
+          Remove-Item backend\.venv -Recurse -Force -ErrorAction SilentlyContinue
+          Remove-Item "backend\dist\win\main.*" -Recurse -Force -ErrorAction SilentlyContinue
+          Get-PSDrive C | Select-Object @{N='FreeGB';E={[math]::Round($_.Free/1GB,1)}}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

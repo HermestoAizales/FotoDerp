@@ -10,7 +10,7 @@ from datetime import datetime
 from PIL import Image
 from typing import List, Dict, Optional
 
-from ..database import add_photo, find_duplicate, set_photo_status
+from fotoerp_backend.database import add_photo, find_duplicate, set_photo_status
 
 
 SUPPORTED_FORMATS = {

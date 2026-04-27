@@ -14,29 +14,41 @@ import asyncio
 import hashlib
 import os
 
-from .models import (
+from fotoerp_backend.models import (
     PhotoInfo, AnalysisResult, Tag, AppSettings,
     ModelConfig, ModelListResponse, DownloadStatus,
 )
-from .database import init_db, list_photos, get_photo, count_photos, \
+from fotoerp_backend.database import init_db, list_photos, get_photo, count_photos, \
     add_tag, assign_tag, get_photo_tags, add_analysis, get_analyses, \
     search_photos, find_similar_embeddings, set_embedding, \
     list_all_tags, list_all_persons, get_recent_photos, get_storage_used, \
     set_photo_status, add_face, count_search_results, \
     update_photo_rating, get_favorites, list_collections, create_collection, \
     add_to_collection, remove_from_collection, delete_collection
-from .services.openapi_adapter import OpenAPIAdapter, AdapterConfig
-from .services.llama_server import LlamaServerManager, ServerConfig, ModelDownloader
-from .services.import_ import import_photos as do_import, mark_analyzing, mark_done
+from fotoerp_backend.services.openapi_adapter import OpenAPIAdapter, AdapterConfig
+from fotoerp_backend.services.llama_server import LlamaServerManager, ServerConfig, ModelDownloader
+from fotoerp_backend.services.import_ import import_photos as do_import, mark_analyzing, mark_done
 from PIL import Image
-from .services.search import SearchService
+from fotoerp_backend.services.search import SearchService
+from contextlib import asynccontextmanager
 
 logger = logging.getLogger("fotoerp")
+
+
+@asynccontextmanager
+async def lifespan(app):
+    """Lifespan event handler (replaces deprecated on_event)."""
+    init_db()
+    logger.info("FotoDerp Backend started (SQLite)")
+    yield
+    logger.info("FotoDerp Backend shutting down")
+
 
 app = FastAPI(
     title="FotoDerp Backend",
     description="KI-gestuetzte Fotoverwaltung — Backend API",
     version="0.2.0",
+    lifespan=lifespan,
 )
 
 
@@ -71,11 +83,15 @@ _search_service = SearchService()
 
 # --- Lifecycle ---
 
-@app.on_event("startup")
-def startup():
-    """Datenbank initialisieren."""
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app):
+    """Lifespan event handler (replaces deprecated on_event)."""
     init_db()
     logger.info("FotoDerp Backend started (SQLite)")
+    yield
+    logger.info("FotoDerp Backend shutting down")
 
 
 # --- Helpers ---
@@ -386,7 +402,7 @@ async def find_similar(photo_id: str, limit: int = 20):
 @app.post("/api/culling/projects")
 async def create_culling_project(req: dict):
     """Culling-Projekt erstellen."""
-    from .services.culling import CullingService
+    from fotoerp_backend.services.culling import CullingService
     folder_paths = req.get("folder_paths", [])
     profile = req.get("profile", "default")
 
@@ -405,7 +421,7 @@ async def create_culling_project(req: dict):
 @app.get("/api/culling/projects/{project_id}")
 async def get_culling_project(project_id: str):
     """Retrieve culling project."""
-    from .services.culling import CullingService
+    from fotoerp_backend.services.culling import CullingService
     service = CullingService()
     project = service.get_project(project_id)
     return project
@@ -745,7 +761,7 @@ async def test_analysis(req: dict):
         raise HTTPException(status_code=400, detail="Valid image_path required")
 
     try:
-        from .services.analysis import analyze_photo
+        from fotoerp_backend.services.analysis import analyze_photo
         adapter = get_active_adapter()
         result = await analyze_photo(image_path, adapter)
         return {

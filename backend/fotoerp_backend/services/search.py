@@ -6,7 +6,7 @@ Kein numpy, kein pgvector, kein hnswlib — alles stdlib.
 
 from typing import List, Optional
 
-from ..database import (
+from fotoerp_backend.database import (
     search_photos, get_photo, list_photos,
     find_similar_embeddings, set_embedding, get_embedding,
 )

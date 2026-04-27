@@ -219,14 +219,59 @@ npm run build:mac     # dmg + zip
 npm run build:win     # NSIS
 ```
 
+## Aktuelle Erkenntnisse (Nuitka Build Issues — ongoing)
+
+### Problem: Nuitka-compiled Binary crasht sofort (exit code 0, keine Ausgabe)
+
+**Stand**: 2025-04-27
+
+**Was funktioniert**:
+- Dev-Modus (`uvicorn fotoerp_backend.main:app`) — alle Endpoints laufen einwandfrei
+- `pip install 'nuitka<4.0'` (2.8.10) mit Python 3.13
+- Absolute Imports statt relativer Imports in main.py und allen Services
+- `lifespan` statt deprecated `@app.on_event("startup")`
+- electron-builder baut erfolgreich AppImage für ARM64 Linux (216MB)
+
+**Was NICHT funktioniert**:
+- Nuitka 4.0.8 onefile → `ImportError: attempted relative import with no known parent package`
+- Nuitka 2.8.10 onefile → Binary crasht sofort (exit code 0, keine Fehlermeldung)
+- Nuitka 2.8.10 standalone → gleiches Problem
+- Unter ARM64 Linux kann kein Windows-Build erstellt werden
+
+**Ursache unbekannt**: Der Nuitka-compiled Binary startet nicht einmal die uvicorn-Server-Logik.
+Keine Tracebacks, keine Ausgaben. Der Prozess beendet sich sofort mit exit code 0.
+Mögliche Ursachen:
+- Inkompatibilität zwischen Nuitka 2.8.x und Python 3.13 auf ARM64
+- Problem mit Nuitka's onefile bootstrap auf aarch64
+- FastAPI/uvicorn startup issue in compiled binary (async event loop?)
+
+**Workaround für Testversionen**:
+- Dev-Modus mit Electron (electron/main.js fall-back zu uvicorn)
+- Oder: Python venv als Runtime mit `python -m fotoerp_backend.main` statt Nuitka
+
+### Disk Space Management
+- Max 10GB für das gesamte Projekt auf Build-Maschinen
+- Nuitka build directories (`*.build`, `*.dist`, `*.onefile-build`) nach Build löschen
+- Electron node_modules: ~2-3GB, cleanup nach Builds
+- GitHub Actions Runner: ~14GB free, cleanup vor/nach Builds
+
 ## Nächste Schritte (für nächste Session)
 
-1. `pip install nuitka` und `python3 build_backend.py` testen
-2. Backend starten (`uvicorn`) und alle Endpoints manuell testen
-3. `npm ci && npm run build` für komplette App bauen
-4. CI/CD Workflow aus BUILD.md einrichten
+### Kurzfristig (Testversion Windows)
+1. **GitHub Actions Windows-Build** anstoßen (schneller als lokaler ARM64-Build)
+   - Workflow: `build.yml` mit `workflow_dispatch`
+   - Platform: windows-latest (x86_64), nicht cross-compile
+2. **Nuitka-Problem lösen** — entweder:
+   a. Nuitka + Python 3.13 auf x86_64 testen (vielleicht ARM64-spezifisch)
+   b. Oder: PyInstaller als Alternative
+   c. Oder: Python venv Runtime statt Nuitka binary
+3. **AppImage ARM64 lokal testen** (bereits gebaut: 216MB)
+
+### Mittelfristig
+4. Backend-Build in CI für alle 3 Plattformen (linux, macos, windows)
 5. Frontend-View-Toggles (Grid/Liste) funktional machen
 6. Semantic Search (Text→Embedding via OpenAPI-Adapter) implementieren
 7. Culling UI in Frontend einbauen (Projekt erstellen, Gruppen anzeigen, select/reject)
 8. Collections UI im Frontend (Sidebar mit Collections, Drag & Drop)
 9. Uninstaller für alle Plattformen final testen
+10. macOS notarization einrichten

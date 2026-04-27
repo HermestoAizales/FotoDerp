@@ -6,8 +6,8 @@ verschiedene KI-Modelle (llama.cpp, Ollama, vLLM, etc.).
 
 import hashlib
 from typing import List, Optional
-from ..models import AnalysisResult, Tag
-from .openapi_adapter import OpenAPIAdapter, AdapterConfig
+from fotoerp_backend.models import AnalysisResult, Tag
+from fotoerp_backend.services.openapi_adapter import OpenAPIAdapter, AdapterConfig
 
 
 async def analyze_photo(
