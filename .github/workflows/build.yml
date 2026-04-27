@@ -238,7 +238,7 @@ jobs:
         run: npm ci || npm install
       - name: Install Nuitka
         shell: pwsh
-        run: pip install nuitka
+        run: pip install "nuitka[onefile]"
       - name: Download Dependencies (Windows only)
         shell: pwsh
         run: |
@@ -265,6 +265,9 @@ jobs:
           }
       - name: Build backend
         shell: bash
+        env:
+          NUITKA_ASSUME_YES: 1
+          PATH: $env:USERPROFILE\.nuitka;$env:PATH
         run: |
           cd backend
           python3 build_backend.py --target win

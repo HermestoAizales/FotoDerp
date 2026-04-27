@@ -8,9 +8,9 @@ Verwendung:
     python build_backend.py                    # Current platform
     python build_backend.py --target linux     # Cross-compile (needs Linux toolchain)
     python build_backend.py --target win       # Cross-compile (needs Windows VM/CI)
-    python build_backend.py --target mac-arm   # Cross-compile (needs macOS VM)
+    python build_backend.py --target mac        # Cross-compile (needs macOS VM)
 
-Output: dist/fotoerp-backend/<platform>/fotoerp-backend (executable)
+Output: dist/<platform>/fotoerp-backend (executable)
 """
 
 import argparse
@@ -22,6 +22,47 @@ import shutil
 from pathlib import Path
 
 
+def download_dependency_walker_windows():
+    """Dependency Walker für Windows herunterladen und bereitstellen."""
+    import urllib.request
+    import zipfile
+    
+    nuitka_cache = Path.home() / ".nuitka"
+    nuitka_cache.mkdir(parents=True, exist_ok=True)
+    
+    deps_exe = nuitka_cache / "Dependencies.exe"
+    
+    if deps_exe.exists():
+        print(f"Dependencies.exe bereits vorhanden: {deps_exe}")
+        return str(deps_exe)
+    
+    print("Downloading Dependency Walker for Windows...")
+    url = "https://github.com/lucasg/Dependencies/releases/download/v1.11.1/Dependencies_x64_Release.zip"
+    zip_path = nuitka_cache / "deps.zip"
+    
+    try:
+        urllib.request.urlretrieve(url, zip_path)
+        print(f"Downloaded: {zip_path}")
+        
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            # Find Dependencies.exe in archive
+            for name in zip_ref.namelist():
+                if name.endswith("Dependencies.exe"):
+                    zip_ref.extract(name, nuitka_cache)
+                    extracted = nuitka_cache / name
+                    if extracted.exists() and extracted != deps_exe:
+                        shutil.move(str(extracted), str(deps_exe))
+                    print(f"Dependencies.exe extracted to: {deps_exe}")
+                    break
+        
+        zip_path.unlink(missing_ok=True)
+        return str(deps_exe)
+        
+    except Exception as e:
+        print(f"WARNING: Could not download Dependency Walker: {e}")
+        return None
+
+
 def get_target_platform(target: str | None) -> str:
     """Zielplattform bestimmen."""
     if target:
@@ -30,7 +71,6 @@ def get_target_platform(target: str | None) -> str:
             "win": "windows",
             "windows": "windows",
             "mac": "darwin",
-            "mac-arm": "darwin",
             "macos": "darwin",
         }
         return mapping.get(target, target)
@@ -49,7 +89,7 @@ def get_target_platform(target: str | None) -> str:
 
 
 def build(target_platform: str):
-    """Nuitka-Build fuer Zielplattform."""
+    """Nuitka-Build für Zielplattform."""
     backend_dir = Path(__file__).parent.resolve()
     dist_dir = backend_dir / "dist"
     output_dir = dist_dir / target_platform
@@ -62,20 +102,28 @@ def build(target_platform: str):
         print(f"ERROR: Entry point not found: {entry_point}")
         sys.exit(1)
 
+    # For Windows: Download Dependency Walker first!
+    if target_platform == "windows":
+        dep_tool = download_dependency_walker_windows()
+        if dep_tool:
+            os.environ["NUITKA_WINDOWS_DEPENDENCY_TOOL"] = dep_tool
+            print(f"Set NUITKA_WINDOWS_DEPENDENCY_TOOL={dep_tool}")
+
     # Nuitka-Befehl zusammenstellen
-    # Use --follow-imports to handle all dependencies explicitly
     nuitka_opts = [
         sys.executable, "-m", "nuitka",
         "--onefile",
         "--nofollow-import-to=tkinter",
         "--nofollow-import-to=pytest",
         "--python-flag=-OO",
-        "--output-dir=" + str(output_dir),
+        f"--output-dir={output_dir}",
         "--output-filename=fotoerp-backend",
     ]
 
     if target_platform == "windows":
         nuitka_opts.append("--windows-icon-from-ico=../icons/icon.ico")
+        # Tell Nuitka to auto-download dependencies
+        os.environ["NUITKA_ASSUME_YES"] = "1"
 
     # Compile main.py directly with all dependencies
     entry = backend_dir / "fotoerp_backend" / "main.py"
@@ -92,7 +140,6 @@ def build(target_platform: str):
         sys.exit(1)
 
     # Binary ins richtige Verzeichnis verschieben
-    # onefile mode: single executable directly in output dir
     if target_platform == "windows":
         exe = output_dir / "fotoerp-backend.exe"
         if exe.exists():
@@ -125,11 +172,10 @@ def build(target_platform: str):
     # Abhängigkeiten kopieren (Pillow, exifread etc.)
     # Nuitka --standalone sollte alles automatisch kopieren
     print(f"\nBuild complete for {target_platform}: {output_dir}")
-    return output_dir
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Nuitka-Build fuer FotoDerp Backend")
+    parser = argparse.ArgumentParser(description="Nuitka-Build für FotoDerp Backend")
     parser.add_argument("--target", type=str, help="Zielplattform: linux, win, mac, mac-arm")
     args = parser.parse_args()
 
