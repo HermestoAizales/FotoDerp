@@ -116,6 +116,7 @@ def build(target_platform: str):
         "--nofollow-import-to=tkinter",
         "--nofollow-import-to=pytest",
         "--python-flag=-OO",
+        "--show-progress",
         f"--output-dir={output_dir}",
         "--output-filename=fotoerp-backend",
     ]
