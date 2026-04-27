@@ -104,7 +104,7 @@ async function startBackend() {
     // --- Dev Mode: Python + uvicorn ---
     console.log('[FotoDerp] Using dev backend (python3 + uvicorn)');
 
-    const pythonPath = process.env.PYTHON_PATH || 'python3';
+    const pythonPath = process.env.PYTHON_PATH || (process.platform === 'win32' ? 'python' : 'python3');
     const backendDir = path.join(__dirname, '..', 'backend');
 
     backendProcess = spawn(pythonPath, [
