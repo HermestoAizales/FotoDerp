@@ -7,7 +7,7 @@
     "start": "concurrently \"npm run start:backend\" \"wait-on http://localhost:8765/health && electron .\"",
     "start:backend": "cd backend && python3 -m uvicorn fotoerp_backend.main:app --host 0.0.0.0 --port 8765",
     "dev": "NODE_ENV=development electron .",
-    "build:backend": "cd backend && [ -f .venv/bin/activate ] && (. .venv/bin/activate && python3 build_backend.py) || python3 build_backend.py",
+    "build:backend": "cd backend && python3 -m pip install pyinstaller && python3 build_backend.py --target win",
     "build": "npm run build:backend && electron-builder",
     "build:linux": "npm run build:backend && electron-builder --linux",
     "build:mac": "npm run build:backend && electron-builder --mac",
@@ -29,14 +29,18 @@
       {
         "from": "backend/dist",
         "to": "backend",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       }
     ],
     "linux": {
       "target": [
         {
           "target": "AppImage",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "category": "Photography",
@@ -52,11 +56,17 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["arm64", "x64"]
+          "arch": [
+            "arm64",
+            "x64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["arm64", "x64"]
+          "arch": [
+            "arm64",
+            "x64"
+          ]
         }
       ],
       "hardenedRuntime": false,
@@ -72,7 +82,9 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },
@@ -96,10 +108,10 @@
   "author": "FotoDerp Contributors",
   "license": "MIT",
   "devDependencies": {
+    "@a5c-ai/babysitter-sdk": "^0.0.187",
+    "concurrently": "^9.0.0",
     "electron": "^33.0.0",
     "electron-builder": "^25.0.0",
-    "concurrently": "^9.0.0",
     "wait-on": "^8.0.0"
-  },
-  "dependencies": {}
+  }
 }

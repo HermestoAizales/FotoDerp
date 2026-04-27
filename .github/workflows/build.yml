@@ -39,7 +39,7 @@ jobs:
         run: |
           cd backend
           pip install --upgrade pip
-          pip install -r requirements.txt nuitka
+          pip install -r requirements.txt pyinstaller
       - name: Compile check
         run: find backend -name "*.py" -not -path "*/__pycache__/*" | xargs python3 -m py_compile
 
@@ -66,38 +66,7 @@ jobs:
       - name: Install npm packages
         run: npm ci || npm install
       
-      - name: Install Nuitka globally
-        shell: pwsh
-        run: python3 -m pip install nuitka
-      
-      - name: Download Dependency Walker for Nuitka
-        shell: pwsh
-        run: |
-          $nuitkaDir = "$env:USERPROFILE\.nuitka"
-          New-Item -ItemType Directory -Force -Path $nuitkaDir | Out-Null
-          
-          if (-not (Test-Path "$nuitkaDir\depends.exe")) {
-            Write-Host "Downloading Dependency Walker (depends.exe)..."
-            $url = "https://dependencywalker.com/depends22_x64.zip"
-            $zipPath = "$nuitkaDir\depends22_x64.zip"
-            try {
-              Invoke-WebRequest -Uri $url -OutFile $zipPath -ErrorAction Stop
-              Expand-Archive -Path $zipPath -DestinationPath $nuitkaDir -Force
-              $exe = Get-ChildItem -Path $nuitkaDir -Recurse -Filter "depends.exe" | Select-Object -First 1
-              if ($exe) {
-                Copy-Item $exe.FullName "$nuitkaDir\depends.exe" -Force
-                Write-Host "depends.exe downloaded to $nuitkaDir\depends.exe"
-              } else {
-                Write-Host "WARNING: depends.exe not found in zip"
-              }
-            } catch {
-              Write-Host "WARNING: Could not download Dependency Walker: $_"
-            }
-          } else {
-            Write-Host "depends.exe already exists at $nuitkaDir\depends.exe"
-          }
-      
-      - name: Build with npm (includes backend and Electron)
+      - name: Build with npm (includes backend with PyInstaller)
         shell: pwsh
         run: npm run build:win
       
