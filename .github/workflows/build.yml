@@ -38,7 +38,6 @@ jobs:
         id: cleanup
         shell: bash
         run: |
-          # GitHub Actions runners have ~14GB free, but we want to be conservative
           BEFORE=$(df -h / | tail -1 | awk '{print $4}')
           
           sudo rm -rf /usr/share/dotnet
@@ -222,7 +221,7 @@ jobs:
       github.event.inputs.platform == '' ||
       github.event.inputs.platform == 'windows'
     needs: backend-check
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - name: Set GitHub token
@@ -236,40 +235,20 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install npm packages
         run: npm ci || npm install
-      - name: Install Nuitka
-        shell: pwsh
-        run: pip install "nuitka[onefile]"
-      - name: Download Dependencies (Windows only)
-        shell: pwsh
-        run: |
-          $dir = "$env:USERPROFILE\.nuitka"
-          New-Item -ItemType Directory -Force -Path $dir | Out-Null
-          $url = "https://github.com/lucasg/Dependencies/releases/download/v1.11.1/Dependencies_x64_Release.zip"
-          try {
-            Invoke-WebRequest -Uri $url -OutFile "$dir\deps.zip" -ErrorAction Stop
-            Expand-Archive -Path "$dir\deps.zip" -DestinationPath $dir -Force -ErrorAction SilentlyContinue
-            $exe = Get-ChildItem -Path $dir -Recurse -Filter "Dependencies.exe" | Select-Object -First 1
-            if ($exe) {
-              $dest = "$dir\Dependencies.exe"
-              if ($exe.FullName -ne $dest) {
-                Copy-Item $exe.FullName $dest -Force
-              }
-              Write-Host "Dependencies.exe found at $($exe.FullName)"
-            } else {
-              Write-Error "Could not find Dependencies.exe in archive"
-              exit 1
-            }
-          } catch {
-            Write-Error "Failed to download Dependencies: $_"
-            exit 1
-          }
-      - name: Build backend
+      - name: Build backend with Nuitka
         shell: bash
         env:
-          PATH: /c/Users/runneradmin/.nuitka:$PATH
+          NUITKA_ASSUME_YES: "1"
         run: |
           cd backend
-          python3 build_simple.py
+          pip install nuitka
+          # Download Dependencies.exe
+          mkdir -p ~/.nuitka
+          curl -L -o ~/.nuitka/deps.zip "https://github.com/lucasg/Dependencies/releases/download/v1.11.1/Dependencies_x64_Release.zip"
+          unzip -o ~/.nuitka/deps.zip -d ~/.nuitka
+          cp ~/.nuitka/x64/Dependencies.exe ~/.nuitka/Dependencies.exe 2>/dev/null || true
+          # Build with Nuitka
+          python3 -m nuitka --onefile --nofollow-import-to=tkinter --nofollow-import-to=pytest --dependency-tool-path=~/.nuitka/Dependencies.exe fotoerp_backend/main.py
       - name: Temporarily move icons dir
         shell: pwsh
         run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
@@ -279,13 +258,6 @@ jobs:
       - name: Restore icons dir
         shell: pwsh
         run: git checkout -- icons/ 2>$null; if (-not (Test-Path icons)) { git restore icons/ }
-      - name: Cleanup disk space
-        shell: pwsh
-        run: |
-          Remove-Item node_modules -Recurse -Force -ErrorAction SilentlyContinue
-          Remove-Item backend\.venv -Recurse -Force -ErrorAction SilentlyContinue
-          Remove-Item "backend\dist\win\main.*" -Recurse -Force -ErrorAction SilentlyContinue
-          Get-PSDrive C | Select-Object @{N='FreeGB';E={[math]::Round($_.Free/1GB,1)}}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
