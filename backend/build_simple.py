@@ -46,18 +46,17 @@ def build_windows():
         "--onefile",
         "--nofollow-import-to=tkinter",
         "--nofollow-import-to=pytest",
-        str(entry)
     ]
     
-    # Set env var for Dependency Walker
-    env = os.environ.copy()
+    # Add dependency tool path if available
     if deps_exe.exists():
-        env["NUITKA_WINDOWS_DEPENDENCY_TOOL"] = str(deps_exe)
-        env["NUITKA_ASSUME_YES"] = "1"
+        nuitka_opts.append(f"--dependency-tool-path={deps_exe}")
         print(f"Using Dependency Walker: {deps_exe}")
     
+    nuitka_opts.append(str(entry))
+    
     print(f"Command: {' '.join(nuitka_opts)}")
-    result = subprocess.run(nuitka_opts, cwd=str(backend_dir), env=env)
+    result = subprocess.run(nuitka_opts, cwd=str(backend_dir))
     
     if result.returncode != 0:
         print(f"ERROR: Build failed with exit code {result.returncode}")
