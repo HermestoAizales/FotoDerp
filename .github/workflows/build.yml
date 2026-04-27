@@ -65,13 +65,10 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install npm packages
         run: npm ci || npm install
-      - name: Build backend with Nuitka
+      
+      - name: Download Dependency Walker for Nuitka
         shell: pwsh
         run: |
-          cd backend
-          pip install nuitka
-          
-          # Download depends.exe (Dependency Walker) - the tool Nuitka expects
           $nuitkaDir = "$env:USERPROFILE\.nuitka"
           New-Item -ItemType Directory -Force -Path $nuitkaDir | Out-Null
           
@@ -85,28 +82,31 @@ jobs:
               $exe = Get-ChildItem -Path $nuitkaDir -Recurse -Filter "depends.exe" | Select-Object -First 1
               if ($exe) {
                 Copy-Item $exe.FullName "$nuitkaDir\depends.exe" -Force
-                Write-Host "Dependency Walker downloaded and placed at $nuitkaDir\depends.exe"
-              } else {
-                Write-Host "WARNING: depends.exe not found in zip"
+                Write-Host "Dependency Walker downloaded to $nuitkaDir\depends.exe"
               }
             } catch {
-              Write-Host "WARNING: Could not download Dependency Walker: $_ (but Nuitka will try to download it itself)"
+              Write-Host "WARNING: Could not download Dependency Walker: $_"
+              Write-Host "Nuitka will try to download it automatically with --assume-yes-for-downloads"
             }
           } else {
-            Write-Host "depends.exe already exists at $nuitkaDir\depends.exe"
+            Write-Host "depends.exe already exists"
           }
-          
-          # Build with Nuitka - it will use depends.exe from ~/.nuitka/
-          python -m nuitka --onefile --assume-yes-for-downloads --nofollow-import-to=tkinter --nofollow-import-to=pytest fotoerp_backend/main.py
+      
+      - name: Build Electron (includes backend build)
+        shell: pwsh
+        run: |
+          # Move icons temporarily (but backend build is already done inside npm run build:win)
+          # Actually, we need to move icons AFTER the build
+          npm run build:win
+      
       - name: Temporarily move icons dir
         shell: pwsh
         run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
-      - name: Build Electron
-        shell: bash
-        run: npm run build:win
+      
       - name: Restore icons dir
         shell: pwsh
         run: git checkout -- icons/ 2>$null; if (-not (Test-Path icons)) { git restore icons/ }
+      
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:

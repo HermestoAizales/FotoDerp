@@ -122,7 +122,11 @@ def build(target_platform: str):
     ]
 
     if target_platform == "windows":
-        nuitka_opts.append("--windows-icon-from-ico=../icons/icon.ico")
+        icon_path = Path(__file__).parent.parent / "icons" / "icon.ico"
+        if icon_path.exists():
+            nuitka_opts.append(f"--windows-icon-from-ico={icon_path}")
+        else:
+            print(f"WARNING: Icon not found at {icon_path}, building without icon")
         # Tell Nuitka to auto-download dependencies
         os.environ["NUITKA_ASSUME_YES"] = "1"
 
