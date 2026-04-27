@@ -7,8 +7,8 @@ Nutzt FTS5 für Volltextsuche und BLOB-Embeddings für Vektorsuche.
 import sqlite3
 import struct
 import os
+import json
 from pathlib import Path
-from datetime import datetime
 from typing import Optional
 
 
@@ -400,7 +400,6 @@ def find_similar_embeddings(photo_id: str, limit: int = 20) -> list[dict]:
         return []
 
     query_vec = unpack_embedding(row["vector"])
-    n = len(query_vec)
 
     # Alle Embeddings laden (für Desktop-Größen OK)
     all_rows = conn.execute("SELECT photo_id, vector FROM embeddings WHERE photo_id != ?").fetchall()
@@ -590,7 +589,7 @@ def list_collections() -> list[dict]:
         import json as _json
         try:
             d["photo_count"] = len(_json.loads(d.get("photo_ids", "[]")))
-        except (json.JSONDecodeError, TypeError):
+        except (_json.JSONDecodeError, TypeError):
             d["photo_count"] = 0
         result.append(d)
     return result
@@ -636,7 +635,7 @@ def remove_from_collection(collection_id: str, photo_id: str):
         import json as _json
         try:
             photo_ids = _json.loads(row["photo_ids"])
-        except (json.JSONDecodeError, TypeError):
+        except (_json.JSONDecodeError, TypeError):
             photo_ids = []
         if photo_id in photo_ids:
             photo_ids.remove(photo_id)

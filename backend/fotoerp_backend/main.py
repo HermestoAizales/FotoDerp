@@ -7,7 +7,6 @@ Startet automatisch die SQLite-Datenbank beim ersten Request.
 """
 
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 from typing import Optional, List, Dict, Any
 import logging
 import asyncio
@@ -15,7 +14,6 @@ import hashlib
 import os
 
 from fotoerp_backend.models import (
-    PhotoInfo, AnalysisResult, Tag, AppSettings,
     ModelConfig, ModelListResponse, DownloadStatus,
 )
 from fotoerp_backend.database import init_db, list_photos, get_photo, count_photos, \
