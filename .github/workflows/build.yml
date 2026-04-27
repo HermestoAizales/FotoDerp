@@ -25,36 +25,11 @@ env:
   NODE_VERSION: '20'
   PYTHON_VERSION: '3.12'
 
-# Disk space helpers
 jobs:
-  cleanup-space:
-    name: Free Disk Space
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    outputs:
-      freed: ${{ steps.cleanup.outputs.freed }}
-    steps:
-      - name: Free disk space
-        id: cleanup
-        shell: bash
-        run: |
-          BEFORE=$(df -h / | tail -1 | awk '{print $4}')
-          
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo rm -rf /opt/ghc
-          sudo rm -rf ~/.cache/pip
-          sudo rm -rf /usr/local/.ghcup
-          sudo apt-get clean
-          
-          AFTER=$(df -h / | tail -1 | awk '{print $4}')
-          echo "freed=${BEFORE} -> ${AFTER}" >> $GITHUB_OUTPUT
-
   backend-check:
     name: Backend Check
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -67,151 +42,6 @@ jobs:
           pip install -r requirements.txt nuitka
       - name: Compile check
         run: find backend -name "*.py" -not -path "*/__pycache__/*" | xargs python3 -m py_compile
-
-  build-linux:
-    name: Build Linux AppImage
-    runs-on: ubuntu-24.04
-    if: >-
-      github.event_name != 'workflow_dispatch' ||
-      github.event.inputs.platform == '' ||
-      github.event.inputs.platform == 'linux'
-    needs: backend-check
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set GitHub token
-        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install npm packages
-        run: npm ci || npm install
-      - name: Build backend
-        shell: bash
-        run: |
-          cd backend
-          pip install nuitka
-          python3 build_backend.py --target linux
-      - name: Temporarily move icons dir
-        run: mv icons icons.bak || true
-      - name: Build Electron
-        shell: bash
-        run: npm run build:linux
-      - name: Restore icons dir
-        run: mv icons.bak icons || true
-      - name: Cleanup disk space
-        shell: bash
-        run: |
-          rm -rf node_modules
-          rm -rf backend/.venv
-          rm -rf backend/dist/linux/main.*
-          df -h /
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: fotoerp-linux-appimage
-          path: dist/FotoDerp*.AppImage
-          retention-days: 14
-
-  build-macos-dmg:
-    name: Build macOS DMG
-    runs-on: macos-14
-    if: >-
-      github.event_name != 'workflow_dispatch' ||
-      github.event.inputs.platform == '' ||
-      github.event.inputs.platform == 'macos-dmg'
-    needs: backend-check
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set GitHub token
-        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install npm packages
-        run: npm ci || npm install
-      - name: Build backend
-        shell: bash
-        run: |
-          cd backend
-          pip install nuitka
-          python3 build_backend.py --target mac
-      - name: Temporarily move icons dir
-        run: mv icons icons.bak || true
-      - name: Build Electron (DMG)
-        shell: bash
-        run: npm run build:mac -- --dir dmg
-      - name: Restore icons dir
-        run: mv icons.bak icons || true
-      - name: Cleanup disk space
-        shell: bash
-        run: |
-          rm -rf node_modules
-          rm -rf backend/.venv
-          df -h /
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: fotoerp-macos-dmg
-          path: dist/FotoDerp*.dmg
-          retention-days: 14
-
-  build-macos-zip:
-    name: Build macOS ZIP
-    runs-on: macos-14
-    if: >-
-      github.event_name != 'workflow_dispatch' ||
-      github.event.inputs.platform == '' ||
-      github.event.inputs.platform == 'macos-zip'
-    needs: backend-check
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set GitHub token
-        run: echo "GH_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install npm packages
-        run: npm ci || npm install
-      - name: Build backend
-        shell: bash
-        run: |
-          cd backend
-          pip install nuitka
-          python3 build_backend.py --target mac
-      - name: Temporarily move icons dir
-        run: mv icons icons.bak || true
-      - name: Build Electron (ZIP)
-        shell: bash
-        run: npm run build:mac -- --dir zip
-      - name: Restore icons dir
-        run: mv icons.bak icons || true
-      - name: Cleanup disk space
-        shell: bash
-        run: |
-          rm -rf node_modules
-          rm -rf backend/.venv
-          df -h /
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: fotoerp-macos-zip
-          path: dist/FotoDerp*.zip
-          retention-days: 14
 
   build-windows:
     name: Build Windows NSIS
@@ -240,18 +70,32 @@ jobs:
         run: |
           cd backend
           pip install nuitka
-          # Download WinDepends (modern replacement for Dependency Walker)
+          # Download depends.exe directly to the location Nuitka expects
           mkdir -p ~/.nuitka
-          curl -L -o ~/.nuitka/windepends.zip "https://github.com/hfiref0x/WinDepends/releases/download/170724/WinDepends.zip"
-          unzip -o ~/.nuitka/windepends.zip -d ~/.nuitka
-          DEPS_EXE=$(find ~/.nuitka -name "WinDepends.exe" -o -name "Depends.exe" | head -1)
-          if [ -z "$DEPS_EXE" ]; then
-            echo "WARNING: WinDepends not found, trying Dependencies.exe"
-            DEPS_EXE=$(find ~/.nuitka -name "Dependencies.exe" | head -1)
+          cd ~/.nuitka
+          # Try to download from multiple sources
+          curl -L -o depends22_x64.zip "https://web.archive.org/web/2023/https://dependencywalker.com/depends22_x64.zip" || \
+          curl -L -o depends22_x64.zip "https://github.com/hfiref0x/WinDepends/releases/download/170724/WinDepends.zip" || \
+          echo "WARNING: Could not download dependency tool"
+          if [ -f depends22_x64.zip ]; then
+            unzip -o depends22_x64.zip -d .
+            # Find the exe file (might be in a subdirectory)
+            find . -name "*.exe" -type f | grep -i "depends\|depend" | head -1 > depends_path.txt
+            DEPS_EXE=$(cat depends_path.txt)
+            if [ -n "$DEPS_EXE" ]; then
+              cp "$DEPS_EXE" ~/.nuitka/depends.exe
+              echo "Downloaded dependency tool: $DEPS_EXE"
+            fi
           fi
-          echo "Using dependency tool: $DEPS_EXE"
-          # Build with Nuitka
-          python3 -m nuitka --onefile --assume-yes-for-downloads --nofollow-import-to=tkinter --nofollow-import-to=pytest --dependency-tool-path="$DEPS_EXE" fotoerp_backend/main.py
+          # Verify depends.exe exists
+          if [ -f ~/.nuitka/depends.exe ]; then
+            echo "depends.exe found at ~/.nuitka/depends.exe"
+          else
+            echo "WARNING: depends.exe not found, Nuitka might fail"
+          fi
+          # Build with Nuitka - use --assume-yes-for-downloads to auto-download if needed
+          cd ${{ github.workspace }}/backend
+          python3 -m nuitka --onefile --assume-yes-for-downloads --nofollow-import-to=tkinter --nofollow-import-to=pytest fotoerp_backend/main.py
       - name: Temporarily move icons dir
         shell: pwsh
         run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
