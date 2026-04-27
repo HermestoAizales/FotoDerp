@@ -2,10 +2,11 @@
  * FotoDerp - Frontend Application
  * 
  * Communicates with the Python backend via Electron IPC.
+ * Improved version with Collections support.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('[FotoDerp] App started');
+  console.log('[FotoDerp] App started - Enhanced Version');
   
   // State
   const state = {
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentView: 'all',
     searchQuery: '',
     selectedTags: [],
+    collections: [],
   };
 
   // --- Star Rating Component ---
@@ -61,16 +63,17 @@ document.addEventListener('DOMContentLoaded', () => {
     previewPanel: document.getElementById('preview-panel'),
     btnImport: document.getElementById('btn-import'),
     btnAnalyze: document.getElementById('btn-analyze'),
+    btnCulling: document.getElementById('btn-culling'),
     viewToggle: document.getElementById('view-toggle'),
     tagsList: document.getElementById('tags-list'),
     personsList: document.getElementById('persons-list'),
+    collectionsList: document.getElementById('collections-list'),
   };
 
   // --- Backend Communication ---
-
   async function callBackend(method, endpoint, data = null) {
     try {
-      const result = await window.fotoerp.backendRequest(method, endpoint, data);
+      const result = await window.fotoDerp.backendRequest(method, endpoint, data);
       return result;
     } catch (error) {
       console.error('[FotoDerp] Backend error:', error);
@@ -80,9 +83,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Photo Loading ---
-
   async function loadPhotos() {
-    updateStatus('Loading images...');
+    updateStatus('Lade Bilder...');
     
     const params = new URLSearchParams({
       page: state.currentPage,
@@ -94,24 +96,15 @@ document.addEventListener('DOMContentLoaded', () => {
       params.set('query', state.searchQuery);
     }
 
-    const result = await callBackend('GET', `/api/search?${params}`);
+    const result = await callBackend('GET', `/api/photos?${params}`);
     
     if (result) {
-      const photos = result.results || [];
+      const photos = result.photos || [];
       renderPhotos(photos);
       state.totalPhotos = result.total || photos.length;
       updatePagination();
-    } else {
-      // Fallback: try direct photo listing without search
-      const fallbackResult = await callBackend('GET', `/api/photos?${params}`);
-      if (fallbackResult) {
-        renderPhotos(fallbackResult.photos || []);
-        state.totalPhotos = fallbackResult.total || 0;
-        updatePagination();
-      }
+      updatePhotoCount();
     }
-    
-    updateStatus(`${state.totalPhotos} images loaded`);
   }
 
   async function renderPhotos(photos) {
@@ -121,7 +114,8 @@ document.addEventListener('DOMContentLoaded', () => {
       elements.photoGrid.innerHTML = `
         <div class="photo-placeholder">
           <div class="placeholder-icon">📷</div>
-          <span>No images imported yet</span>
+          <span>Keine Bilder importiert</span>
+          <p>Klicke auf "Import" um Fotos hinzuzufügen</p>
         </div>
       `;
       return;
@@ -138,12 +132,11 @@ document.addEventListener('DOMContentLoaded', () => {
       img.loading = 'lazy';
       
       // Load image via Electron IPC (works for any file type)
-      if (photo.path && window.fotoerp.imageBlobUrl) {
-        const blobUrl = await window.fotoerp.imageBlobUrl(photo.path);
+      if (photo.path && window.fotoDerp.imageBlobUrl) {
+        const blobUrl = await window.fotoDerp.imageBlobUrl(photo.path);
         if (blobUrl) {
           img.src = blobUrl;
         } else {
-          // Fallback: show placeholder
           img.src = '';
           img.alt = '⚠️';
           img.style.fontSize = '32px';
@@ -170,10 +163,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Photo Selection & Preview ---
-
   async function selectPhoto(photo) {
     state.selectedPhoto = photo;
-    updateStatus(`Selected: ${photo.filename}`);
+    updateStatus(`Ausgewählt: ${photo.filename}`);
     
     // Load detail view
     const result = await callBackend('GET', `/api/photos/${photo.id}`);
@@ -186,8 +178,8 @@ document.addEventListener('DOMContentLoaded', () => {
   async function renderPreview(photo) {
     // Load image via IPC for local file access
     let imageUrl = '';
-    if (photo.path && window.fotoerp.imageBlobUrl) {
-      imageUrl = await window.fotoerp.imageBlobUrl(photo.path) || '';
+    if (photo.path && window.fotoDerp.imageBlobUrl) {
+      imageUrl = await window.fotoDerp.imageBlobUrl(photo.path) || '';
     }
 
     // Build analyses display
@@ -209,27 +201,27 @@ document.addEventListener('DOMContentLoaded', () => {
       <div class="preview-image-container">
         ${imageUrl ?
           `<img src="${imageUrl}" alt="${photo.filename}" class="preview-image">` :
-          `<div class="preview-placeholder">Image not available</div>`
+          `<div class="preview-placeholder">Bild nicht verfügbar</div>`
         }
       </div>
       <div class="preview-meta">
         <h4>${photo.filename}</h4>
-        <p>Size: ${photo.width || '?'}×${photo.height || '?'}</p>
-        <p>Format: ${photo.format || 'unknown'}</p>
-        <p>Captured: ${photo.captured_at || 'Unknown'}</p>
-        ${photo.gps_lat ? `<p>Location: ${photo.gps_lat}, ${photo.gps_lon}</p>` : ''}
-        <p>Status: ${photo.status || 'unknown'}</p>
+        <p>Größe: ${photo.width || '?'}×${photo.height || '?'}</p>
+        <p>Format: ${photo.format || 'unbekannt'}</p>
+        <p>Aufnahme: ${photo.captured_at || 'Unbekannt'}</p>
+        ${photo.gps_lat ? `<p>Position: ${photo.gps_lat}, ${photo.gps_lon}</p>` : ''}
+        <p>Status: ${photo.status || 'unbekannt'}</p>
 
-        <h4 style="margin-top: 12px;">Rating</h4>
+        <h4 style="margin-top: 12px;">Bewertung</h4>
         <div id="star-rating-container"></div>
 
-        <h4 style="margin-top: 12px;">Tags</h4>
+        <h4 style="margin-top: 12px;">Schlagwörter</h4>
         <div class="preview-tags">
-          ${tagsList || '<span style="color: var(--text-secondary)">No tags</span>'}
+          ${tagsList || '<span style="color: var(--text-secondary)">Keine Tags</span>'}
         </div>
 
         ${analysesList ? `
-          <h4 style="margin-top: 12px;">KI Analyses</h4>
+          <h4 style="margin-top: 12px;">KI-Analysen</h4>
           <div class="preview-analyses">
             ${analysesList}
           </div>
@@ -250,9 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Favorites Loading ---
-
   async function loadFavorites() {
-    updateStatus('Loading favorites...');
+    updateStatus('Lade Favoriten...');
 
     const params = new URLSearchParams({
       page: state.currentPage,
@@ -265,13 +256,85 @@ document.addEventListener('DOMContentLoaded', () => {
       renderPhotos(result.photos || []);
       state.totalPhotos = result.total || 0;
       updatePagination();
+      updatePhotoCount();
     }
+  }
 
-    updateStatus(`${state.totalPhotos} favorites loaded`);
+  // --- Collections Loading ---
+  async function loadCollections() {
+    updateStatus('Lade Sammlungen...');
+    
+    const result = await callBackend('GET', '/api/collections');
+    
+    if (result && result.length > 0) {
+      renderCollections(result);
+      state.collections = result;
+      updateStatus(`${result.length} Sammlungen geladen`);
+    } else {
+      elements.photoGrid.innerHTML = `
+        <div class="photo-placeholder">
+          <div class="placeholder-icon">📚</div>
+          <span>Keine Sammlungen erstellt</span>
+          <button id="btn-create-first-collection" class="btn-primary">Erste Sammlung erstellen</button>
+        </div>
+      `;
+      
+      document.getElementById('btn-create-first-collection')?.addEventListener('click', () => {
+        createCollection();
+      });
+      
+      updateStatus('Keine Sammlungen');
+    }
+  }
+
+  function renderCollections(collections) {
+    elements.photoGrid.innerHTML = '';
+    
+    collections.forEach(col => {
+      const card = document.createElement('div');
+      card.className = 'collection-card';
+      
+      card.innerHTML = `
+        <div class="collection-header">
+          <h4>${col.name}</h4>
+          <span class="photo-count">${col.photo_count || 0} Bilder</span>
+        </div>
+        <div class="collection-actions">
+          <button class="btn-small" onclick="viewCollection('${col.id}')">Ansehen</button>
+          <button class="btn-small btn-danger" onclick="deleteCollection('${col.id}')">Löschen</button>
+        </div>
+      `;
+      
+      elements.photoGrid.appendChild(card);
+    });
+  }
+
+  window.viewCollection = async function(collectionId) {
+    updateStatus('Lade Sammlung...');
+    // TODO: Load collection photos
+    await loadPhotos();
+  };
+
+  window.deleteCollection = async function(collectionId) {
+    if (!confirm('Sammlung wirklich löschen?')) return;
+    
+    const result = await callBackend('DELETE', `/api/collections/${collectionId}`);
+    if (result) {
+      await loadCollections();
+    }
+  };
+
+  async function createCollection() {
+    const name = prompt('Name der Sammlung:');
+    if (!name) return;
+    
+    const result = await callBackend('POST', '/api/collections', { name });
+    if (result) {
+      await loadCollections();
+    }
   }
 
   // --- Search ---
-
   let searchTimeout;
   elements.searchInput.addEventListener('input', (e) => {
     clearTimeout(searchTimeout);
@@ -283,7 +346,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Pagination ---
-
   elements.prevPage.addEventListener('click', async () => {
     if (state.currentPage > 1) {
       state.currentPage--;
@@ -301,38 +363,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updatePagination() {
     const maxPage = Math.ceil(state.totalPhotos / state.perPage);
-    elements.pageInfo.textContent = `Page ${state.currentPage} of ${maxPage || 1}`;
+    elements.pageInfo.textContent = `Seite ${state.currentPage} von ${maxPage || 1}`;
     elements.prevPage.disabled = state.currentPage <= 1;
     elements.nextPage.disabled = state.currentPage >= maxPage;
   }
 
-  // --- Import ---
+  function updatePhotoCount() {
+    document.getElementById('photo-count').textContent = `${state.totalPhotos} Bilder`;
+  }
 
+  // --- Import ---
   elements.btnImport.addEventListener('click', async () => {
-    const folders = await window.fotoerp.selectFolder();
+    const folders = await window.fotoDerp.selectFolder();
     if (folders && folders.length > 0) {
-      updateStatus(`Importing: ${folders.join(', ')}`);
+      updateStatus(`Importiere: ${folders.join(', ')}`);
       
       const result = await callBackend('POST', '/api/photos/import', {
         paths: folders,
       });
       
       if (result) {
-        updateStatus(`${result.imported} images imported`);
+        updateStatus(`${result.imported} Bilder importiert`);
         loadPhotos();
       }
     }
   });
 
   // --- Analysis ---
-
   elements.btnAnalyze.addEventListener('click', async () => {
-    updateStatus('Starting KI analysis...');
+    updateStatus('Starte KI-Analyse...');
     
     const result = await callBackend('POST', '/api/analyze/start', {});
     
     if (result) {
-      updateStatus('Analysis running...');
+      updateStatus('Analyse läuft...');
       
       // Poll for status with timeout
       pollAnalysisStatus(0);
@@ -341,23 +405,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function pollAnalysisStatus(attempts = 0) {
     if (attempts > 30) {
-      updateStatus('Analysis timed out');
+      updateStatus('Analyse-Timeout');
       return;
     }
     
     const result = await callBackend('GET', '/api/analyze/status');
     
     if (result && result.running) {
-      updateStatus(`Analysis: ${result.processed}/${result.total} images`);
+      updateStatus(`Analyse: ${result.processed}/${result.total} Bilder`);
       setTimeout(() => pollAnalysisStatus(attempts + 1), 2000);
     } else {
-      updateStatus('Analysis complete — check results');
+      updateStatus('Analyse abgeschlossen');
       loadPhotos();
     }
   }
 
   // --- Navigation ---
-
   document.querySelectorAll('.nav-item[data-view]').forEach(item => {
     item.addEventListener('click', async () => {
       document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
@@ -368,9 +431,11 @@ document.addEventListener('DOMContentLoaded', () => {
       elements.searchInput.value = '';
       state.currentPage = 1;
 
-      // Favorites view uses a different endpoint
+      // Handle different views
       if (state.currentView === 'favorites') {
         await loadFavorites();
+      } else if (state.currentView === 'collections') {
+        await loadCollections();
       } else {
         await loadPhotos();
       }
@@ -378,7 +443,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Tag Click ---
-
   document.addEventListener('click', async (e) => {
     const tagItem = e.target.closest('.tag-item');
     if (tagItem) {
@@ -391,7 +455,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Status Updates ---
-
   function updateStatus(message, type = 'info') {
     elements.statusLeft.textContent = message;
     if (type === 'error') {
@@ -402,6 +465,5 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Initial Load ---
-
   loadPhotos();
 });

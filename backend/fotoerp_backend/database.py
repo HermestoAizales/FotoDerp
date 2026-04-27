@@ -510,6 +510,21 @@ def add_person(person_id: str, name: Optional[str] = None, embedding: Optional[b
     conn.close()
 
 
+def rename_person(person_id: str, name: str) -> bool:
+    """Person umbenennen."""
+    if not name:
+        return False
+    conn = get_connection()
+    cur = conn.execute(
+        "UPDATE persons SET name = ?, unknown = 0 WHERE id = ?",
+        (name, person_id),
+    )
+    conn.commit()
+    success = cur.rowcount > 0
+    conn.close()
+    return success
+
+
 def add_face(face_id: str, photo_id: str, person_id: Optional[str],
              x: float, y: float, width: float, height: float, confidence: float):
     """Face-Erkennung speichern."""

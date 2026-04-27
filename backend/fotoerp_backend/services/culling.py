@@ -1,36 +1,49 @@
-"""FotoDerp Backend — Culling Service
+"""FotoDerp Backend - Culling Service
 
 Culling = automatische Gruppierung für schnelle Bildauswahl.
 Nutzt database.py Funktionen für Persistenz.
 """
 
 import hashlib
+import logging
 import os
 from typing import List, Dict, Optional
 
 from fotoerp_backend.services.import_ import scan_directory
 from fotoerp_backend.database import get_photo, set_photo_status
 
+logger = logging.getLogger(__name__)
+
 
 class CullingService:
     """Culling-Workflow für Bildauswahl."""
 
     def create_project(self, folder_paths: List[str], profile: str = "default") -> dict:
-        """Culling-Projekt erstellen."""
+        """Culling-Projekt erstellen.
+        
+        Args:
+            folder_paths: Liste von Ordnerpfaden
+            profile: Gruppierungs-Profil (default, similarity, date, sequence)
+            
+        Returns:
+            Projekt-Dictionary mit ID, Fotos und Gruppen
+        """
         project_id = hashlib.sha256(','.join(folder_paths).encode()).hexdigest()[:16]
-
+        
         # Fotos aus Verzeichnissen laden (live, nicht aus DB)
         photos = []
         for path in folder_paths:
-            if os.path.isdir(path):
+            try:
                 for image_path in scan_directory(path):
                     photos.append({
                         'path': image_path,
                         'filename': os.path.basename(image_path),
                     })
-
+            except Exception as e:
+                logger.error(f"Fehler beim Scannen von {path}: {e}")
+        
         groups = self._group_photos(photos, profile)
-
+        
         return {
             'id': project_id,
             'folder_paths': folder_paths,
@@ -46,12 +59,26 @@ class CullingService:
         return {'id': project_id, 'groups': [], 'stats': {}}
 
     def select_photo(self, project_id: str, photo_id: str, group_id: str = "all"):
-        """Foto als ausgewählt markieren — speichert in DB als 'picked'."""
-        set_photo_status(photo_id, "done")
-        return {"photo_id": photo_id, "action": "selected", "group_id": group_id}
+        """Foto als ausgewählt markieren - speichert in DB als 'picked'.
+        
+        Args:
+            project_id: ID des Culling-Projekts
+            photo_id: ID des Fotos
+            group_id: ID der Gruppe (optional)
+            
+        Returns:
+            True bei Erfolg
+        """
+        try:
+            set_photo_status(photo_id, "done")
+            logger.info(f"Foto {photo_id} als ausgewählt markiert")
+            return True
+        except Exception as e:
+            logger.error(f"Fehler beim Markieren von {photo_id}: {e}")
+            return False
 
     def reject_photo(self, project_id: str, photo_id: str, group_id: str = "all"):
-        """Foto ablehnen — speichert in DB als 'rejected'."""
+        """Foto ablehnen - speichert in DB als 'rejected'."""
         # Use a custom status to track rejected photos
         # We'll use the existing status field: 'pending', 'analyzing', 'done', 'error'
         # For rejected, we store in a separate tracking mechanism
@@ -59,8 +86,8 @@ class CullingService:
 
     def smart_select(self, project_id: str) -> Dict:
         """Smart Selection: wählt automatisch die besten Bilder pro Gruppe.
-        
-        Heuristic: prefers photos with higher rating, better EXIF data, and 
+
+        Heuristic: prefers photos with higher rating, better EXIF data, and
             lower phash similarity to already-selected photos.
         """
         # For now, use a simple heuristic: pick the first photo in each group

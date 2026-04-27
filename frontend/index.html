@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
-  <title>FotoDerp</title>
+  <title>FotoDerp - AI-Powered Photo Management</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -13,15 +13,17 @@
     <div class="toolbar-left">
       <button id="btn-import" title="Fotos importieren">📁 Import</button>
       <button id="btn-analyze" title="KI-Analyse starten">🤖 Analysieren</button>
+      <button id="btn-culling" title="Culling starten">🗂️ Culling</button>
     </div>
     <div class="toolbar-center">
-      <input type="text" id="search-input" placeholder="Search... (e.g. 'dog at the beach')">
-    </div>
-    <div class="toolbar-right">
+      <input type="text" id="search-input" placeholder="Suche... (z.B. 'Hund am Strand')">
       <select id="view-toggle">
         <option value="grid">Grid</option>
         <option value="list">Liste</option>
       </select>
+    </div>
+    <div class="toolbar-right">
+      <span id="photo-count">0 Bilder</span>
     </div>
   </div>
 
@@ -30,7 +32,7 @@
     <!-- Left Sidebar -->
     <aside class="sidebar-left">
       <div class="sidebar-section">
-        <h3>Bibliotheken</h3>
+        <h3>📷 Bibliothek</h3>
         <ul class="nav-list">
           <li class="nav-item active" data-view="all">Alle Bilder</li>
           <li class="nav-item" data-view="favorites">⭐ Favoriten</li>
@@ -39,36 +41,38 @@
       </div>
       
       <div class="sidebar-section">
-        <h3>Stichwörter</h3>
-        <ul id="tags-list" class="nav-list">
-          <li class="nav-item tag-item" data-tag="Hund">🐕 Hund (12)</li>
-          <li class="nav-item tag-item" data-tag="Strand">🏖️ Strand (8)</li>
-          <li class="nav-item tag-item" data-tag="Natur">🌿 Natur (24)</li>
-        </ul>
+        <h3>🏷 Stichwörter</h3>
+        <div id="tags-list" class="tag-cloud">
+          <span class="tag-item" data-tag="Hund">🐕 Hund (12)</span>
+          <span class="tag-item" data-tag="Strand">🏖️ Strand (8)</span>
+          <span class="tag-item" data-tag="Natur">🌿 Natur (24)</span>
+        </div>
       </div>
       
       <div class="sidebar-section">
-        <h3>Personen</h3>
+        <h3>👤 Personen</h3>
         <ul id="persons-list" class="nav-list">
           <li class="nav-item person-item" data-person="unknown">Unbekannt (5)</li>
         </ul>
       </div>
       
       <div class="sidebar-section">
-        <h3>Culling</h3>
-        <ul class="nav-list">
-          <li class="nav-item" data-view="culling">🗂️ Culling-Projekte</li>
+        <h3>📚 Sammlungen</h3>
+        <ul id="collections-list" class="nav-list">
+          <li class="nav-item" data-view="collections">📚 Alle Sammlungen</li>
         </ul>
+        <button id="btn-new-collection" class="btn-small">+ Neue Sammlung</button>
       </div>
     </aside>
 
     <!-- Center: Photo Grid -->
     <main class="photo-grid-container">
       <div id="photo-grid" class="photo-grid">
-        <!-- Placeholder photos -->
+        <!-- Placeholder -->
         <div class="photo-placeholder">
           <div class="placeholder-icon">📷</div>
           <span>Keine Bilder importiert</span>
+          <p>Klicke auf "Import" um Fotos hinzuzufügen</p>
         </div>
       </div>
       

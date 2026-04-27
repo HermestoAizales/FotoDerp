@@ -1,22 +1,36 @@
-"""FotoDerp Backend — KI-Analyse Service
+"""FotoDerp Backend - KI-Analyse Service
 
 Verwendet den OpenAPI-Adapter für universellen Zugriff auf
 verschiedene KI-Modelle (llama.cpp, Ollama, vLLM, etc.).
 """
 
 import hashlib
+import logging
 from typing import List, Optional
 from fotoerp_backend.models import AnalysisResult, Tag
 from fotoerp_backend.services.openapi_adapter import OpenAPIAdapter, AdapterConfig
+
+logger = logging.getLogger(__name__)
 
 
 async def analyze_photo(
     photo_path: str,
     adapter: OpenAPIAdapter,
 ) -> AnalysisResult:
-    """Foto mit einem Vision-Modell analysieren"""
+    """Foto mit einem Vision-Modell analysieren.
     
-    result = await adapter.image_analysis(photo_path)
+    Args:
+        photo_path: Pfad zum Foto
+        adapter: OpenAPI Adapter für KI-Modell-Zugriff
+        
+    Returns:
+        AnalysisResult mit Tags, Faces, Scores
+    """
+    try:
+        result = await adapter.image_analysis(photo_path)
+    except Exception as e:
+        logger.error(f"Fehler bei KI-Analyse von {photo_path}: {e}")
+        raise
     
     # Parse tags
     tags = []
@@ -36,7 +50,7 @@ async def analyze_photo(
         faces=result.get("faces", []),
         aesthetic_score=result.get("aesthetic_score"),
         ocr_text=result.get("ocr_text"),
-        model_version=adapter.config.model,
+        model_version=str(adapter.config.model) if adapter.config.model else "unknown",
     )
 
 
@@ -47,8 +61,10 @@ async def generate_embedding(
     """Text-Embedding generieren"""
     
     result = await adapter.embedding(text)
-    data = result.get("data", [{}])[0]
-    return data.get("embedding")
+    data = result.get("data", [])
+    if not data:
+        return None
+    return data[0].get("embedding")
 
 
 async def analyze_photo_batch(
@@ -56,7 +72,16 @@ async def analyze_photo_batch(
     adapter: OpenAPIAdapter,
     batch_size: int = 10,
 ) -> List[AnalysisResult]:
-    """Batch-Analyse mehrerer Fotos (async parallel)"""
+    """Batch-Analyse mehrerer Fotos (async parallel).
+    
+    Args:
+        photo_paths: Liste von Foto-Pfaden
+        adapter: OpenAPI Adapter
+        batch_size: Anzahl paralleler Analysen
+        
+    Returns:
+        Liste von AnalysisResult (fehlgeschlagene Analysen werden übersprungen)
+    """
     import asyncio
     
     results = []
@@ -67,7 +92,7 @@ async def analyze_photo_batch(
         
         for path, result in zip(batch, batch_results):
             if isinstance(result, Exception):
-                print(f"Error analyzing {path}: {result}")
+                logger.error(f"Fehler bei Analyse von {path}: {result}")
             else:
                 results.append(result)
     
