@@ -66,44 +66,52 @@ jobs:
       - name: Install npm packages
         run: npm ci || npm install
       - name: Build backend with Nuitka
-        shell: bash
+        shell: pwsh
         run: |
           cd backend
           pip install nuitka
           # Download depends.exe directly to the location Nuitka expects
-          mkdir -p ~/.nuitka
-          cd ~/.nuitka
+          $nuitkaDir = "$env:USERPROFILE\.nuitka"
+          New-Item -ItemType Directory -Force -Path $nuitkaDir | Out-Null
           
           # Try to download from multiple sources
-          if [ ! -f depends.exe ]; then
+          if (-not (Test-Path "$nuitkaDir\depends.exe")) {
             # Try WinDepends first
-            curl -L -o depends.zip "https://github.com/hfiref0x/WinDepends/releases/download/170724/WinDepends.zip" && unzip -o depends.zip -d . || true
-            
-            # Find depends.exe recursively
-            DEPS_EXE=$(find . -name "depends.exe" -o -name "Depends.exe" -o -name "WinDepends.exe" | head -1)
-            
-            if [ -n "$DEPS_EXE" ] && [ ! -f depends.exe ]; then
-              cp "$DEPS_EXE" depends.exe
-              echo "Copied $DEPS_EXE to depends.exe"
-            fi
+            $url = "https://github.com/hfiref0x/WinDepends/releases/download/170724/WinDepends.zip"
+            $zipPath = "$nuitkaDir\windepends.zip"
+            Invoke-WebRequest -Uri $url -OutFile $zipPath -ErrorAction SilentlyContinue
+            if (Test-Path $zipPath) {
+              Expand-Archive -Path $zipPath -DestinationPath $nuitkaDir -Force
+              $exe = Get-ChildItem -Path $nuitkaDir -Recurse -Filter "*depends*.exe" | Select-Object -First 1
+              if ($exe) {
+                Copy-Item $exe.FullName "$nuitkaDir\depends.exe" -Force
+              }
+            }
             
             # Fallback to dependencywalker.com if needed
-            if [ ! -f depends.exe ]; then
-              cd ~/.nuitka
-              curl -L -o depends22_x64.zip "https://web.archive.org/web/2023/https://dependencywalker.com/depends22_x64.zip" && unzip -o depends22_x64.zip -d .
-            fi
-          fi
+            if (-not (Test-Path "$nuitkaDir\depends.exe")) {
+              $url2 = "https://web.archive.org/web/2023/https://dependencywalker.com/depends22_x64.zip"
+              $zipPath2 = "$nuitkaDir\depends22_x64.zip"
+              Invoke-WebRequest -Uri $url2 -OutFile $zipPath2 -ErrorAction SilentlyContinue
+              if (Test-Path $zipPath2) {
+                Expand-Archive -Path $zipPath2 -DestinationPath $nuitkaDir -Force
+                $exe2 = Get-ChildItem -Path $nuitkaDir -Recurse -Filter "depends.exe" | Select-Object -First 1
+                if ($exe2) {
+                  Copy-Item $exe2.FullName "$nuitkaDir\depends.exe" -Force
+                }
+              }
+            }
+          }
           
           # Verify depends.exe exists
-          if [ -f ~/.nuitka/depends.exe ]; then
-            echo "depends.exe found at ~/.nuitka/depends.exe"
-          else
-            echo "WARNING: depends.exe not found, Nuitka will try to download it automatically"
-          fi
+          if (Test-Path "$nuitkaDir\depends.exe") {
+            Write-Host "depends.exe found at $nuitkaDir\depends.exe"
+          } else {
+            Write-Host "WARNING: depends.exe not found, Nuitka will try to download it automatically"
+          }
           
           # Build with Nuitka
-          cd backend
-          python3 -m nuitka --onefile --assume-yes-for-downloads --nofollow-import-to=tkinter --nofollow-import-to=pytest fotoerp_backend/main.py
+          python -m nuitka --onefile --assume-yes-for-downloads --nofollow-import-to=tkinter --nofollow-import-to=pytest fotoerp_backend/main.py
       - name: Temporarily move icons dir
         shell: pwsh
         run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
