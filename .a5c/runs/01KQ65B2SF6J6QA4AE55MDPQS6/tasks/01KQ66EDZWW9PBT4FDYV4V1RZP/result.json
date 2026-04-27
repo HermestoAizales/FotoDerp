@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ66EDZWW9PBT4FDYV4V1RZP",
+  "taskId": "configure-gitignore",
+  "invocationKey": "project-install-fotoderp:S000013:configure-gitignore",
+  "status": "ok",
+  "result": {
+    "configured": true,
+    "entriesAdded": [
+      ".a5c/creds.env",
+      ".a5c/creds.env.tmp.*",
+      ".a5c/logs/"
+    ],
+    "existedBefore": true,
+    "gitignorePath": ".gitignore",
+    "level": "logs",
+    "sectionReplaced": false
+  },
+  "startedAt": "2026-04-27T00:47:30.000Z",
+  "finishedAt": "2026-04-27T00:47:30.000Z",
+  "value": {
+    "configured": true,
+    "entriesAdded": [
+      ".a5c/creds.env",
+      ".a5c/creds.env.tmp.*",
+      ".a5c/logs/"
+    ],
+    "existedBefore": true,
+    "gitignorePath": ".gitignore",
+    "level": "logs",
+    "sectionReplaced": false
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "kind": "breakpoint",
+  "metadata": {
+    "label": "breakpoint",
+    "payload": {
+      "context": {
+        "detectedProvider": "GitHub Actions",
+        "existingPipelines": [
+          {
+            "name": "CI Checks",
+            "stages": [
+              "python-check",
+              "npm-check",
+              "lint-python"
+            ],
+            "trigger": [
+              "push to main, develop",
+              "pull_request to main"
+            ]
+          },
+          {
+            "name": "Build",
+            "stages": [
+              "build-linux",
+              "build-mac",
+              "build-windows"
+            ],
+            "trigger": [
+              "push to main",
+              "tags v*"
+            ]
+          }
+        ]
+      },
+      "question": "Would you like to set up CI/CD integration for babysitter?\n\nThis will configure babysitter to run automatically in your CI/CD pipeline.\n\nWe detected you are using **GitHub Actions**. We can add babysitter steps to your existing pipeline.\n\nOptions:\n- **Yes**: Configure CI/CD integration (we will create/update pipeline config files)\n- **No**: Skip CI/CD setup for now (you can always run project-install again later)\n\nIf yes, please also indicate which events should trigger babysitter:\n- PR opened / updated\n- Push to main / release branches\n- Scheduled (cron)\n- Manual trigger",
+      "title": "CI/CD Integration"
+    },
+    "requestedAt": "2026-04-27T00:42:53.194Z"
+  },
+  "title": "breakpoint",
+  "schemaVersion": "2026.01.tasks-v1",
+  "effectId": "01KQ6676WBHTBQ49CHFWKBCPF4",
+  "taskId": "__sdk.breakpoint",
+  "invocationKey": "project-install-fotoderp:S000008:__sdk.breakpoint",
+  "stepId": "S000008",
+  "inputs": {
+    "label": "breakpoint",
+    "payload": {
+      "context": {
+        "detectedProvider": "GitHub Actions",
+        "existingPipelines": [
+          {
+            "name": "CI Checks",
+            "stages": [
+              "python-check",
+              "npm-check",
+              "lint-python"
+            ],
+            "trigger": [
+              "push to main, develop",
+              "pull_request to main"
+            ]
+          },
+          {
+            "name": "Build",
+            "stages": [
+              "build-linux",
+              "build-mac",
+              "build-windows"
+            ],
+            "trigger": [
+              "push to main",
+              "tags v*"
+            ]
+          }
+        ]
+      },
+      "question": "Would you like to set up CI/CD integration for babysitter?\n\nThis will configure babysitter to run automatically in your CI/CD pipeline.\n\nWe detected you are using **GitHub Actions**. We can add babysitter steps to your existing pipeline.\n\nOptions:\n- **Yes**: Configure CI/CD integration (we will create/update pipeline config files)\n- **No**: Skip CI/CD setup for now (you can always run project-install again later)\n\nIf yes, please also indicate which events should trigger babysitter:\n- PR opened / updated\n- Push to main / release branches\n- Scheduled (cron)\n- Manual trigger",
+      "title": "CI/CD Integration"
+    },
+    "requestedAt": "2026-04-27T00:42:53.194Z"
+  }
+}

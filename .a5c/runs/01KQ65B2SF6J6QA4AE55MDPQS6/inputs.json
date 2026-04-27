@@ -1,0 +1,5 @@
+{
+  "projectRoot": "/home/hermes/FotoDerp",
+  "isNewProject": false,
+  "additionalContext": "FotoDerp is an open-source AI-powered photo management application for professional photographers. It uses Electron for the desktop app, Python/FastAPI for the backend, and has build targets for Linux, macOS, and Windows."
+}

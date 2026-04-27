@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:28:43.164Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ65D8RMCT167RJFDT6R5WPC",
+    "invocationKey": "project-install-fotoderp:S000002:analyze-repo",
+    "invocationHash": "10692724709deb93327fe34d046d4f02f192ecf5ae11d2912d35561dc87ce3b3",
+    "stepId": "S000002",
+    "taskId": "analyze-repo",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ65D8RMCT167RJFDT6R5WPC/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "analysis",
+      "repo"
+    ]
+  },
+  "checksum": "8bf14fb93a4bef21476746a8f2e0c6ac452bde80528603f5a9ea0a131246163b"
+}

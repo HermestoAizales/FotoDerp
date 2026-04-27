@@ -1,0 +1,563 @@
+{
+  "agent": {
+    "name": "general-purpose",
+    "outputSchema": {
+      "properties": {
+        "bottlenecks": {
+          "items": {
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "frequency": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "impact": {
+                "type": "string"
+              },
+              "location": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "branchPatterns": {
+          "properties": {
+            "averageLifetime": {
+              "type": "string"
+            },
+            "mergeStrategy": {
+              "type": "string"
+            },
+            "namingConvention": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "commitPatterns": {
+          "properties": {
+            "averageFrequency": {
+              "type": "string"
+            },
+            "averageSize": {
+              "type": "object"
+            },
+            "conventions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "messageFormat": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "contributors": {
+          "items": {
+            "properties": {
+              "areas": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "commitCount": {
+                "type": "number"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "evolution": {
+          "properties": {
+            "growthAreas": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "majorEvents": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "technologyChanges": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "implicitRules": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "painPoints": {
+          "items": {
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              },
+              "discoveredVia": {
+                "type": "string"
+              },
+              "id": {
+                "type": "string"
+              },
+              "severity": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "releasePatterns": {
+          "properties": {
+            "frequency": {
+              "type": "string"
+            },
+            "tagFormat": {
+              "type": "string"
+            },
+            "versioningScheme": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "required": [
+        "commitPatterns",
+        "bottlenecks"
+      ],
+      "type": "object"
+    },
+    "prompt": {
+      "context": {
+        "existingProfile": null,
+        "projectRoot": "/home/hermes/FotoDerp",
+        "repoStructure": {
+          "architecture": {
+            "dataFlow": "Electron app launches Python FastAPI backend (via npm start script), frontend (HTML/JS) communicates with backend via HTTP API (localhost:8765), backend uses SQLite for storage and llama.cpp-compatible endpoints for AI features",
+            "entryPoints": [
+              "electron/main.js",
+              "backend/fotoerp_backend/main.py",
+              "frontend/js/app.js"
+            ],
+            "modules": [
+              {
+                "description": "Electron desktop app shell - main process and preload scripts",
+                "name": "electron",
+                "path": "electron/"
+              },
+              {
+                "description": "Vanilla HTML/CSS/JS frontend served by Electron",
+                "name": "frontend",
+                "path": "frontend/"
+              },
+              {
+                "description": "Python FastAPI backend with AI services, photo management, and SQLite database",
+                "name": "backend",
+                "path": "backend/"
+              },
+              {
+                "description": "Application icons and icon generation scripts",
+                "name": "icons",
+                "path": "icons/"
+              }
+            ],
+            "pattern": "Desktop application with separate backend service (Electron + Python FastAPI)"
+          },
+          "conventions": {
+            "additionalRules": [
+              "German comments in Python backend code",
+              "English comments in JavaScript frontend code",
+              "API endpoints follow RESTful conventions with /api/ prefix"
+            ],
+            "codeStyle": {
+              "javascript": "Vanilla JS, no framework",
+              "python": "Standard Python conventions"
+            },
+            "errorHandling": "Try-except blocks in Python, try-catch in JavaScript, HTTP exception handling via FastAPI",
+            "importOrder": [],
+            "naming": {
+              "javascript": "camelCase for functions/variables, PascalCase for classes",
+              "python": "snake_case for functions/variables, PascalCase for classes"
+            },
+            "testingConventions": "No formal testing framework detected - CI uses py_compile and ruff linting"
+          },
+          "directoryTree": {
+            ".github/workflows/": [
+              "build.yml",
+              "ci.yml",
+              "release.yml"
+            ],
+            "backend/": [
+              "fotoerp_backend/",
+              "requirements.txt",
+              "build_backend.py"
+            ],
+            "electron/": [
+              "main.js",
+              "preload.js",
+              "uninstall-mac.sh",
+              "uninstaller.nsh"
+            ],
+            "frontend/": [
+              "css/",
+              "js/app.js"
+            ],
+            "icons/": [
+              "generate_icons.py"
+            ]
+          },
+          "documentation": [
+            {
+              "path": "README.md",
+              "summary": "Project overview, features, tech stack, API endpoints, build instructions",
+              "type": "main"
+            },
+            {
+              "path": "DESIGN.md",
+              "summary": "Design documentation",
+              "type": "design"
+            },
+            {
+              "path": "BUILD.md",
+              "summary": "Build instructions",
+              "type": "build"
+            },
+            {
+              "path": "MODELS.md",
+              "summary": "AI model support documentation",
+              "type": "documentation"
+            },
+            {
+              "path": "SESSION-PROMPT.md",
+              "summary": "Session prompt documentation",
+              "type": "session"
+            },
+            {
+              "path": "WINDOWS-BUILD-TESTPLAN.md",
+              "summary": "Windows build test plan",
+              "type": "testing"
+            }
+          ],
+          "techStack": {
+            "buildTools": [
+              "Nuitka (Python compiler)",
+              "electron-builder"
+            ],
+            "databases": [
+              {
+                "name": "SQLite",
+                "type": "embedded",
+                "version": "latest"
+              }
+            ],
+            "frameworks": [
+              {
+                "category": "backend-web",
+                "name": "FastAPI",
+                "version": "latest"
+              },
+              {
+                "category": "desktop",
+                "name": "Electron",
+                "version": "^33.0.0"
+              },
+              {
+                "category": "build",
+                "name": "electron-builder",
+                "version": "^25.0.0"
+              }
+            ],
+            "infrastructure": [
+              {
+                "category": "ai-inference",
+                "name": "llama.cpp"
+              },
+              {
+                "category": "ai-inference",
+                "name": "Ollama"
+              },
+              {
+                "category": "ai-inference",
+                "name": "vLLM"
+              }
+            ],
+            "languages": [
+              {
+                "name": "Python",
+                "role": "primary",
+                "version": "3.11+"
+              },
+              {
+                "name": "JavaScript",
+                "role": "primary"
+              },
+              {
+                "name": "HTML/CSS",
+                "role": "frontend"
+              }
+            ],
+            "packageManagers": [
+              "npm",
+              "pip"
+            ]
+          }
+        }
+      },
+      "instructions": [
+        "Analyze git log for commit patterns:",
+        "  - Commit message format and conventions (conventional commits, ticket references, etc.)",
+        "  - Commit frequency and distribution over time",
+        "  - Average commit size (files changed, lines added/removed)",
+        "  - Most active contributors and their areas of focus",
+        "Analyze branch patterns:",
+        "  - Branch naming conventions",
+        "  - Branch lifetime (how long branches live before merge)",
+        "  - Merge strategy (merge commits, squash, rebase)",
+        "Analyze PR/merge patterns if available:",
+        "  - PR size distribution",
+        "  - Review turnaround time indicators (time between commits)",
+        "  - Common reviewers",
+        "Analyze release patterns:",
+        "  - Tag format and frequency",
+        "  - Release branching strategy",
+        "  - Versioning scheme (semver, calver, etc.)",
+        "Identify evolution patterns:",
+        "  - Major refactoring events (large commits touching many files)",
+        "  - Technology migrations visible in history",
+        "  - Growing or shrinking areas of the codebase",
+        "Identify bottlenecks:",
+        "  - Files with high churn (frequently changed)",
+        "  - Files that are always changed together (hidden coupling)",
+        "  - Long-lived branches that cause merge conflicts",
+        "Extract implicit rules:",
+        "  - Files that must be changed together",
+        "  - Areas that rarely change (stable core)",
+        "  - Patterns of test-code co-changes",
+        "Limit git log analysis to a reasonable depth (last 500-1000 commits or 6 months)",
+        "Do NOT access any sensitive information from git history"
+      ],
+      "outputFormat": "JSON with commitPatterns (object), branchPatterns (object), releasePatterns (object), evolution (object with majorEvents, technologyChanges, growthAreas), bottlenecks (array of {id, description, impact, location, frequency}), implicitRules (array of strings), painPoints (array of {id, description, severity, category, discoveredVia}), contributors (array of {name, areas, commitCount})",
+      "role": "process mining specialist and software historian",
+      "task": "Analyze the git history of this project to extract development patterns, implicit rules, evolution trajectory, and bottlenecks. This information will help babysitter understand how the project operates."
+    }
+  },
+  "description": "Analyze git history to extract commit patterns, PR patterns, release patterns, evolution, bottlenecks, and implicit rules",
+  "io": {
+    "inputJsonPath": "tasks/01KQ65FA6ZC1MHXYQ9VRFTKTR0/input.json",
+    "outputJsonPath": "tasks/01KQ65FA6ZC1MHXYQ9VRFTKTR0/result.json"
+  },
+  "kind": "agent",
+  "labels": [
+    "agent",
+    "cradle",
+    "git-history",
+    "mining"
+  ],
+  "title": "Mine git history for process patterns",
+  "schemaVersion": "2026.01.tasks-v1",
+  "effectId": "01KQ65FA6ZC1MHXYQ9VRFTKTR0",
+  "taskId": "process-mining",
+  "invocationKey": "project-install-fotoderp:S000004:process-mining",
+  "stepId": "S000004",
+  "inputs": {
+    "existingProfile": null,
+    "projectRoot": "/home/hermes/FotoDerp",
+    "repoStructure": {
+      "architecture": {
+        "dataFlow": "Electron app launches Python FastAPI backend (via npm start script), frontend (HTML/JS) communicates with backend via HTTP API (localhost:8765), backend uses SQLite for storage and llama.cpp-compatible endpoints for AI features",
+        "entryPoints": [
+          "electron/main.js",
+          "backend/fotoerp_backend/main.py",
+          "frontend/js/app.js"
+        ],
+        "modules": [
+          {
+            "description": "Electron desktop app shell - main process and preload scripts",
+            "name": "electron",
+            "path": "electron/"
+          },
+          {
+            "description": "Vanilla HTML/CSS/JS frontend served by Electron",
+            "name": "frontend",
+            "path": "frontend/"
+          },
+          {
+            "description": "Python FastAPI backend with AI services, photo management, and SQLite database",
+            "name": "backend",
+            "path": "backend/"
+          },
+          {
+            "description": "Application icons and icon generation scripts",
+            "name": "icons",
+            "path": "icons/"
+          }
+        ],
+        "pattern": "Desktop application with separate backend service (Electron + Python FastAPI)"
+      },
+      "conventions": {
+        "additionalRules": [
+          "German comments in Python backend code",
+          "English comments in JavaScript frontend code",
+          "API endpoints follow RESTful conventions with /api/ prefix"
+        ],
+        "codeStyle": {
+          "javascript": "Vanilla JS, no framework",
+          "python": "Standard Python conventions"
+        },
+        "errorHandling": "Try-except blocks in Python, try-catch in JavaScript, HTTP exception handling via FastAPI",
+        "importOrder": [],
+        "naming": {
+          "javascript": "camelCase for functions/variables, PascalCase for classes",
+          "python": "snake_case for functions/variables, PascalCase for classes"
+        },
+        "testingConventions": "No formal testing framework detected - CI uses py_compile and ruff linting"
+      },
+      "directoryTree": {
+        ".github/workflows/": [
+          "build.yml",
+          "ci.yml",
+          "release.yml"
+        ],
+        "backend/": [
+          "fotoerp_backend/",
+          "requirements.txt",
+          "build_backend.py"
+        ],
+        "electron/": [
+          "main.js",
+          "preload.js",
+          "uninstall-mac.sh",
+          "uninstaller.nsh"
+        ],
+        "frontend/": [
+          "css/",
+          "js/app.js"
+        ],
+        "icons/": [
+          "generate_icons.py"
+        ]
+      },
+      "documentation": [
+        {
+          "path": "README.md",
+          "summary": "Project overview, features, tech stack, API endpoints, build instructions",
+          "type": "main"
+        },
+        {
+          "path": "DESIGN.md",
+          "summary": "Design documentation",
+          "type": "design"
+        },
+        {
+          "path": "BUILD.md",
+          "summary": "Build instructions",
+          "type": "build"
+        },
+        {
+          "path": "MODELS.md",
+          "summary": "AI model support documentation",
+          "type": "documentation"
+        },
+        {
+          "path": "SESSION-PROMPT.md",
+          "summary": "Session prompt documentation",
+          "type": "session"
+        },
+        {
+          "path": "WINDOWS-BUILD-TESTPLAN.md",
+          "summary": "Windows build test plan",
+          "type": "testing"
+        }
+      ],
+      "techStack": {
+        "buildTools": [
+          "Nuitka (Python compiler)",
+          "electron-builder"
+        ],
+        "databases": [
+          {
+            "name": "SQLite",
+            "type": "embedded",
+            "version": "latest"
+          }
+        ],
+        "frameworks": [
+          {
+            "category": "backend-web",
+            "name": "FastAPI",
+            "version": "latest"
+          },
+          {
+            "category": "desktop",
+            "name": "Electron",
+            "version": "^33.0.0"
+          },
+          {
+            "category": "build",
+            "name": "electron-builder",
+            "version": "^25.0.0"
+          }
+        ],
+        "infrastructure": [
+          {
+            "category": "ai-inference",
+            "name": "llama.cpp"
+          },
+          {
+            "category": "ai-inference",
+            "name": "Ollama"
+          },
+          {
+            "category": "ai-inference",
+            "name": "vLLM"
+          }
+        ],
+        "languages": [
+          {
+            "name": "Python",
+            "role": "primary",
+            "version": "3.11+"
+          },
+          {
+            "name": "JavaScript",
+            "role": "primary"
+          },
+          {
+            "name": "HTML/CSS",
+            "role": "frontend"
+          }
+        ],
+        "packageManagers": [
+          "npm",
+          "pip"
+        ]
+      }
+    }
+  }
+}

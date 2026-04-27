@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:27:44.386Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ65BFBQRQ0YM3D1RJ4SBA3K",
+    "invocationKey": "project-install-fotoderp:S000001:check-existing-setup",
+    "invocationHash": "a50f010d781127c6718fe1529dea053e3c9065fa9fdf84b279faadae51b1de27",
+    "stepId": "S000001",
+    "taskId": "check-existing-setup",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ65BFBQRQ0YM3D1RJ4SBA3K/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "setup",
+      "read-only"
+    ]
+  },
+  "checksum": "1183bebd124c08f17009238644bff7ca4389fcd0aa88351e18a4f5a9ab024aeb"
+}

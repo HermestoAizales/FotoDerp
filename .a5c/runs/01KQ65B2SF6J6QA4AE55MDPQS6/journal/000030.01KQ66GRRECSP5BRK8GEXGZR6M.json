@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:48:06.414Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ66GRR52DKSXSTTEPYTAN5J",
+    "invocationKey": "project-install-fotoderp:S000015:save-profile",
+    "invocationHash": "cbfb7a32ce4ba95d5efd4a7660ac23db02ccd9842c9038b7d232d7c49506e34a",
+    "stepId": "S000015",
+    "taskId": "save-profile",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ66GRR52DKSXSTTEPYTAN5J/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "save",
+      "atomic"
+    ]
+  },
+  "checksum": "e1bcc196fcb6b0449196cfc8fbecc1f68ae93105cbb53b5a828432d8b7342d0b"
+}

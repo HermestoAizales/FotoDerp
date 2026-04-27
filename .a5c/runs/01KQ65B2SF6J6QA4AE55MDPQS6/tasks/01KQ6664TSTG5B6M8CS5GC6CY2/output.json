@@ -1,0 +1,68 @@
+{
+  "recommendedProcesses": [
+    "gsd/new-project",
+    "gsd/plan",
+    "gsd/execute",
+    "gsd/verify",
+    "gsd/iterative-convergence",
+    "methodologies/TDD",
+    "cradle/project-install",
+    "specializations/ux-ui-design"
+  ],
+  "recommendedSkills": [
+    "codebase-analyzer",
+    "ui-ux-reviewer",
+    "test-generator",
+    "doc-generator"
+  ],
+  "recommendedAgents": [
+    "general-purpose",
+    "quality-scorer",
+    "code-reviewer"
+  ],
+  "recommendedMethodology": "TDD (Test-Driven Development) mit iterative-convergence für qualitätssicherung",
+  "justifications": {
+    "gsd/new-project": "Für die Erstellung der ersten Testversion für Windows - strukturierte Projektplanung",
+    "gsd/plan": "Detaillierte Planung für Features und UX-Verbesserungen",
+    "gsd/execute": "Ausführung der Entwicklungsaufgaben mit autonomer Operation",
+    "gsd/verify": "Verifizierung der Features gegen die Anforderungen (professional standards)",
+    "gsd/iterative-convergence": "Iterative Qualitätsverbesserung für sauberen Code und Tests",
+    "methodologies/TDD": "Test-Driven Development für professionelle Code-Qualität - wie von einem Profi erwartet",
+    "specializations/ux-ui-design": "UX-Orientierung an professionellen Foto-Verwaltungs-Tools (ohne den Namen zu erwähnen)",
+    "codebase-analyzer": "Analyse der bestehenden Codebasis für Verbesserungen",
+    "ui-ux-reviewer": "Sicherstellen, dass die UX intuitiv für Profi-Fotografen ist",
+    "test-generator": "Automatische Testgenerierung für Python (pytest) und JS",
+    "TDD": "Tests zuerst - sauberer Code, Profi-Standards"
+  },
+  "prioritized": {
+    "mustHave": [
+      "gsd/execute",
+      "methodologies/TDD",
+      "gsd/verify",
+      "test-generator",
+      "codebase-analyzer"
+    ],
+    "niceToHave": [
+      "specializations/ux-ui-design",
+      "ui-ux-reviewer",
+      "gsd/iterative-convergence"
+    ]
+  },
+  "remediations": [
+    {
+      "painPointId": "pp-build-complexity",
+      "recommendation": "Verwende gsd/execute mit Fokus auf Build-Stabilisierung und Tests",
+      "process": "gsd/execute"
+    },
+    {
+      "painPointId": "pp-platform-support",
+      "recommendation": "Dediziertes Windows-Build mit proper dependency management via gsd/plan + execute",
+      "process": "gsd/plan"
+    },
+    {
+      "painPointId": "pp-model-stopping",
+      "recommendation": "Autonome Operation mit babysitter - gsd/execute ohne manuelle Intervention",
+      "process": "gsd/execute"
+    }
+  ]
+}

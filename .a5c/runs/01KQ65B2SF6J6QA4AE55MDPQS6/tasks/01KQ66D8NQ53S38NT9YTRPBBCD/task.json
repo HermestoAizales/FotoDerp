@@ -1,0 +1,31 @@
+{
+  "kind": "breakpoint",
+  "metadata": {
+    "label": "breakpoint",
+    "payload": {
+      "context": {
+        "currentGitignore": "Will be read during task execution"
+      },
+      "question": "**Configure .gitignore for babysitter files**\n\nBabysitter generates run metadata, logs, and process files in the `.a5c/` directory.\nWould you like to add these to `.gitignore` to keep your repository clean?\n\nOptions (each level includes the previous):\n- **Nothing** — Do not modify .gitignore (only add credential exclusions for security)\n- **Logs only** (Recommended) — Ignore `.a5c/logs/`\n- **Logs + Runs** — Ignore `.a5c/logs/` and `.a5c/runs/`\n- **Entire .a5c** — Ignore the entire `.a5c/` directory\n\nNote: `.a5c/creds.env` and `.a5c/creds.env.tmp.*` are always added to `.gitignore` for security, regardless of your choice.",
+      "title": ".gitignore Configuration"
+    },
+    "requestedAt": "2026-04-27T00:46:11.638Z"
+  },
+  "title": "breakpoint",
+  "schemaVersion": "2026.01.tasks-v1",
+  "effectId": "01KQ66D8NQ53S38NT9YTRPBBCD",
+  "taskId": "__sdk.breakpoint",
+  "invocationKey": "project-install-fotoderp:S000012:__sdk.breakpoint",
+  "stepId": "S000012",
+  "inputs": {
+    "label": "breakpoint",
+    "payload": {
+      "context": {
+        "currentGitignore": "Will be read during task execution"
+      },
+      "question": "**Configure .gitignore for babysitter files**\n\nBabysitter generates run metadata, logs, and process files in the `.a5c/` directory.\nWould you like to add these to `.gitignore` to keep your repository clean?\n\nOptions (each level includes the previous):\n- **Nothing** — Do not modify .gitignore (only add credential exclusions for security)\n- **Logs only** (Recommended) — Ignore `.a5c/logs/`\n- **Logs + Runs** — Ignore `.a5c/logs/` and `.a5c/runs/`\n- **Entire .a5c** — Ignore the entire `.a5c/` directory\n\nNote: `.a5c/creds.env` and `.a5c/creds.env.tmp.*` are always added to `.gitignore` for security, regardless of your choice.",
+      "title": ".gitignore Configuration"
+    },
+    "requestedAt": "2026-04-27T00:46:11.638Z"
+  }
+}

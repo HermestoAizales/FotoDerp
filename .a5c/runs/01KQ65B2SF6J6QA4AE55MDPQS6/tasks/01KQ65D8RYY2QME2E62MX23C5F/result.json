@@ -1,0 +1,317 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ65D8RYY2QME2E62MX23C5F",
+  "taskId": "analyze-tools-services",
+  "invocationKey": "project-install-fotoderp:S000003:analyze-tools-services",
+  "status": "ok",
+  "result": {
+    "cicd": {
+      "configPaths": [
+        ".github/workflows/build.yml",
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml"
+      ],
+      "pipelines": [
+        {
+          "name": "CI Checks",
+          "stages": [
+            "python-check",
+            "npm-check",
+            "lint-python"
+          ],
+          "trigger": [
+            "push to main, develop",
+            "pull_request to main"
+          ]
+        },
+        {
+          "name": "Build",
+          "stages": [
+            "build-linux",
+            "build-mac",
+            "build-windows"
+          ],
+          "trigger": [
+            "push to main",
+            "tags v*"
+          ]
+        },
+        {
+          "name": "Release",
+          "stages": [
+            "create-release",
+            "upload-assets"
+          ],
+          "trigger": [
+            "tags v*"
+          ]
+        }
+      ],
+      "provider": "GitHub Actions"
+    },
+    "containerization": {
+      "docker": false,
+      "dockerCompose": false
+    },
+    "externalIntegrations": [
+      {
+        "category": "version-control",
+        "enabled": true,
+        "service": "GitHub"
+      },
+      {
+        "category": "model-repository",
+        "enabled": true,
+        "service": "Hugging Face"
+      }
+    ],
+    "infrastructure": {
+      "deployment": "Electron desktop app with embedded Python backend",
+      "type": "local-desktop"
+    },
+    "services": [
+      {
+        "name": "llama.cpp",
+        "type": "ai-inference",
+        "url": "http://127.0.0.1:8080/v1"
+      },
+      {
+        "name": "Ollama",
+        "type": "ai-inference",
+        "url": "http://127.0.0.1:11434"
+      },
+      {
+        "name": "vLLM",
+        "type": "ai-inference",
+        "url": null
+      },
+      {
+        "name": "LM Studio",
+        "type": "ai-inference",
+        "url": null
+      },
+      {
+        "name": "Jan.ai",
+        "type": "ai-inference",
+        "url": null
+      }
+    ],
+    "tools": {
+      "formatting": [],
+      "linting": [
+        {
+          "configPath": null,
+          "name": "ruff",
+          "type": "python-linter",
+          "usedIn": [
+            "ci.yml"
+          ]
+        },
+        {
+          "configPath": null,
+          "name": "py_compile",
+          "type": "python-syntax-check",
+          "usedIn": [
+            "ci.yml"
+          ]
+        }
+      ],
+      "testing": []
+    },
+    "workflows": [
+      {
+        "description": "Local development workflow with npm scripts",
+        "name": "development",
+        "steps": [
+          "npm run start:backend",
+          "npm run dev"
+        ],
+        "triggers": [
+          "manual"
+        ]
+      },
+      {
+        "description": "Build distributable packages for multiple platforms",
+        "name": "build",
+        "steps": [
+          "npm run build:backend",
+          "electron-builder --linux/mac/win"
+        ],
+        "triggers": [
+          "manual",
+          "ci-build",
+          "release"
+        ]
+      },
+      {
+        "description": "GitHub Actions CI pipeline",
+        "name": "ci",
+        "steps": [
+          "python syntax check",
+          "npm ci check",
+          "python lint (ruff)"
+        ],
+        "triggers": [
+          "push",
+          "pull_request"
+        ]
+      }
+    ]
+  },
+  "startedAt": "2026-04-27T00:29:42.371Z",
+  "finishedAt": "2026-04-27T00:29:42.371Z",
+  "value": {
+    "cicd": {
+      "configPaths": [
+        ".github/workflows/build.yml",
+        ".github/workflows/ci.yml",
+        ".github/workflows/release.yml"
+      ],
+      "pipelines": [
+        {
+          "name": "CI Checks",
+          "stages": [
+            "python-check",
+            "npm-check",
+            "lint-python"
+          ],
+          "trigger": [
+            "push to main, develop",
+            "pull_request to main"
+          ]
+        },
+        {
+          "name": "Build",
+          "stages": [
+            "build-linux",
+            "build-mac",
+            "build-windows"
+          ],
+          "trigger": [
+            "push to main",
+            "tags v*"
+          ]
+        },
+        {
+          "name": "Release",
+          "stages": [
+            "create-release",
+            "upload-assets"
+          ],
+          "trigger": [
+            "tags v*"
+          ]
+        }
+      ],
+      "provider": "GitHub Actions"
+    },
+    "containerization": {
+      "docker": false,
+      "dockerCompose": false
+    },
+    "externalIntegrations": [
+      {
+        "category": "version-control",
+        "enabled": true,
+        "service": "GitHub"
+      },
+      {
+        "category": "model-repository",
+        "enabled": true,
+        "service": "Hugging Face"
+      }
+    ],
+    "infrastructure": {
+      "deployment": "Electron desktop app with embedded Python backend",
+      "type": "local-desktop"
+    },
+    "services": [
+      {
+        "name": "llama.cpp",
+        "type": "ai-inference",
+        "url": "http://127.0.0.1:8080/v1"
+      },
+      {
+        "name": "Ollama",
+        "type": "ai-inference",
+        "url": "http://127.0.0.1:11434"
+      },
+      {
+        "name": "vLLM",
+        "type": "ai-inference",
+        "url": null
+      },
+      {
+        "name": "LM Studio",
+        "type": "ai-inference",
+        "url": null
+      },
+      {
+        "name": "Jan.ai",
+        "type": "ai-inference",
+        "url": null
+      }
+    ],
+    "tools": {
+      "formatting": [],
+      "linting": [
+        {
+          "configPath": null,
+          "name": "ruff",
+          "type": "python-linter",
+          "usedIn": [
+            "ci.yml"
+          ]
+        },
+        {
+          "configPath": null,
+          "name": "py_compile",
+          "type": "python-syntax-check",
+          "usedIn": [
+            "ci.yml"
+          ]
+        }
+      ],
+      "testing": []
+    },
+    "workflows": [
+      {
+        "description": "Local development workflow with npm scripts",
+        "name": "development",
+        "steps": [
+          "npm run start:backend",
+          "npm run dev"
+        ],
+        "triggers": [
+          "manual"
+        ]
+      },
+      {
+        "description": "Build distributable packages for multiple platforms",
+        "name": "build",
+        "steps": [
+          "npm run build:backend",
+          "electron-builder --linux/mac/win"
+        ],
+        "triggers": [
+          "manual",
+          "ci-build",
+          "release"
+        ]
+      },
+      {
+        "description": "GitHub Actions CI pipeline",
+        "name": "ci",
+        "steps": [
+          "python syntax check",
+          "npm ci check",
+          "python lint (ruff)"
+        ],
+        "triggers": [
+          "push",
+          "pull_request"
+        ]
+      }
+    ]
+  }
+}

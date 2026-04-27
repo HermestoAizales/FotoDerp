@@ -1,0 +1,351 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ65D8RMCT167RJFDT6R5WPC",
+  "taskId": "analyze-repo",
+  "invocationKey": "project-install-fotoderp:S000002:analyze-repo",
+  "status": "ok",
+  "result": {
+    "architecture": {
+      "dataFlow": "Electron app launches Python FastAPI backend (via npm start script), frontend (HTML/JS) communicates with backend via HTTP API (localhost:8765), backend uses SQLite for storage and llama.cpp-compatible endpoints for AI features",
+      "entryPoints": [
+        "electron/main.js",
+        "backend/fotoerp_backend/main.py",
+        "frontend/js/app.js"
+      ],
+      "modules": [
+        {
+          "description": "Electron desktop app shell - main process and preload scripts",
+          "name": "electron",
+          "path": "electron/"
+        },
+        {
+          "description": "Vanilla HTML/CSS/JS frontend served by Electron",
+          "name": "frontend",
+          "path": "frontend/"
+        },
+        {
+          "description": "Python FastAPI backend with AI services, photo management, and SQLite database",
+          "name": "backend",
+          "path": "backend/"
+        },
+        {
+          "description": "Application icons and icon generation scripts",
+          "name": "icons",
+          "path": "icons/"
+        }
+      ],
+      "pattern": "Desktop application with separate backend service (Electron + Python FastAPI)"
+    },
+    "conventions": {
+      "additionalRules": [
+        "German comments in Python backend code",
+        "English comments in JavaScript frontend code",
+        "API endpoints follow RESTful conventions with /api/ prefix"
+      ],
+      "codeStyle": {
+        "javascript": "Vanilla JS, no framework",
+        "python": "Standard Python conventions"
+      },
+      "errorHandling": "Try-except blocks in Python, try-catch in JavaScript, HTTP exception handling via FastAPI",
+      "importOrder": [],
+      "naming": {
+        "javascript": "camelCase for functions/variables, PascalCase for classes",
+        "python": "snake_case for functions/variables, PascalCase for classes"
+      },
+      "testingConventions": "No formal testing framework detected - CI uses py_compile and ruff linting"
+    },
+    "directoryTree": {
+      ".github/workflows/": [
+        "build.yml",
+        "ci.yml",
+        "release.yml"
+      ],
+      "backend/": [
+        "fotoerp_backend/",
+        "requirements.txt",
+        "build_backend.py"
+      ],
+      "electron/": [
+        "main.js",
+        "preload.js",
+        "uninstall-mac.sh",
+        "uninstaller.nsh"
+      ],
+      "frontend/": [
+        "css/",
+        "js/app.js"
+      ],
+      "icons/": [
+        "generate_icons.py"
+      ]
+    },
+    "documentation": [
+      {
+        "path": "README.md",
+        "summary": "Project overview, features, tech stack, API endpoints, build instructions",
+        "type": "main"
+      },
+      {
+        "path": "DESIGN.md",
+        "summary": "Design documentation",
+        "type": "design"
+      },
+      {
+        "path": "BUILD.md",
+        "summary": "Build instructions",
+        "type": "build"
+      },
+      {
+        "path": "MODELS.md",
+        "summary": "AI model support documentation",
+        "type": "documentation"
+      },
+      {
+        "path": "SESSION-PROMPT.md",
+        "summary": "Session prompt documentation",
+        "type": "session"
+      },
+      {
+        "path": "WINDOWS-BUILD-TESTPLAN.md",
+        "summary": "Windows build test plan",
+        "type": "testing"
+      }
+    ],
+    "techStack": {
+      "buildTools": [
+        "Nuitka (Python compiler)",
+        "electron-builder"
+      ],
+      "databases": [
+        {
+          "name": "SQLite",
+          "type": "embedded",
+          "version": "latest"
+        }
+      ],
+      "frameworks": [
+        {
+          "category": "backend-web",
+          "name": "FastAPI",
+          "version": "latest"
+        },
+        {
+          "category": "desktop",
+          "name": "Electron",
+          "version": "^33.0.0"
+        },
+        {
+          "category": "build",
+          "name": "electron-builder",
+          "version": "^25.0.0"
+        }
+      ],
+      "infrastructure": [
+        {
+          "category": "ai-inference",
+          "name": "llama.cpp"
+        },
+        {
+          "category": "ai-inference",
+          "name": "Ollama"
+        },
+        {
+          "category": "ai-inference",
+          "name": "vLLM"
+        }
+      ],
+      "languages": [
+        {
+          "name": "Python",
+          "role": "primary",
+          "version": "3.11+"
+        },
+        {
+          "name": "JavaScript",
+          "role": "primary"
+        },
+        {
+          "name": "HTML/CSS",
+          "role": "frontend"
+        }
+      ],
+      "packageManagers": [
+        "npm",
+        "pip"
+      ]
+    }
+  },
+  "startedAt": "2026-04-27T00:29:42.372Z",
+  "finishedAt": "2026-04-27T00:29:42.372Z",
+  "value": {
+    "architecture": {
+      "dataFlow": "Electron app launches Python FastAPI backend (via npm start script), frontend (HTML/JS) communicates with backend via HTTP API (localhost:8765), backend uses SQLite for storage and llama.cpp-compatible endpoints for AI features",
+      "entryPoints": [
+        "electron/main.js",
+        "backend/fotoerp_backend/main.py",
+        "frontend/js/app.js"
+      ],
+      "modules": [
+        {
+          "description": "Electron desktop app shell - main process and preload scripts",
+          "name": "electron",
+          "path": "electron/"
+        },
+        {
+          "description": "Vanilla HTML/CSS/JS frontend served by Electron",
+          "name": "frontend",
+          "path": "frontend/"
+        },
+        {
+          "description": "Python FastAPI backend with AI services, photo management, and SQLite database",
+          "name": "backend",
+          "path": "backend/"
+        },
+        {
+          "description": "Application icons and icon generation scripts",
+          "name": "icons",
+          "path": "icons/"
+        }
+      ],
+      "pattern": "Desktop application with separate backend service (Electron + Python FastAPI)"
+    },
+    "conventions": {
+      "additionalRules": [
+        "German comments in Python backend code",
+        "English comments in JavaScript frontend code",
+        "API endpoints follow RESTful conventions with /api/ prefix"
+      ],
+      "codeStyle": {
+        "javascript": "Vanilla JS, no framework",
+        "python": "Standard Python conventions"
+      },
+      "errorHandling": "Try-except blocks in Python, try-catch in JavaScript, HTTP exception handling via FastAPI",
+      "importOrder": [],
+      "naming": {
+        "javascript": "camelCase for functions/variables, PascalCase for classes",
+        "python": "snake_case for functions/variables, PascalCase for classes"
+      },
+      "testingConventions": "No formal testing framework detected - CI uses py_compile and ruff linting"
+    },
+    "directoryTree": {
+      ".github/workflows/": [
+        "build.yml",
+        "ci.yml",
+        "release.yml"
+      ],
+      "backend/": [
+        "fotoerp_backend/",
+        "requirements.txt",
+        "build_backend.py"
+      ],
+      "electron/": [
+        "main.js",
+        "preload.js",
+        "uninstall-mac.sh",
+        "uninstaller.nsh"
+      ],
+      "frontend/": [
+        "css/",
+        "js/app.js"
+      ],
+      "icons/": [
+        "generate_icons.py"
+      ]
+    },
+    "documentation": [
+      {
+        "path": "README.md",
+        "summary": "Project overview, features, tech stack, API endpoints, build instructions",
+        "type": "main"
+      },
+      {
+        "path": "DESIGN.md",
+        "summary": "Design documentation",
+        "type": "design"
+      },
+      {
+        "path": "BUILD.md",
+        "summary": "Build instructions",
+        "type": "build"
+      },
+      {
+        "path": "MODELS.md",
+        "summary": "AI model support documentation",
+        "type": "documentation"
+      },
+      {
+        "path": "SESSION-PROMPT.md",
+        "summary": "Session prompt documentation",
+        "type": "session"
+      },
+      {
+        "path": "WINDOWS-BUILD-TESTPLAN.md",
+        "summary": "Windows build test plan",
+        "type": "testing"
+      }
+    ],
+    "techStack": {
+      "buildTools": [
+        "Nuitka (Python compiler)",
+        "electron-builder"
+      ],
+      "databases": [
+        {
+          "name": "SQLite",
+          "type": "embedded",
+          "version": "latest"
+        }
+      ],
+      "frameworks": [
+        {
+          "category": "backend-web",
+          "name": "FastAPI",
+          "version": "latest"
+        },
+        {
+          "category": "desktop",
+          "name": "Electron",
+          "version": "^33.0.0"
+        },
+        {
+          "category": "build",
+          "name": "electron-builder",
+          "version": "^25.0.0"
+        }
+      ],
+      "infrastructure": [
+        {
+          "category": "ai-inference",
+          "name": "llama.cpp"
+        },
+        {
+          "category": "ai-inference",
+          "name": "Ollama"
+        },
+        {
+          "category": "ai-inference",
+          "name": "vLLM"
+        }
+      ],
+      "languages": [
+        {
+          "name": "Python",
+          "role": "primary",
+          "version": "3.11+"
+        },
+        {
+          "name": "JavaScript",
+          "role": "primary"
+        },
+        {
+          "name": "HTML/CSS",
+          "role": "frontend"
+        }
+      ],
+      "packageManagers": [
+        "npm",
+        "pip"
+      ]
+    }
+  }
+}

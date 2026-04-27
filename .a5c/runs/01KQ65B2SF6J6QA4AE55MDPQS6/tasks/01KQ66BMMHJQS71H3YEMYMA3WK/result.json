@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ66BMMHJQS71H3YEMYMA3WK",
+  "taskId": "initialize-a5c-infra",
+  "invocationKey": "project-install-fotoderp:S000011:initialize-a5c-infra",
+  "status": "ok",
+  "result": {
+    "packageJsonCreated": true,
+    "packageJsonPath": ".a5c/package.json",
+    "qualityGates": {
+      "ciIntegration": {
+        "enabled": true,
+        "provider": "GitHub Actions",
+        "workflowFile": ".github/workflows/babysitter.yml"
+      },
+      "commitChecks": [
+        "lint",
+        "test"
+      ],
+      "deployGates": [
+        "tests-pass",
+        "no-lint-errors",
+        "coverage-met"
+      ],
+      "linting": {
+        "javascript": [],
+        "python": [
+          "ruff"
+        ]
+      },
+      "qualityThreshold": 80,
+      "testCoverage": {
+        "minimum": 60,
+        "target": 80
+      }
+    },
+    "qualityGatesPath": ".a5c/quality-gates.json",
+    "sdkInstalled": true
+  },
+  "startedAt": "2026-04-27T00:46:02.556Z",
+  "finishedAt": "2026-04-27T00:46:02.556Z",
+  "value": {
+    "packageJsonCreated": true,
+    "packageJsonPath": ".a5c/package.json",
+    "qualityGates": {
+      "ciIntegration": {
+        "enabled": true,
+        "provider": "GitHub Actions",
+        "workflowFile": ".github/workflows/babysitter.yml"
+      },
+      "commitChecks": [
+        "lint",
+        "test"
+      ],
+      "deployGates": [
+        "tests-pass",
+        "no-lint-errors",
+        "coverage-met"
+      ],
+      "linting": {
+        "javascript": [],
+        "python": [
+          "ruff"
+        ]
+      },
+      "qualityThreshold": 80,
+      "testCoverage": {
+        "minimum": 60,
+        "target": 80
+      }
+    },
+    "qualityGatesPath": ".a5c/quality-gates.json",
+    "sdkInstalled": true
+  }
+}

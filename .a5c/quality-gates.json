@@ -1,0 +1,29 @@
+{
+  "qualityThreshold": 80,
+  "testCoverage": {
+    "minimum": 60,
+    "target": 80
+  },
+  "linting": {
+    "python": ["ruff"],
+    "javascript": []
+  },
+  "formatting": {
+    "python": [],
+    "javascript": []
+  },
+  "commitChecks": [
+    "lint",
+    "test"
+  ],
+  "deployGates": [
+    "tests-pass",
+    "no-lint-errors",
+    "coverage-met"
+  ],
+  "ciIntegration": {
+    "enabled": true,
+    "provider": "GitHub Actions",
+    "workflowFile": ".github/workflows/babysitter.yml"
+  }
+}

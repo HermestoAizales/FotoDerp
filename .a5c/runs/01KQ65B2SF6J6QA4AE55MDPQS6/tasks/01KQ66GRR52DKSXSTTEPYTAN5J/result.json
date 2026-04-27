@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ66GRR52DKSXSTTEPYTAN5J",
+  "taskId": "save-profile",
+  "invocationKey": "project-install-fotoderp:S000015:save-profile",
+  "status": "ok",
+  "result": {
+    "bytesWritten": 11779,
+    "filesWritten": [
+      "/home/hermes/FotoDerp/.a5c/project-profile.json",
+      "/home/hermes/FotoDerp/.a5c/project-profile.md"
+    ],
+    "profileJsonPath": ".a5c/project-profile.json",
+    "profileMdPath": ".a5c/project-profile.md",
+    "savedProfile": {
+      "createdAt": "2026-04-27T00:41:09Z",
+      "description": "Open-source AI-powered photo management for professional photographers. Desktop application with Electron frontend and Python/FastAPI backend. Features AI auto-tagging, face recognition, semantic search, culling workflow, and aesthetic rating. UX inspired by professional photo management tools with improved workflow.",
+      "projectName": "FotoDerp",
+      "updatedAt": "2026-04-27T00:48:06Z",
+      "version": 1
+    },
+    "verified": true
+  },
+  "startedAt": "2026-04-27T00:49:47.495Z",
+  "finishedAt": "2026-04-27T00:49:47.495Z",
+  "value": {
+    "bytesWritten": 11779,
+    "filesWritten": [
+      "/home/hermes/FotoDerp/.a5c/project-profile.json",
+      "/home/hermes/FotoDerp/.a5c/project-profile.md"
+    ],
+    "profileJsonPath": ".a5c/project-profile.json",
+    "profileMdPath": ".a5c/project-profile.md",
+    "savedProfile": {
+      "createdAt": "2026-04-27T00:41:09Z",
+      "description": "Open-source AI-powered photo management for professional photographers. Desktop application with Electron frontend and Python/FastAPI backend. Features AI auto-tagging, face recognition, semantic search, culling workflow, and aesthetic rating. UX inspired by professional photo management tools with improved workflow.",
+      "projectName": "FotoDerp",
+      "updatedAt": "2026-04-27T00:48:06Z",
+      "version": 1
+    },
+    "verified": true
+  }
+}

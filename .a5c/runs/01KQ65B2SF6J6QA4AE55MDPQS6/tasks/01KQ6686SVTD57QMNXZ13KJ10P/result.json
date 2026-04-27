@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ6686SVTD57QMNXZ13KJ10P",
+  "taskId": "configure-cicd",
+  "invocationKey": "project-install-fotoderp:S000009:configure-cicd",
+  "status": "ok",
+  "result": {
+    "babysitterIntegration": {
+      "enabled": true,
+      "processIds": [
+        "gsd/plan",
+        "gsd/execute",
+        "gsd/verify"
+      ],
+      "triggerOn": [
+        "push to main",
+        "tags v*"
+      ]
+    },
+    "configFilesWritten": [
+      ".github/workflows/babysitter.yml"
+    ],
+    "configured": true,
+    "processIds": [
+      "gsd/plan",
+      "gsd/execute",
+      "gsd/verify"
+    ],
+    "provider": "GitHub Actions",
+    "skippedReason": null,
+    "triggerEvents": [
+      "push to main",
+      "tags v*",
+      "workflow_dispatch"
+    ]
+  },
+  "startedAt": "2026-04-27T00:44:05.835Z",
+  "finishedAt": "2026-04-27T00:44:05.835Z",
+  "value": {
+    "babysitterIntegration": {
+      "enabled": true,
+      "processIds": [
+        "gsd/plan",
+        "gsd/execute",
+        "gsd/verify"
+      ],
+      "triggerOn": [
+        "push to main",
+        "tags v*"
+      ]
+    },
+    "configFilesWritten": [
+      ".github/workflows/babysitter.yml"
+    ],
+    "configured": true,
+    "processIds": [
+      "gsd/plan",
+      "gsd/execute",
+      "gsd/verify"
+    ],
+    "provider": "GitHub Actions",
+    "skippedReason": null,
+    "triggerEvents": [
+      "push to main",
+      "tags v*",
+      "workflow_dispatch"
+    ]
+  }
+}

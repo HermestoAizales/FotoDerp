@@ -1,0 +1,88 @@
+name: Babysitter CI
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+jobs:
+  babysitter-plan:
+    name: Babysitter Plan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install babysitter
+        run: npm install -g @a5c-ai/babysitter-pi
+      
+      - name: Run babysitter plan
+        run: |
+          cd $GITHUB_WORKSPACE
+          babysitter call --process gsd/plan --non-interactive --json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  babysitter-execute:
+    name: Babysitter Execute
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: babysitter-plan
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+      
+      - name: Install babysitter
+        run: npm install -g @a5c-ai/babysitter-pi
+      
+      - name: Run babysitter execute
+        run: |
+          cd $GITHUB_WORKSPACE
+          babysitter call --process gsd/execute --non-interactive --json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  babysitter-verify:
+    name: Babysitter Verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: babysitter-execute
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install babysitter
+        run: npm install -g @a5c-ai/babysitter-pi
+      
+      - name: Run babysitter verify
+        run: |
+          cd $GITHUB_WORKSPACE
+          babysitter call --process gsd/verify --non-interactive --json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

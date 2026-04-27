@@ -1,0 +1,19 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:42:53.203Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ6676WBHTBQ49CHFWKBCPF4",
+    "invocationKey": "project-install-fotoderp:S000008:__sdk.breakpoint",
+    "invocationHash": "3dbd69608dd470a97b0cfec6a6cacf78d4345ddfc71136ee85d1968383e03dec",
+    "stepId": "S000008",
+    "taskId": "__sdk.breakpoint",
+    "kind": "breakpoint",
+    "label": "breakpoint",
+    "taskDefRef": "tasks/01KQ6676WBHTBQ49CHFWKBCPF4/task.json",
+    "labels": [
+      "breakpoint"
+    ]
+  },
+  "checksum": "787532a3e789d7ac6e53c46c74d85d261721e43ddd2dd26e03e48289902b7801"
+}

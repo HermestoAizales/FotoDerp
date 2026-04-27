@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:44:12.506Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ669MAHXY9SNB6VFRVDS4KR",
+    "invocationKey": "project-install-fotoderp:S000010:update-claude-md",
+    "invocationHash": "97b9451605e754b8c0324dac1afea789c8796992f365dac08cb407cc9afb2dcd",
+    "stepId": "S000010",
+    "taskId": "update-claude-md",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ669MAHXY9SNB6VFRVDS4KR/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "claude-md",
+      "documentation"
+    ]
+  },
+  "checksum": "2d103eeb791a2c03b4d3f37537bf3ac007b6d50859a853b5944f4c9155e1cf2b"
+}

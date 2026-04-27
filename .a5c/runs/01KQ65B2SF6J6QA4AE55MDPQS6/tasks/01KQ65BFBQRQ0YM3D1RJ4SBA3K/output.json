@@ -1,0 +1,12 @@
+{
+  "existingProfile": null,
+  "isFirstRun": true,
+  "isNewProject": false,
+  "a5cDirExists": true,
+  "a5cFiles": ["project-install-inputs.json", "runs/"],
+  "claudeMdExists": false,
+  "claudeMdContent": null,
+  "cicdConfigFiles": [".github/workflows/build.yml", ".github/workflows/ci.yml", ".github/workflows/release.yml"],
+  "gitCommitCount": 29,
+  "profileVersion": null
+}

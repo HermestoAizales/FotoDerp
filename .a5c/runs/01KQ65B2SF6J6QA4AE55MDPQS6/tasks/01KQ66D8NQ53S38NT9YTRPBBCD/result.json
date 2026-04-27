@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ66D8NQ53S38NT9YTRPBBCD",
+  "taskId": "__sdk.breakpoint",
+  "invocationKey": "project-install-fotoderp:S000012:__sdk.breakpoint",
+  "status": "ok",
+  "result": {
+    "approved": true,
+    "response": "Logs only (Recommended) - Ignore .a5c/logs/. Das ist eine gute Balance zwischen Privatsphäre und Nachvollziehbarkeit der Babysitter-Runs."
+  },
+  "startedAt": "2026-04-27T00:46:41.605Z",
+  "finishedAt": "2026-04-27T00:46:41.605Z",
+  "value": {
+    "approved": true,
+    "response": "Logs only (Recommended) - Ignore .a5c/logs/. Das ist eine gute Balance zwischen Privatsphäre und Nachvollziehbarkeit der Babysitter-Runs."
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "tools": {
+    "linting": [
+      {"name": "ruff", "type": "python-linter", "configPath": null, "usedIn": ["ci.yml"]},
+      {"name": "py_compile", "type": "python-syntax-check", "configPath": null, "usedIn": ["ci.yml"]}
+    ],
+    "testing": [],
+    "formatting": []
+  },
+  "cicd": {
+    "provider": "GitHub Actions",
+    "configPaths": [".github/workflows/build.yml", ".github/workflows/ci.yml", ".github/workflows/release.yml"],
+    "pipelines": [
+      {
+        "name": "CI Checks",
+        "trigger": ["push to main, develop", "pull_request to main"],
+        "stages": ["python-check", "npm-check", "lint-python"]
+      },
+      {
+        "name": "Build",
+        "trigger": ["push to main", "tags v*"],
+        "stages": ["build-linux", "build-mac", "build-windows"]
+      },
+      {
+        "name": "Release",
+        "trigger": ["tags v*"],
+        "stages": ["create-release", "upload-assets"]
+      }
+    ]
+  },
+  "services": [
+    {"name": "llama.cpp", "type": "ai-inference", "url": "http://127.0.0.1:8080/v1"},
+    {"name": "Ollama", "type": "ai-inference", "url": "http://127.0.0.1:11434"},
+    {"name": "vLLM", "type": "ai-inference", "url": null},
+    {"name": "LM Studio", "type": "ai-inference", "url": null},
+    {"name": "Jan.ai", "type": "ai-inference", "url": null}
+  ],
+  "workflows": [
+    {
+      "name": "development",
+      "description": "Local development workflow with npm scripts",
+      "steps": ["npm run start:backend", "npm run dev"],
+      "triggers": ["manual"]
+    },
+    {
+      "name": "build",
+      "description": "Build distributable packages for multiple platforms",
+      "steps": ["npm run build:backend", "electron-builder --linux/mac/win"],
+      "triggers": ["manual", "ci-build", "release"]
+    },
+    {
+      "name": "ci",
+      "description": "GitHub Actions CI pipeline",
+      "steps": ["python syntax check", "npm ci check", "python lint (ruff)"],
+      "triggers": ["push", "pull_request"]
+    }
+  ],
+  "externalIntegrations": [
+    {"service": "GitHub", "category": "version-control", "enabled": true},
+    {"service": "Hugging Face", "category": "model-repository", "enabled": true}
+  ],
+  "containerization": {
+    "docker": false,
+    "dockerCompose": false
+  },
+  "infrastructure": {
+    "type": "local-desktop",
+    "deployment": "Electron desktop app with embedded Python backend"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:41:09.485Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ6641K3SMPMP4VG6ZHTQ2ZR",
+    "invocationKey": "project-install-fotoderp:S000006:build-profile",
+    "invocationHash": "e27c2797c82e371eff3d2ab7ddb5341b5a60b87113dbbe2077d102cf1ae8e081",
+    "stepId": "S000006",
+    "taskId": "build-profile",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ6641K3SMPMP4VG6ZHTQ2ZR/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "profile",
+      "build"
+    ]
+  },
+  "checksum": "85bd4f61a84efbaa58f80bba9b9090170cd87e19c617609511b6c9f4067b6e02"
+}

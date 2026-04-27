@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:45:18.361Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ66BMMHJQS71H3YEMYMA3WK",
+    "invocationKey": "project-install-fotoderp:S000011:initialize-a5c-infra",
+    "invocationHash": "8534daec9503b07b2c6790324dc7cb950457945fef41724828666077ede701a8",
+    "stepId": "S000011",
+    "taskId": "initialize-a5c-infra",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ66BMMHJQS71H3YEMYMA3WK/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "infrastructure",
+      "quality-gates"
+    ]
+  },
+  "checksum": "f895fcc1ccd7c8aed6f7dce813d7a1e7022b5d119f7e97b2d78b0acc3a115d44"
+}

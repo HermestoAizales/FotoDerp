@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:46:49.860Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ66EDZWW9PBT4FDYV4V1RZP",
+    "invocationKey": "project-install-fotoderp:S000013:configure-gitignore",
+    "invocationHash": "ab9328a7979fc0911f92e25e1a5c911b2021be75613d7d185a2f55d9837af705",
+    "stepId": "S000013",
+    "taskId": "configure-gitignore",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ66EDZWW9PBT4FDYV4V1RZP/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "gitignore",
+      "configuration"
+    ]
+  },
+  "checksum": "987a0271a5edb69981dc4c13e8762aa0fdb63ddf8080216e5b70eabef6ca23a8"
+}

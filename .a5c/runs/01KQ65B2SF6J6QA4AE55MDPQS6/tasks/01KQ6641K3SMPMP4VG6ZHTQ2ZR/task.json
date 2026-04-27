@@ -1,0 +1,1138 @@
+{
+  "agent": {
+    "name": "general-purpose",
+    "outputSchema": {
+      "properties": {
+        "changesSummary": {
+          "type": "string"
+        },
+        "profile": {
+          "properties": {
+            "architecture": {
+              "type": "object"
+            },
+            "bottlenecks": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "cicd": {
+              "type": "object"
+            },
+            "claudeMdInstructions": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "conventions": {
+              "type": "object"
+            },
+            "createdAt": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "externalIntegrations": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "goals": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "installedAgents": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "installedProcesses": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "installedSkills": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "painPoints": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "processes": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "projectName": {
+              "type": "string"
+            },
+            "repositories": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "services": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "team": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "techStack": {
+              "type": "object"
+            },
+            "tools": {
+              "type": "object"
+            },
+            "updatedAt": {
+              "type": "string"
+            },
+            "version": {
+              "type": "number"
+            },
+            "workflows": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "projectName",
+            "description",
+            "goals",
+            "techStack",
+            "architecture",
+            "workflows",
+            "conventions",
+            "createdAt",
+            "updatedAt",
+            "version"
+          ],
+          "type": "object"
+        },
+        "sourcesUsed": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "profile",
+        "changesSummary"
+      ],
+      "type": "object"
+    },
+    "prompt": {
+      "context": {
+        "additionalContext": "FotoDerp is an open-source AI-powered photo management application for professional photographers. It uses Electron for the desktop app, Python/FastAPI for the backend, and has build targets for Linux, macOS, and Windows.",
+        "existingProfile": null,
+        "isNewProject": false,
+        "miningResult": {
+          "bottlenecks": [
+            {
+              "description": "Build system instability - multiple commits fixing Nuitka, electron-builder, Windows-specific issues",
+              "frequency": "12+ fix commits related to build issues",
+              "id": "bn-build-system",
+              "impact": "high",
+              "location": "build.yml, package.json, build_backend.py"
+            },
+            {
+              "description": "Windows build challenges with DLL dependencies and icon handling",
+              "frequency": "5+ commits",
+              "id": "bn-windows-build",
+              "impact": "medium",
+              "location": "build.yml, electron-builder config"
+            },
+            {
+              "description": "CI pipeline required multiple iterations to get right (parse errors, encoding issues)",
+              "frequency": "6+ fix/rewrite commits",
+              "id": "bn-ci-pipeline",
+              "impact": "medium",
+              "location": ".github/workflows/"
+            }
+          ],
+          "branchPatterns": {
+            "averageLifetime": "N/A - no long-lived branches detected",
+            "mergeStrategy": "Direct commits to main, no merge commits visible",
+            "namingConvention": "Direct commits to main (no feature branches detected in recent history)"
+          },
+          "commitPatterns": {
+            "averageFrequency": "29 commits over project lifetime (~3 months), approximately 1-2 commits per week",
+            "averageSize": {
+              "filesChanged": 3,
+              "linesAdded": 50,
+              "linesDeleted": 30
+            },
+            "conventions": [
+              "conventional commits prefixes",
+              "parentheses for file/component scope",
+              "imperative mood in descriptions"
+            ],
+            "messageFormat": "Conventional commits style (ci:, fix:, feat:, docs:, test:, Translate:)"
+          },
+          "contributors": [
+            {
+              "areas": [
+                "build-system",
+                "ci-cd",
+                "backend"
+              ],
+              "commitCount": 22,
+              "name": "Sascha"
+            },
+            {
+              "areas": [
+                "documentation",
+                "translation",
+                "project-setup"
+              ],
+              "commitCount": 7,
+              "name": "Hermesto"
+            }
+          ],
+          "evolution": {
+            "growthAreas": [
+              "backend/fotoerp_backend/",
+              "electron/",
+              ".github/workflows/"
+            ],
+            "majorEvents": [
+              {
+                "date": "Initial",
+                "event": "Project structure created with German documentation"
+              },
+              {
+                "date": "Middle",
+                "event": "Translation to English (README, DESIGN.md, package.json)"
+              },
+              {
+                "date": "Recent",
+                "event": "CI/CD pipeline setup with GitHub Actions"
+              },
+              {
+                "date": "Recent",
+                "event": "Build system stabilization (Nuitka, electron-builder fixes)"
+              }
+            ],
+            "technologyChanges": [
+              "Started with basic Electron + Python setup",
+              "Added Nuitka for Python compilation",
+              "Migrated from Dependency Walker to lucasg/Dependencies for Windows builds",
+              "Upgraded to electron-builder v25"
+            ]
+          },
+          "implicitRules": [
+            "All documentation should be in English (migrated from German)",
+            "Use conventional commit prefixes (ci:, fix:, feat:, docs:)",
+            "Build system changes require testing on all platforms",
+            "Python backend uses German comments but English function names",
+            "API endpoints follow /api/ prefix convention"
+          ],
+          "painPoints": [
+            {
+              "category": "build",
+              "description": "Complex build process with Nuitka compilation and multi-platform electron-builder",
+              "discoveredVia": "git-history",
+              "id": "pp-build-complexity",
+              "severity": "high"
+            },
+            {
+              "category": "build",
+              "description": "Windows builds require special handling (Dependencies, DLL management)",
+              "discoveredVia": "git-history",
+              "id": "pp-platform-support",
+              "severity": "medium"
+            },
+            {
+              "category": "ci-cd",
+              "description": "CI pipeline required multiple rewrites to stabilize",
+              "discoveredVia": "git-history",
+              "id": "pp-ci-stability",
+              "severity": "medium"
+            }
+          ],
+          "releasePatterns": {
+            "frequency": "No releases tagged yet",
+            "tagFormat": "No tags found - no release tagging convention established yet",
+            "versioningScheme": "Semantic versioning implied by package.json (0.1.0), but not enforced via tags"
+          }
+        },
+        "projectProfileSchema": {
+          "architectureSchema": "{ pattern?: string, modules?: [{name, path, description?, dependencies?}], entryPoints?: string[], dataFlow?: string }",
+          "bottleneckSchema": "{ id: string, description: string, impact: string, location?: string, frequency?: string }",
+          "cicdSchema": "{ provider?: string, configPaths?: string[], pipelines?: [{name, trigger?, stages?}], babysitterIntegration?: {enabled?, triggerOn?, processIds?} }",
+          "conventionsSchema": "{ naming?: Record<string, string>, git?: Record<string, string>, codeStyle?: Record<string, unknown>, importOrder?: string[], errorHandling?: string, testingConventions?: string, additionalRules?: string[] }",
+          "goalSchema": "{ id: string, description: string, category: string, priority?: string, status?: string }",
+          "painPointSchema": "{ id: string, description: string, severity: string, category?: string, discoveredVia?: string, suggestedRemediation?: string }",
+          "requiredFields": [
+            "projectName",
+            "description",
+            "goals",
+            "techStack",
+            "architecture",
+            "workflows",
+            "conventions",
+            "createdAt",
+            "updatedAt",
+            "version"
+          ],
+          "teamMemberSchema": "{ name: string, role: string, responsibilities?: string[] }",
+          "techStackSchema": "{ languages?: [{name, version?, role?}], frameworks?: [{name, version?, category?}], databases?: [{name, type?, version?}], infrastructure?: [{name, category?}], buildTools?: string[], packageManagers?: string[] }",
+          "workflowSchema": "{ name: string, description?: string, steps?: string[], triggers?: string[] }"
+        },
+        "projectRoot": "/home/hermes/FotoDerp",
+        "repoStructure": {
+          "architecture": {
+            "dataFlow": "Electron app launches Python FastAPI backend (via npm start script), frontend (HTML/JS) communicates with backend via HTTP API (localhost:8765), backend uses SQLite for storage and llama.cpp-compatible endpoints for AI features",
+            "entryPoints": [
+              "electron/main.js",
+              "backend/fotoerp_backend/main.py",
+              "frontend/js/app.js"
+            ],
+            "modules": [
+              {
+                "description": "Electron desktop app shell - main process and preload scripts",
+                "name": "electron",
+                "path": "electron/"
+              },
+              {
+                "description": "Vanilla HTML/CSS/JS frontend served by Electron",
+                "name": "frontend",
+                "path": "frontend/"
+              },
+              {
+                "description": "Python FastAPI backend with AI services, photo management, and SQLite database",
+                "name": "backend",
+                "path": "backend/"
+              },
+              {
+                "description": "Application icons and icon generation scripts",
+                "name": "icons",
+                "path": "icons/"
+              }
+            ],
+            "pattern": "Desktop application with separate backend service (Electron + Python FastAPI)"
+          },
+          "conventions": {
+            "additionalRules": [
+              "German comments in Python backend code",
+              "English comments in JavaScript frontend code",
+              "API endpoints follow RESTful conventions with /api/ prefix"
+            ],
+            "codeStyle": {
+              "javascript": "Vanilla JS, no framework",
+              "python": "Standard Python conventions"
+            },
+            "errorHandling": "Try-except blocks in Python, try-catch in JavaScript, HTTP exception handling via FastAPI",
+            "importOrder": [],
+            "naming": {
+              "javascript": "camelCase for functions/variables, PascalCase for classes",
+              "python": "snake_case for functions/variables, PascalCase for classes"
+            },
+            "testingConventions": "No formal testing framework detected - CI uses py_compile and ruff linting"
+          },
+          "directoryTree": {
+            ".github/workflows/": [
+              "build.yml",
+              "ci.yml",
+              "release.yml"
+            ],
+            "backend/": [
+              "fotoerp_backend/",
+              "requirements.txt",
+              "build_backend.py"
+            ],
+            "electron/": [
+              "main.js",
+              "preload.js",
+              "uninstall-mac.sh",
+              "uninstaller.nsh"
+            ],
+            "frontend/": [
+              "css/",
+              "js/app.js"
+            ],
+            "icons/": [
+              "generate_icons.py"
+            ]
+          },
+          "documentation": [
+            {
+              "path": "README.md",
+              "summary": "Project overview, features, tech stack, API endpoints, build instructions",
+              "type": "main"
+            },
+            {
+              "path": "DESIGN.md",
+              "summary": "Design documentation",
+              "type": "design"
+            },
+            {
+              "path": "BUILD.md",
+              "summary": "Build instructions",
+              "type": "build"
+            },
+            {
+              "path": "MODELS.md",
+              "summary": "AI model support documentation",
+              "type": "documentation"
+            },
+            {
+              "path": "SESSION-PROMPT.md",
+              "summary": "Session prompt documentation",
+              "type": "session"
+            },
+            {
+              "path": "WINDOWS-BUILD-TESTPLAN.md",
+              "summary": "Windows build test plan",
+              "type": "testing"
+            }
+          ],
+          "techStack": {
+            "buildTools": [
+              "Nuitka (Python compiler)",
+              "electron-builder"
+            ],
+            "databases": [
+              {
+                "name": "SQLite",
+                "type": "embedded",
+                "version": "latest"
+              }
+            ],
+            "frameworks": [
+              {
+                "category": "backend-web",
+                "name": "FastAPI",
+                "version": "latest"
+              },
+              {
+                "category": "desktop",
+                "name": "Electron",
+                "version": "^33.0.0"
+              },
+              {
+                "category": "build",
+                "name": "electron-builder",
+                "version": "^25.0.0"
+              }
+            ],
+            "infrastructure": [
+              {
+                "category": "ai-inference",
+                "name": "llama.cpp"
+              },
+              {
+                "category": "ai-inference",
+                "name": "Ollama"
+              },
+              {
+                "category": "ai-inference",
+                "name": "vLLM"
+              }
+            ],
+            "languages": [
+              {
+                "name": "Python",
+                "role": "primary",
+                "version": "3.11+"
+              },
+              {
+                "name": "JavaScript",
+                "role": "primary"
+              },
+              {
+                "name": "HTML/CSS",
+                "role": "frontend"
+              }
+            ],
+            "packageManagers": [
+              "npm",
+              "pip"
+            ]
+          }
+        },
+        "toolsAndServices": {
+          "cicd": {
+            "configPaths": [
+              ".github/workflows/build.yml",
+              ".github/workflows/ci.yml",
+              ".github/workflows/release.yml"
+            ],
+            "pipelines": [
+              {
+                "name": "CI Checks",
+                "stages": [
+                  "python-check",
+                  "npm-check",
+                  "lint-python"
+                ],
+                "trigger": [
+                  "push to main, develop",
+                  "pull_request to main"
+                ]
+              },
+              {
+                "name": "Build",
+                "stages": [
+                  "build-linux",
+                  "build-mac",
+                  "build-windows"
+                ],
+                "trigger": [
+                  "push to main",
+                  "tags v*"
+                ]
+              },
+              {
+                "name": "Release",
+                "stages": [
+                  "create-release",
+                  "upload-assets"
+                ],
+                "trigger": [
+                  "tags v*"
+                ]
+              }
+            ],
+            "provider": "GitHub Actions"
+          },
+          "containerization": {
+            "docker": false,
+            "dockerCompose": false
+          },
+          "externalIntegrations": [
+            {
+              "category": "version-control",
+              "enabled": true,
+              "service": "GitHub"
+            },
+            {
+              "category": "model-repository",
+              "enabled": true,
+              "service": "Hugging Face"
+            }
+          ],
+          "infrastructure": {
+            "deployment": "Electron desktop app with embedded Python backend",
+            "type": "local-desktop"
+          },
+          "services": [
+            {
+              "name": "llama.cpp",
+              "type": "ai-inference",
+              "url": "http://127.0.0.1:8080/v1"
+            },
+            {
+              "name": "Ollama",
+              "type": "ai-inference",
+              "url": "http://127.0.0.1:11434"
+            },
+            {
+              "name": "vLLM",
+              "type": "ai-inference",
+              "url": null
+            },
+            {
+              "name": "LM Studio",
+              "type": "ai-inference",
+              "url": null
+            },
+            {
+              "name": "Jan.ai",
+              "type": "ai-inference",
+              "url": null
+            }
+          ],
+          "tools": {
+            "formatting": [],
+            "linting": [
+              {
+                "configPath": null,
+                "name": "ruff",
+                "type": "python-linter",
+                "usedIn": [
+                  "ci.yml"
+                ]
+              },
+              {
+                "configPath": null,
+                "name": "py_compile",
+                "type": "python-syntax-check",
+                "usedIn": [
+                  "ci.yml"
+                ]
+              }
+            ],
+            "testing": []
+          },
+          "workflows": [
+            {
+              "description": "Local development workflow with npm scripts",
+              "name": "development",
+              "steps": [
+                "npm run start:backend",
+                "npm run dev"
+              ],
+              "triggers": [
+                "manual"
+              ]
+            },
+            {
+              "description": "Build distributable packages for multiple platforms",
+              "name": "build",
+              "steps": [
+                "npm run build:backend",
+                "electron-builder --linux/mac/win"
+              ],
+              "triggers": [
+                "manual",
+                "ci-build",
+                "release"
+              ]
+            },
+            {
+              "description": "GitHub Actions CI pipeline",
+              "name": "ci",
+              "steps": [
+                "python syntax check",
+                "npm ci check",
+                "python lint (ruff)"
+              ],
+              "triggers": [
+                "push",
+                "pull_request"
+              ]
+            }
+          ]
+        }
+      },
+      "instructions": [
+        "Read the breakpoint response from the user interview (Phase 4) to get user-provided information",
+        "If an existing profile exists (loaded via `babysitter profile:read --project --json` in Phase 1), use it as the base and merge new information on top",
+        "IMPORTANT: Do not import or call SDK profile functions directly — use the babysitter CLI for all profile I/O",
+        "Incorporate repo structure analysis into architecture, techStack, and conventions",
+        "Incorporate tools and services analysis into tools, services, cicd, externalIntegrations, and workflows",
+        "Incorporate process mining results into bottlenecks, painPoints, conventions (git patterns), and workflows",
+        "Incorporate user interview responses into goals, team, workflows, and preferences",
+        "Build a complete ProjectProfile object conforming to the schema described in context",
+        "For any fields not discovered or provided, use sensible defaults:",
+        "  - conventions: extract from detected code patterns or leave minimal",
+        "  - workflows: at minimum include a \"development\" workflow",
+        "Set createdAt to the existing profile createdAt if updating, or current timestamp if new",
+        "Set updatedAt to current timestamp",
+        "Set version to existing version + 1 if updating, or 1 if new",
+        "Generate unique IDs for goals (format: goal-<category>-<index>)",
+        "Generate unique IDs for pain points (format: pp-<category>-<index>)",
+        "Generate unique IDs for bottlenecks (format: bn-<location>-<index>)",
+        "Merge arrays by deduplicating on id/name fields, not replacing entire arrays",
+        "Write the preview profile to artifacts/project-profile-preview.json for the review breakpoint (this is a run artifact, NOT the actual profile — the actual profile is written later by the save task using `babysitter profile:write`)",
+        "Do NOT write to .a5c/project-profile.json or any profile path directly — that is the save task's job via the CLI"
+      ],
+      "outputFormat": "JSON with profile (complete ProjectProfile object), changesSummary (string describing what was new/changed), sourcesUsed (array of strings indicating which data sources contributed)",
+      "role": "project profile architect and data integration engineer",
+      "task": "Build a comprehensive ProjectProfile by merging all available information sources. The profile must conform to the babysitter SDK ProjectProfile schema. Use merge semantics: merge, do not overwrite. Always use the babysitter CLI for profile I/O — never import SDK profile functions directly."
+    }
+  },
+  "description": "Merge existing profile + repo research + tools analysis + process mining + user interview into a complete ProjectProfile",
+  "io": {
+    "inputJsonPath": "tasks/01KQ6641K3SMPMP4VG6ZHTQ2ZR/input.json",
+    "outputJsonPath": "tasks/01KQ6641K3SMPMP4VG6ZHTQ2ZR/result.json"
+  },
+  "kind": "agent",
+  "labels": [
+    "agent",
+    "build",
+    "cradle",
+    "profile"
+  ],
+  "title": "Build comprehensive project profile",
+  "schemaVersion": "2026.01.tasks-v1",
+  "effectId": "01KQ6641K3SMPMP4VG6ZHTQ2ZR",
+  "taskId": "build-profile",
+  "invocationKey": "project-install-fotoderp:S000006:build-profile",
+  "stepId": "S000006",
+  "inputs": {
+    "additionalContext": "FotoDerp is an open-source AI-powered photo management application for professional photographers. It uses Electron for the desktop app, Python/FastAPI for the backend, and has build targets for Linux, macOS, and Windows.",
+    "existingProfile": null,
+    "isNewProject": false,
+    "miningResult": {
+      "bottlenecks": [
+        {
+          "description": "Build system instability - multiple commits fixing Nuitka, electron-builder, Windows-specific issues",
+          "frequency": "12+ fix commits related to build issues",
+          "id": "bn-build-system",
+          "impact": "high",
+          "location": "build.yml, package.json, build_backend.py"
+        },
+        {
+          "description": "Windows build challenges with DLL dependencies and icon handling",
+          "frequency": "5+ commits",
+          "id": "bn-windows-build",
+          "impact": "medium",
+          "location": "build.yml, electron-builder config"
+        },
+        {
+          "description": "CI pipeline required multiple iterations to get right (parse errors, encoding issues)",
+          "frequency": "6+ fix/rewrite commits",
+          "id": "bn-ci-pipeline",
+          "impact": "medium",
+          "location": ".github/workflows/"
+        }
+      ],
+      "branchPatterns": {
+        "averageLifetime": "N/A - no long-lived branches detected",
+        "mergeStrategy": "Direct commits to main, no merge commits visible",
+        "namingConvention": "Direct commits to main (no feature branches detected in recent history)"
+      },
+      "commitPatterns": {
+        "averageFrequency": "29 commits over project lifetime (~3 months), approximately 1-2 commits per week",
+        "averageSize": {
+          "filesChanged": 3,
+          "linesAdded": 50,
+          "linesDeleted": 30
+        },
+        "conventions": [
+          "conventional commits prefixes",
+          "parentheses for file/component scope",
+          "imperative mood in descriptions"
+        ],
+        "messageFormat": "Conventional commits style (ci:, fix:, feat:, docs:, test:, Translate:)"
+      },
+      "contributors": [
+        {
+          "areas": [
+            "build-system",
+            "ci-cd",
+            "backend"
+          ],
+          "commitCount": 22,
+          "name": "Sascha"
+        },
+        {
+          "areas": [
+            "documentation",
+            "translation",
+            "project-setup"
+          ],
+          "commitCount": 7,
+          "name": "Hermesto"
+        }
+      ],
+      "evolution": {
+        "growthAreas": [
+          "backend/fotoerp_backend/",
+          "electron/",
+          ".github/workflows/"
+        ],
+        "majorEvents": [
+          {
+            "date": "Initial",
+            "event": "Project structure created with German documentation"
+          },
+          {
+            "date": "Middle",
+            "event": "Translation to English (README, DESIGN.md, package.json)"
+          },
+          {
+            "date": "Recent",
+            "event": "CI/CD pipeline setup with GitHub Actions"
+          },
+          {
+            "date": "Recent",
+            "event": "Build system stabilization (Nuitka, electron-builder fixes)"
+          }
+        ],
+        "technologyChanges": [
+          "Started with basic Electron + Python setup",
+          "Added Nuitka for Python compilation",
+          "Migrated from Dependency Walker to lucasg/Dependencies for Windows builds",
+          "Upgraded to electron-builder v25"
+        ]
+      },
+      "implicitRules": [
+        "All documentation should be in English (migrated from German)",
+        "Use conventional commit prefixes (ci:, fix:, feat:, docs:)",
+        "Build system changes require testing on all platforms",
+        "Python backend uses German comments but English function names",
+        "API endpoints follow /api/ prefix convention"
+      ],
+      "painPoints": [
+        {
+          "category": "build",
+          "description": "Complex build process with Nuitka compilation and multi-platform electron-builder",
+          "discoveredVia": "git-history",
+          "id": "pp-build-complexity",
+          "severity": "high"
+        },
+        {
+          "category": "build",
+          "description": "Windows builds require special handling (Dependencies, DLL management)",
+          "discoveredVia": "git-history",
+          "id": "pp-platform-support",
+          "severity": "medium"
+        },
+        {
+          "category": "ci-cd",
+          "description": "CI pipeline required multiple rewrites to stabilize",
+          "discoveredVia": "git-history",
+          "id": "pp-ci-stability",
+          "severity": "medium"
+        }
+      ],
+      "releasePatterns": {
+        "frequency": "No releases tagged yet",
+        "tagFormat": "No tags found - no release tagging convention established yet",
+        "versioningScheme": "Semantic versioning implied by package.json (0.1.0), but not enforced via tags"
+      }
+    },
+    "projectRoot": "/home/hermes/FotoDerp",
+    "repoStructure": {
+      "architecture": {
+        "dataFlow": "Electron app launches Python FastAPI backend (via npm start script), frontend (HTML/JS) communicates with backend via HTTP API (localhost:8765), backend uses SQLite for storage and llama.cpp-compatible endpoints for AI features",
+        "entryPoints": [
+          "electron/main.js",
+          "backend/fotoerp_backend/main.py",
+          "frontend/js/app.js"
+        ],
+        "modules": [
+          {
+            "description": "Electron desktop app shell - main process and preload scripts",
+            "name": "electron",
+            "path": "electron/"
+          },
+          {
+            "description": "Vanilla HTML/CSS/JS frontend served by Electron",
+            "name": "frontend",
+            "path": "frontend/"
+          },
+          {
+            "description": "Python FastAPI backend with AI services, photo management, and SQLite database",
+            "name": "backend",
+            "path": "backend/"
+          },
+          {
+            "description": "Application icons and icon generation scripts",
+            "name": "icons",
+            "path": "icons/"
+          }
+        ],
+        "pattern": "Desktop application with separate backend service (Electron + Python FastAPI)"
+      },
+      "conventions": {
+        "additionalRules": [
+          "German comments in Python backend code",
+          "English comments in JavaScript frontend code",
+          "API endpoints follow RESTful conventions with /api/ prefix"
+        ],
+        "codeStyle": {
+          "javascript": "Vanilla JS, no framework",
+          "python": "Standard Python conventions"
+        },
+        "errorHandling": "Try-except blocks in Python, try-catch in JavaScript, HTTP exception handling via FastAPI",
+        "importOrder": [],
+        "naming": {
+          "javascript": "camelCase for functions/variables, PascalCase for classes",
+          "python": "snake_case for functions/variables, PascalCase for classes"
+        },
+        "testingConventions": "No formal testing framework detected - CI uses py_compile and ruff linting"
+      },
+      "directoryTree": {
+        ".github/workflows/": [
+          "build.yml",
+          "ci.yml",
+          "release.yml"
+        ],
+        "backend/": [
+          "fotoerp_backend/",
+          "requirements.txt",
+          "build_backend.py"
+        ],
+        "electron/": [
+          "main.js",
+          "preload.js",
+          "uninstall-mac.sh",
+          "uninstaller.nsh"
+        ],
+        "frontend/": [
+          "css/",
+          "js/app.js"
+        ],
+        "icons/": [
+          "generate_icons.py"
+        ]
+      },
+      "documentation": [
+        {
+          "path": "README.md",
+          "summary": "Project overview, features, tech stack, API endpoints, build instructions",
+          "type": "main"
+        },
+        {
+          "path": "DESIGN.md",
+          "summary": "Design documentation",
+          "type": "design"
+        },
+        {
+          "path": "BUILD.md",
+          "summary": "Build instructions",
+          "type": "build"
+        },
+        {
+          "path": "MODELS.md",
+          "summary": "AI model support documentation",
+          "type": "documentation"
+        },
+        {
+          "path": "SESSION-PROMPT.md",
+          "summary": "Session prompt documentation",
+          "type": "session"
+        },
+        {
+          "path": "WINDOWS-BUILD-TESTPLAN.md",
+          "summary": "Windows build test plan",
+          "type": "testing"
+        }
+      ],
+      "techStack": {
+        "buildTools": [
+          "Nuitka (Python compiler)",
+          "electron-builder"
+        ],
+        "databases": [
+          {
+            "name": "SQLite",
+            "type": "embedded",
+            "version": "latest"
+          }
+        ],
+        "frameworks": [
+          {
+            "category": "backend-web",
+            "name": "FastAPI",
+            "version": "latest"
+          },
+          {
+            "category": "desktop",
+            "name": "Electron",
+            "version": "^33.0.0"
+          },
+          {
+            "category": "build",
+            "name": "electron-builder",
+            "version": "^25.0.0"
+          }
+        ],
+        "infrastructure": [
+          {
+            "category": "ai-inference",
+            "name": "llama.cpp"
+          },
+          {
+            "category": "ai-inference",
+            "name": "Ollama"
+          },
+          {
+            "category": "ai-inference",
+            "name": "vLLM"
+          }
+        ],
+        "languages": [
+          {
+            "name": "Python",
+            "role": "primary",
+            "version": "3.11+"
+          },
+          {
+            "name": "JavaScript",
+            "role": "primary"
+          },
+          {
+            "name": "HTML/CSS",
+            "role": "frontend"
+          }
+        ],
+        "packageManagers": [
+          "npm",
+          "pip"
+        ]
+      }
+    },
+    "toolsAndServices": {
+      "cicd": {
+        "configPaths": [
+          ".github/workflows/build.yml",
+          ".github/workflows/ci.yml",
+          ".github/workflows/release.yml"
+        ],
+        "pipelines": [
+          {
+            "name": "CI Checks",
+            "stages": [
+              "python-check",
+              "npm-check",
+              "lint-python"
+            ],
+            "trigger": [
+              "push to main, develop",
+              "pull_request to main"
+            ]
+          },
+          {
+            "name": "Build",
+            "stages": [
+              "build-linux",
+              "build-mac",
+              "build-windows"
+            ],
+            "trigger": [
+              "push to main",
+              "tags v*"
+            ]
+          },
+          {
+            "name": "Release",
+            "stages": [
+              "create-release",
+              "upload-assets"
+            ],
+            "trigger": [
+              "tags v*"
+            ]
+          }
+        ],
+        "provider": "GitHub Actions"
+      },
+      "containerization": {
+        "docker": false,
+        "dockerCompose": false
+      },
+      "externalIntegrations": [
+        {
+          "category": "version-control",
+          "enabled": true,
+          "service": "GitHub"
+        },
+        {
+          "category": "model-repository",
+          "enabled": true,
+          "service": "Hugging Face"
+        }
+      ],
+      "infrastructure": {
+        "deployment": "Electron desktop app with embedded Python backend",
+        "type": "local-desktop"
+      },
+      "services": [
+        {
+          "name": "llama.cpp",
+          "type": "ai-inference",
+          "url": "http://127.0.0.1:8080/v1"
+        },
+        {
+          "name": "Ollama",
+          "type": "ai-inference",
+          "url": "http://127.0.0.1:11434"
+        },
+        {
+          "name": "vLLM",
+          "type": "ai-inference",
+          "url": null
+        },
+        {
+          "name": "LM Studio",
+          "type": "ai-inference",
+          "url": null
+        },
+        {
+          "name": "Jan.ai",
+          "type": "ai-inference",
+          "url": null
+        }
+      ],
+      "tools": {
+        "formatting": [],
+        "linting": [
+          {
+            "configPath": null,
+            "name": "ruff",
+            "type": "python-linter",
+            "usedIn": [
+              "ci.yml"
+            ]
+          },
+          {
+            "configPath": null,
+            "name": "py_compile",
+            "type": "python-syntax-check",
+            "usedIn": [
+              "ci.yml"
+            ]
+          }
+        ],
+        "testing": []
+      },
+      "workflows": [
+        {
+          "description": "Local development workflow with npm scripts",
+          "name": "development",
+          "steps": [
+            "npm run start:backend",
+            "npm run dev"
+          ],
+          "triggers": [
+            "manual"
+          ]
+        },
+        {
+          "description": "Build distributable packages for multiple platforms",
+          "name": "build",
+          "steps": [
+            "npm run build:backend",
+            "electron-builder --linux/mac/win"
+          ],
+          "triggers": [
+            "manual",
+            "ci-build",
+            "release"
+          ]
+        },
+        {
+          "description": "GitHub Actions CI pipeline",
+          "name": "ci",
+          "steps": [
+            "python syntax check",
+            "npm ci check",
+            "python lint (ruff)"
+          ],
+          "triggers": [
+            "push",
+            "pull_request"
+          ]
+        }
+      ]
+    }
+  }
+}

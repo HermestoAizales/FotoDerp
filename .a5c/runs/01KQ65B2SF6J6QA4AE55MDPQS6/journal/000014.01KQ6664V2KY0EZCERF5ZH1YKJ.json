@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:42:18.338Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ6664TSTG5B6M8CS5GC6CY2",
+    "invocationKey": "project-install-fotoderp:S000007:tool-selection",
+    "invocationHash": "0d93724c3a3121c3fd557b941a0931c1ea1994e56d87b03e292d27f744c431c4",
+    "stepId": "S000007",
+    "taskId": "tool-selection",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ6664TSTG5B6M8CS5GC6CY2/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "tools",
+      "selection"
+    ]
+  },
+  "checksum": "f734513950899445428e817adfac281063d681ae03f893cfa2f4dda15e9f0abc"
+}

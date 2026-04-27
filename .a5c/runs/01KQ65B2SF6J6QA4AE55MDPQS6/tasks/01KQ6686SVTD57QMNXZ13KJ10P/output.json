@@ -1,0 +1,13 @@
+{
+  "configured": true,
+  "provider": "GitHub Actions",
+  "configFilesWritten": [".github/workflows/babysitter.yml"],
+  "triggerEvents": ["push to main", "tags v*", "workflow_dispatch"],
+  "processIds": ["gsd/plan", "gsd/execute", "gsd/verify"],
+  "babysitterIntegration": {
+    "enabled": true,
+    "triggerOn": ["push to main", "tags v*"],
+    "processIds": ["gsd/plan", "gsd/execute", "gsd/verify"]
+  },
+  "skippedReason": null
+}

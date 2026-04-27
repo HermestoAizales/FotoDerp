@@ -1,0 +1,8 @@
+{
+  "configured": true,
+  "level": "logs",
+  "entriesAdded": [".a5c/creds.env", ".a5c/creds.env.tmp.*", ".a5c/logs/"],
+  "gitignorePath": ".gitignore",
+  "existedBefore": true,
+  "sectionReplaced": false
+}

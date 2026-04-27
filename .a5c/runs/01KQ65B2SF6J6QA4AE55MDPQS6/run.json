@@ -1,0 +1,15 @@
+{
+  "runId": "01KQ65B2SF6J6QA4AE55MDPQS6",
+  "request": "project-install-fotoderp",
+  "processId": "project-install-fotoderp",
+  "harness": "pi",
+  "entrypoint": {
+    "importPath": "../../../../.a5c/process-library/babysitter-repo/library/cradle/project-install.js",
+    "exportName": "process"
+  },
+  "processPath": "../../../../.a5c/process-library/babysitter-repo/library/cradle/project-install.js",
+  "layoutVersion": "2026.01-storage-preview",
+  "createdAt": "2026-04-27T00:27:31.508Z",
+  "prompt": "Set up FotoDerp project for babysitting - research repo, build profile, install tools, configure CI/CD",
+  "completionProof": "a592d62f1cb2b54d373b9a04a50017fc"
+}

@@ -1,0 +1,25 @@
+{
+  "updated": true,
+  "claudeMdPath": "CLAUDE.md",
+  "addedSections": [
+    "Project Overview",
+    "Development Commands",
+    "Architecture",
+    "Conventions",
+    "Testing",
+    "Babysitter"
+  ],
+  "claudeMdInstructions": [
+    "Use 'babysitter call --process gsd/execute' for autonomous task execution",
+    "Use 'babysitter call --process gsd/plan' for feature planning",
+    "Use 'babysitter call --process gsd/verify' for feature verification",
+    "Use 'babysitter call --process methodologies/TDD' for Test-Driven Development",
+    "Focus on professional photo management features (tagging, face rec, search, culling)",
+    "Maintain clean code standards with proper tests (TDD)",
+    "Build for Windows first, then optimize (CUDA/Vulkan support)",
+    "UX should be intuitive for professional photographers - better than existing tools",
+    "Autonomous operation - let babysitter handle the orchestration",
+    "Never mention 'Excire Foto 2027' or similar inspiration sources in code or docs"
+  ],
+  "additions": "# CLAUDE.md - FotoDerp Project Instructions\n\n[Full content written to CLAUDE.md - includes project overview, development commands, architecture, conventions, testing, and Babysitter section with commands, processes, CI/CD integration, project goals, and autonomous operation notes]"
+}

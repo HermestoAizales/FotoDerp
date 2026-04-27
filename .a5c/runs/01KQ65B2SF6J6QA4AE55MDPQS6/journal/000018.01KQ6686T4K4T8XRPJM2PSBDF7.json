@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:43:25.892Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ6686SVTD57QMNXZ13KJ10P",
+    "invocationKey": "project-install-fotoderp:S000009:configure-cicd",
+    "invocationHash": "8a8d010a250a04abf0a780b43b98abf311dc68c7ab33327c244e6f4c8fe09ad8",
+    "stepId": "S000009",
+    "taskId": "configure-cicd",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ6686SVTD57QMNXZ13KJ10P/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "cicd",
+      "configuration"
+    ]
+  },
+  "checksum": "c891c9da8b3badf631a4b512bb422c37423ab8ac99aba88096202b5180ad4083"
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ65BFBQRQ0YM3D1RJ4SBA3K",
+  "taskId": "check-existing-setup",
+  "invocationKey": "project-install-fotoderp:S000001:check-existing-setup",
+  "status": "ok",
+  "result": {
+    "a5cDirExists": true,
+    "a5cFiles": [
+      "project-install-inputs.json",
+      "runs/"
+    ],
+    "cicdConfigFiles": [
+      ".github/workflows/build.yml",
+      ".github/workflows/ci.yml",
+      ".github/workflows/release.yml"
+    ],
+    "claudeMdContent": null,
+    "claudeMdExists": false,
+    "existingProfile": null,
+    "gitCommitCount": 29,
+    "isFirstRun": true,
+    "isNewProject": false,
+    "profileVersion": null
+  },
+  "startedAt": "2026-04-27T00:28:36.973Z",
+  "finishedAt": "2026-04-27T00:28:36.973Z",
+  "value": {
+    "a5cDirExists": true,
+    "a5cFiles": [
+      "project-install-inputs.json",
+      "runs/"
+    ],
+    "cicdConfigFiles": [
+      ".github/workflows/build.yml",
+      ".github/workflows/ci.yml",
+      ".github/workflows/release.yml"
+    ],
+    "claudeMdContent": null,
+    "claudeMdExists": false,
+    "existingProfile": null,
+    "gitCommitCount": 29,
+    "isFirstRun": true,
+    "isNewProject": false,
+    "profileVersion": null
+  }
+}

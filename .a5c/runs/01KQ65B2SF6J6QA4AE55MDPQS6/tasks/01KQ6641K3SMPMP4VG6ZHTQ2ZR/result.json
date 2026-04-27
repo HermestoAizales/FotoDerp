@@ -1,0 +1,879 @@
+{
+  "schemaVersion": "2026.01.results-v1",
+  "effectId": "01KQ6641K3SMPMP4VG6ZHTQ2ZR",
+  "taskId": "build-profile",
+  "invocationKey": "project-install-fotoderp:S000006:build-profile",
+  "status": "ok",
+  "result": {
+    "changesSummary": "Initial project profile created for FotoDerp. Includes comprehensive analysis of repository structure (Electron + Python FastAPI), tech stack, CI/CD setup (GitHub Actions), git history mining (29 commits, conventional commits), and user interview responses. Project configured for autonomous operation with babysitter orchestration. Goals focus on Windows test version, professional features, clean code with tests, and CUDA/Vulkan optimization. UX inspired by professional photo management tools. Team configured as single developer (pi agent) with autonomous operation.",
+    "profile": {
+      "architecture": {
+        "dataFlow": "Electron app launches Python FastAPI backend (via npm start script), frontend (HTML/JS) communicates with backend via HTTP API (localhost:8765), backend uses SQLite for storage and llama.cpp-compatible endpoints for AI features",
+        "entryPoints": [
+          "electron/main.js",
+          "backend/fotoerp_backend/main.py",
+          "frontend/js/app.js"
+        ],
+        "modules": [
+          {
+            "description": "Electron desktop app shell - main process and preload scripts",
+            "name": "electron",
+            "path": "electron/"
+          },
+          {
+            "description": "Vanilla HTML/CSS/JS frontend served by Electron",
+            "name": "frontend",
+            "path": "frontend/"
+          },
+          {
+            "description": "Python FastAPI backend with AI services, photo management, and SQLite database",
+            "name": "backend",
+            "path": "backend/"
+          },
+          {
+            "description": "Application icons and icon generation scripts",
+            "name": "icons",
+            "path": "icons/"
+          }
+        ],
+        "pattern": "Desktop application with separate backend service (Electron + Python FastAPI)"
+      },
+      "bottlenecks": [
+        {
+          "description": "Build system instability - multiple commits fixing Nuitka, electron-builder, Windows-specific issues",
+          "frequency": "12+ fix commits",
+          "id": "bn-build-system",
+          "impact": "high",
+          "location": "build.yml, package.json, build_backend.py"
+        },
+        {
+          "description": "Windows build challenges with DLL dependencies and icon handling",
+          "frequency": "5+ commits",
+          "id": "bn-windows-build",
+          "impact": "medium",
+          "location": "build.yml, electron-builder config"
+        }
+      ],
+      "cicd": {
+        "babysitterIntegration": {
+          "enabled": true,
+          "processIds": [
+            "gsd/new-project",
+            "gsd/plan",
+            "gsd/execute"
+          ],
+          "triggerOn": [
+            "push to main",
+            "tags v*"
+          ]
+        },
+        "configPaths": [
+          ".github/workflows/build.yml",
+          ".github/workflows/ci.yml",
+          ".github/workflows/release.yml"
+        ],
+        "pipelines": [
+          {
+            "name": "CI Checks",
+            "stages": [
+              "python-check",
+              "npm-check",
+              "lint-python"
+            ],
+            "trigger": [
+              "push to main, develop",
+              "pull_request to main"
+            ]
+          },
+          {
+            "name": "Build",
+            "stages": [
+              "build-linux",
+              "build-mac",
+              "build-windows"
+            ],
+            "trigger": [
+              "push to main",
+              "tags v*"
+            ]
+          }
+        ],
+        "provider": "GitHub Actions"
+      },
+      "claudeMdInstructions": [
+        "Use 'babysitter call' or 'babysit' for orchestrating complex workflows",
+        "Focus on professional photo management features (tagging, face rec, search, culling)",
+        "Maintain clean code standards with proper tests",
+        "Build for Windows first, then optimize (CUDA/Vulkan support)",
+        "UX should be intuitive for professional photographers",
+        "Autonomous operation - let babysitter handle the orchestration"
+      ],
+      "conventions": {
+        "additionalRules": [
+          "German comments in Python backend code allowed",
+          "English comments in JavaScript frontend code",
+          "API endpoints follow RESTful conventions with /api/ prefix",
+          "All documentation in English (migrated from German)",
+          "Clean code standards - as expected from a professional developer",
+          "Never mention 'Excire Foto 2027' or similar inspiration sources in code or docs"
+        ],
+        "codeStyle": {
+          "javascript": "Vanilla JS, no framework, clean and modular",
+          "python": "Standard Python conventions, German comments allowed"
+        },
+        "errorHandling": "Try-except blocks in Python, try-catch in JavaScript, HTTP exception handling via FastAPI",
+        "git": {
+          "branchStrategy": "trunk-based (direct commits to main)",
+          "commitFormat": "Conventional commits (ci:, fix:, feat:, docs:, Translate:)",
+          "mergeStrategy": "Direct commits, no merge commits"
+        },
+        "importOrder": [],
+        "naming": {
+          "javascript": "camelCase for functions/variables, PascalCase for classes",
+          "python": "snake_case for functions/variables, PascalCase for classes"
+        },
+        "testingConventions": "Comprehensive tests required (pytest for Python, Jest/Vitest for JS when added)"
+      },
+      "createdAt": "2026-04-27T00:41:09Z",
+      "description": "Open-source AI-powered photo management for professional photographers. Desktop application with Electron frontend and Python/FastAPI backend. Features AI auto-tagging, face recognition, semantic search, culling workflow, and aesthetic rating. UX inspired by professional photo management tools with improved workflow.",
+      "externalIntegrations": [
+        {
+          "category": "version-control",
+          "enabled": true,
+          "service": "GitHub"
+        },
+        {
+          "category": "model-repository",
+          "enabled": true,
+          "service": "Hugging Face"
+        }
+      ],
+      "goals": [
+        {
+          "category": "feature",
+          "description": "Erstellung und Verbesserung von FotoDerp - erste Testversion für Windows",
+          "id": "goal-feature-0",
+          "priority": "high",
+          "status": "active"
+        },
+        {
+          "category": "feature",
+          "description": "Vollständiger Feature-Set: AI-Tagging, Face Recognition, Semantic Search, Similarity Search, Culling Workflow, Aesthetic Rating, OCR, Collections, Analytics",
+          "id": "goal-feature-1",
+          "priority": "high",
+          "status": "active"
+        },
+        {
+          "category": "quality",
+          "description": "Sauberer Code, Tests, Profi-Standards (wie von einem professionellen Entwickler erwartet)",
+          "id": "goal-quality-0",
+          "priority": "high",
+          "status": "active"
+        },
+        {
+          "category": "technology",
+          "description": "CUDA/Vulkan Unterstützung für AI-Inference optimieren",
+          "id": "goal-tech-0",
+          "priority": "medium",
+          "status": "pending"
+        },
+        {
+          "category": "technology",
+          "description": "Multi-Platform Support (Linux, macOS, Windows) mit stabilen Builds",
+          "id": "goal-tech-1",
+          "priority": "high",
+          "status": "active"
+        },
+        {
+          "category": "ux",
+          "description": "UX orientiert an professionellen Foto-Verwaltungs-Tools, aber besser - intuitive Bedienung für Profi-Fotografen",
+          "id": "goal-ux-0",
+          "priority": "high",
+          "status": "active"
+        }
+      ],
+      "installedAgents": [],
+      "installedProcesses": [
+        "cradle/project-install"
+      ],
+      "installedSkills": [],
+      "painPoints": [
+        {
+          "category": "build",
+          "description": "Complex build process with Nuitka compilation and multi-platform electron-builder",
+          "discoveredVia": "git-history",
+          "id": "pp-build-complexity",
+          "severity": "high",
+          "suggestedRemediation": "Stabilize build system, add comprehensive tests for build process"
+        },
+        {
+          "category": "build",
+          "description": "Windows builds require special handling (Dependencies, DLL management)",
+          "discoveredVia": "git-history",
+          "id": "pp-platform-support",
+          "severity": "medium",
+          "suggestedRemediation": "Create dedicated Windows build workflow with proper dependency management"
+        },
+        {
+          "category": "ci-cd",
+          "description": "CI pipeline required multiple rewrites to stabilize",
+          "discoveredVia": "git-history",
+          "id": "pp-ci-stability",
+          "severity": "medium",
+          "suggestedRemediation": "Use babysitter for CI/CD automation and testing"
+        },
+        {
+          "category": "development",
+          "description": "Entwicklung stoppt weil das Model stoppt",
+          "discoveredVia": "user-interview",
+          "id": "pp-model-stopping",
+          "severity": "high",
+          "suggestedRemediation": "Autonomous operation with babysitter orchestration - no manual intervention required"
+        }
+      ],
+      "processes": [
+        {
+          "description": "Project setup and onboarding",
+          "installedAt": "2026-04-27T00:41:09Z",
+          "name": "cradle/project-install"
+        }
+      ],
+      "projectName": "FotoDerp",
+      "repositories": [
+        {
+          "defaultBranch": "main",
+          "name": "FotoDerp",
+          "primary": true,
+          "url": "https://github.com/HermestoAizales/FotoDerp.git"
+        }
+      ],
+      "services": [
+        {
+          "name": "llama.cpp",
+          "type": "ai-inference",
+          "url": "http://127.0.0.1:8080/v1"
+        },
+        {
+          "name": "Ollama",
+          "type": "ai-inference",
+          "url": "http://127.0.0.1:11434"
+        },
+        {
+          "name": "GitHub",
+          "type": "version-control",
+          "url": "https://github.com/HermestoAizales/FotoDerp"
+        },
+        {
+          "name": "Hugging Face",
+          "type": "model-repository",
+          "url": "https://huggingface.co/"
+        }
+      ],
+      "team": [
+        {
+          "name": "pi agent (Babysitter)",
+          "responsibilities": [
+            "Full development",
+            "Architecture",
+            "Testing",
+            "Build",
+            "Deployment",
+            "Autonomous operation"
+          ],
+          "role": "Lead Developer / Orchestrator"
+        }
+      ],
+      "techStack": {
+        "buildTools": [
+          "Nuitka (Python compiler)",
+          "electron-builder"
+        ],
+        "databases": [
+          {
+            "name": "SQLite",
+            "type": "embedded",
+            "version": "latest"
+          }
+        ],
+        "frameworks": [
+          {
+            "category": "backend-web",
+            "name": "FastAPI",
+            "version": "latest"
+          },
+          {
+            "category": "desktop",
+            "name": "Electron",
+            "version": "^33.0.0"
+          },
+          {
+            "category": "build",
+            "name": "electron-builder",
+            "version": "^25.0.0"
+          }
+        ],
+        "infrastructure": [
+          {
+            "category": "ai-inference",
+            "name": "llama.cpp"
+          },
+          {
+            "category": "ai-inference",
+            "name": "Ollama"
+          },
+          {
+            "category": "ai-inference",
+            "name": "vLLM"
+          },
+          {
+            "category": "gpu-acceleration",
+            "name": "CUDA",
+            "status": "planned"
+          },
+          {
+            "category": "gpu-acceleration",
+            "name": "Vulkan",
+            "status": "planned"
+          }
+        ],
+        "languages": [
+          {
+            "name": "Python",
+            "role": "primary",
+            "version": "3.11+"
+          },
+          {
+            "name": "JavaScript",
+            "role": "primary"
+          },
+          {
+            "name": "HTML/CSS",
+            "role": "frontend"
+          }
+        ],
+        "packageManagers": [
+          "npm",
+          "pip"
+        ]
+      },
+      "tools": {
+        "formatting": [],
+        "linting": [
+          {
+            "configPath": null,
+            "name": "ruff",
+            "type": "python-linter",
+            "usedIn": [
+              "ci.yml"
+            ]
+          }
+        ],
+        "testing": [
+          {
+            "name": "pytest",
+            "priority": "high",
+            "status": "planned",
+            "type": "python-testing"
+          }
+        ]
+      },
+      "updatedAt": "2026-04-27T00:41:09Z",
+      "version": 1,
+      "workflows": [
+        {
+          "description": "Local development workflow with npm scripts",
+          "name": "development",
+          "steps": [
+            "npm run start:backend",
+            "npm run dev"
+          ],
+          "triggers": [
+            "manual"
+          ]
+        },
+        {
+          "description": "Build distributable packages for multiple platforms",
+          "name": "build",
+          "steps": [
+            "npm run build:backend",
+            "electron-builder --linux/mac/win"
+          ],
+          "triggers": [
+            "manual",
+            "ci-build",
+            "release"
+          ]
+        },
+        {
+          "description": "GitHub Actions CI pipeline",
+          "name": "ci",
+          "steps": [
+            "python syntax check",
+            "npm ci check",
+            "python lint (ruff)"
+          ],
+          "triggers": [
+            "push",
+            "pull_request"
+          ]
+        },
+        {
+          "description": "Direct commits to main branch (single developer workflow)",
+          "name": "trunk-based",
+          "steps": [
+            "develop",
+            "commit",
+            "push to main"
+          ],
+          "triggers": [
+            "development-complete"
+          ]
+        }
+      ]
+    },
+    "sourcesUsed": [
+      "repo-structure-analysis",
+      "tools-services-analysis",
+      "git-history-mining",
+      "user-interview",
+      "existing-profile: none (first run)"
+    ]
+  },
+  "startedAt": "2026-04-27T00:42:10.503Z",
+  "finishedAt": "2026-04-27T00:42:10.503Z",
+  "value": {
+    "changesSummary": "Initial project profile created for FotoDerp. Includes comprehensive analysis of repository structure (Electron + Python FastAPI), tech stack, CI/CD setup (GitHub Actions), git history mining (29 commits, conventional commits), and user interview responses. Project configured for autonomous operation with babysitter orchestration. Goals focus on Windows test version, professional features, clean code with tests, and CUDA/Vulkan optimization. UX inspired by professional photo management tools. Team configured as single developer (pi agent) with autonomous operation.",
+    "profile": {
+      "architecture": {
+        "dataFlow": "Electron app launches Python FastAPI backend (via npm start script), frontend (HTML/JS) communicates with backend via HTTP API (localhost:8765), backend uses SQLite for storage and llama.cpp-compatible endpoints for AI features",
+        "entryPoints": [
+          "electron/main.js",
+          "backend/fotoerp_backend/main.py",
+          "frontend/js/app.js"
+        ],
+        "modules": [
+          {
+            "description": "Electron desktop app shell - main process and preload scripts",
+            "name": "electron",
+            "path": "electron/"
+          },
+          {
+            "description": "Vanilla HTML/CSS/JS frontend served by Electron",
+            "name": "frontend",
+            "path": "frontend/"
+          },
+          {
+            "description": "Python FastAPI backend with AI services, photo management, and SQLite database",
+            "name": "backend",
+            "path": "backend/"
+          },
+          {
+            "description": "Application icons and icon generation scripts",
+            "name": "icons",
+            "path": "icons/"
+          }
+        ],
+        "pattern": "Desktop application with separate backend service (Electron + Python FastAPI)"
+      },
+      "bottlenecks": [
+        {
+          "description": "Build system instability - multiple commits fixing Nuitka, electron-builder, Windows-specific issues",
+          "frequency": "12+ fix commits",
+          "id": "bn-build-system",
+          "impact": "high",
+          "location": "build.yml, package.json, build_backend.py"
+        },
+        {
+          "description": "Windows build challenges with DLL dependencies and icon handling",
+          "frequency": "5+ commits",
+          "id": "bn-windows-build",
+          "impact": "medium",
+          "location": "build.yml, electron-builder config"
+        }
+      ],
+      "cicd": {
+        "babysitterIntegration": {
+          "enabled": true,
+          "processIds": [
+            "gsd/new-project",
+            "gsd/plan",
+            "gsd/execute"
+          ],
+          "triggerOn": [
+            "push to main",
+            "tags v*"
+          ]
+        },
+        "configPaths": [
+          ".github/workflows/build.yml",
+          ".github/workflows/ci.yml",
+          ".github/workflows/release.yml"
+        ],
+        "pipelines": [
+          {
+            "name": "CI Checks",
+            "stages": [
+              "python-check",
+              "npm-check",
+              "lint-python"
+            ],
+            "trigger": [
+              "push to main, develop",
+              "pull_request to main"
+            ]
+          },
+          {
+            "name": "Build",
+            "stages": [
+              "build-linux",
+              "build-mac",
+              "build-windows"
+            ],
+            "trigger": [
+              "push to main",
+              "tags v*"
+            ]
+          }
+        ],
+        "provider": "GitHub Actions"
+      },
+      "claudeMdInstructions": [
+        "Use 'babysitter call' or 'babysit' for orchestrating complex workflows",
+        "Focus on professional photo management features (tagging, face rec, search, culling)",
+        "Maintain clean code standards with proper tests",
+        "Build for Windows first, then optimize (CUDA/Vulkan support)",
+        "UX should be intuitive for professional photographers",
+        "Autonomous operation - let babysitter handle the orchestration"
+      ],
+      "conventions": {
+        "additionalRules": [
+          "German comments in Python backend code allowed",
+          "English comments in JavaScript frontend code",
+          "API endpoints follow RESTful conventions with /api/ prefix",
+          "All documentation in English (migrated from German)",
+          "Clean code standards - as expected from a professional developer",
+          "Never mention 'Excire Foto 2027' or similar inspiration sources in code or docs"
+        ],
+        "codeStyle": {
+          "javascript": "Vanilla JS, no framework, clean and modular",
+          "python": "Standard Python conventions, German comments allowed"
+        },
+        "errorHandling": "Try-except blocks in Python, try-catch in JavaScript, HTTP exception handling via FastAPI",
+        "git": {
+          "branchStrategy": "trunk-based (direct commits to main)",
+          "commitFormat": "Conventional commits (ci:, fix:, feat:, docs:, Translate:)",
+          "mergeStrategy": "Direct commits, no merge commits"
+        },
+        "importOrder": [],
+        "naming": {
+          "javascript": "camelCase for functions/variables, PascalCase for classes",
+          "python": "snake_case for functions/variables, PascalCase for classes"
+        },
+        "testingConventions": "Comprehensive tests required (pytest for Python, Jest/Vitest for JS when added)"
+      },
+      "createdAt": "2026-04-27T00:41:09Z",
+      "description": "Open-source AI-powered photo management for professional photographers. Desktop application with Electron frontend and Python/FastAPI backend. Features AI auto-tagging, face recognition, semantic search, culling workflow, and aesthetic rating. UX inspired by professional photo management tools with improved workflow.",
+      "externalIntegrations": [
+        {
+          "category": "version-control",
+          "enabled": true,
+          "service": "GitHub"
+        },
+        {
+          "category": "model-repository",
+          "enabled": true,
+          "service": "Hugging Face"
+        }
+      ],
+      "goals": [
+        {
+          "category": "feature",
+          "description": "Erstellung und Verbesserung von FotoDerp - erste Testversion für Windows",
+          "id": "goal-feature-0",
+          "priority": "high",
+          "status": "active"
+        },
+        {
+          "category": "feature",
+          "description": "Vollständiger Feature-Set: AI-Tagging, Face Recognition, Semantic Search, Similarity Search, Culling Workflow, Aesthetic Rating, OCR, Collections, Analytics",
+          "id": "goal-feature-1",
+          "priority": "high",
+          "status": "active"
+        },
+        {
+          "category": "quality",
+          "description": "Sauberer Code, Tests, Profi-Standards (wie von einem professionellen Entwickler erwartet)",
+          "id": "goal-quality-0",
+          "priority": "high",
+          "status": "active"
+        },
+        {
+          "category": "technology",
+          "description": "CUDA/Vulkan Unterstützung für AI-Inference optimieren",
+          "id": "goal-tech-0",
+          "priority": "medium",
+          "status": "pending"
+        },
+        {
+          "category": "technology",
+          "description": "Multi-Platform Support (Linux, macOS, Windows) mit stabilen Builds",
+          "id": "goal-tech-1",
+          "priority": "high",
+          "status": "active"
+        },
+        {
+          "category": "ux",
+          "description": "UX orientiert an professionellen Foto-Verwaltungs-Tools, aber besser - intuitive Bedienung für Profi-Fotografen",
+          "id": "goal-ux-0",
+          "priority": "high",
+          "status": "active"
+        }
+      ],
+      "installedAgents": [],
+      "installedProcesses": [
+        "cradle/project-install"
+      ],
+      "installedSkills": [],
+      "painPoints": [
+        {
+          "category": "build",
+          "description": "Complex build process with Nuitka compilation and multi-platform electron-builder",
+          "discoveredVia": "git-history",
+          "id": "pp-build-complexity",
+          "severity": "high",
+          "suggestedRemediation": "Stabilize build system, add comprehensive tests for build process"
+        },
+        {
+          "category": "build",
+          "description": "Windows builds require special handling (Dependencies, DLL management)",
+          "discoveredVia": "git-history",
+          "id": "pp-platform-support",
+          "severity": "medium",
+          "suggestedRemediation": "Create dedicated Windows build workflow with proper dependency management"
+        },
+        {
+          "category": "ci-cd",
+          "description": "CI pipeline required multiple rewrites to stabilize",
+          "discoveredVia": "git-history",
+          "id": "pp-ci-stability",
+          "severity": "medium",
+          "suggestedRemediation": "Use babysitter for CI/CD automation and testing"
+        },
+        {
+          "category": "development",
+          "description": "Entwicklung stoppt weil das Model stoppt",
+          "discoveredVia": "user-interview",
+          "id": "pp-model-stopping",
+          "severity": "high",
+          "suggestedRemediation": "Autonomous operation with babysitter orchestration - no manual intervention required"
+        }
+      ],
+      "processes": [
+        {
+          "description": "Project setup and onboarding",
+          "installedAt": "2026-04-27T00:41:09Z",
+          "name": "cradle/project-install"
+        }
+      ],
+      "projectName": "FotoDerp",
+      "repositories": [
+        {
+          "defaultBranch": "main",
+          "name": "FotoDerp",
+          "primary": true,
+          "url": "https://github.com/HermestoAizales/FotoDerp.git"
+        }
+      ],
+      "services": [
+        {
+          "name": "llama.cpp",
+          "type": "ai-inference",
+          "url": "http://127.0.0.1:8080/v1"
+        },
+        {
+          "name": "Ollama",
+          "type": "ai-inference",
+          "url": "http://127.0.0.1:11434"
+        },
+        {
+          "name": "GitHub",
+          "type": "version-control",
+          "url": "https://github.com/HermestoAizales/FotoDerp"
+        },
+        {
+          "name": "Hugging Face",
+          "type": "model-repository",
+          "url": "https://huggingface.co/"
+        }
+      ],
+      "team": [
+        {
+          "name": "pi agent (Babysitter)",
+          "responsibilities": [
+            "Full development",
+            "Architecture",
+            "Testing",
+            "Build",
+            "Deployment",
+            "Autonomous operation"
+          ],
+          "role": "Lead Developer / Orchestrator"
+        }
+      ],
+      "techStack": {
+        "buildTools": [
+          "Nuitka (Python compiler)",
+          "electron-builder"
+        ],
+        "databases": [
+          {
+            "name": "SQLite",
+            "type": "embedded",
+            "version": "latest"
+          }
+        ],
+        "frameworks": [
+          {
+            "category": "backend-web",
+            "name": "FastAPI",
+            "version": "latest"
+          },
+          {
+            "category": "desktop",
+            "name": "Electron",
+            "version": "^33.0.0"
+          },
+          {
+            "category": "build",
+            "name": "electron-builder",
+            "version": "^25.0.0"
+          }
+        ],
+        "infrastructure": [
+          {
+            "category": "ai-inference",
+            "name": "llama.cpp"
+          },
+          {
+            "category": "ai-inference",
+            "name": "Ollama"
+          },
+          {
+            "category": "ai-inference",
+            "name": "vLLM"
+          },
+          {
+            "category": "gpu-acceleration",
+            "name": "CUDA",
+            "status": "planned"
+          },
+          {
+            "category": "gpu-acceleration",
+            "name": "Vulkan",
+            "status": "planned"
+          }
+        ],
+        "languages": [
+          {
+            "name": "Python",
+            "role": "primary",
+            "version": "3.11+"
+          },
+          {
+            "name": "JavaScript",
+            "role": "primary"
+          },
+          {
+            "name": "HTML/CSS",
+            "role": "frontend"
+          }
+        ],
+        "packageManagers": [
+          "npm",
+          "pip"
+        ]
+      },
+      "tools": {
+        "formatting": [],
+        "linting": [
+          {
+            "configPath": null,
+            "name": "ruff",
+            "type": "python-linter",
+            "usedIn": [
+              "ci.yml"
+            ]
+          }
+        ],
+        "testing": [
+          {
+            "name": "pytest",
+            "priority": "high",
+            "status": "planned",
+            "type": "python-testing"
+          }
+        ]
+      },
+      "updatedAt": "2026-04-27T00:41:09Z",
+      "version": 1,
+      "workflows": [
+        {
+          "description": "Local development workflow with npm scripts",
+          "name": "development",
+          "steps": [
+            "npm run start:backend",
+            "npm run dev"
+          ],
+          "triggers": [
+            "manual"
+          ]
+        },
+        {
+          "description": "Build distributable packages for multiple platforms",
+          "name": "build",
+          "steps": [
+            "npm run build:backend",
+            "electron-builder --linux/mac/win"
+          ],
+          "triggers": [
+            "manual",
+            "ci-build",
+            "release"
+          ]
+        },
+        {
+          "description": "GitHub Actions CI pipeline",
+          "name": "ci",
+          "steps": [
+            "python syntax check",
+            "npm ci check",
+            "python lint (ruff)"
+          ],
+          "triggers": [
+            "push",
+            "pull_request"
+          ]
+        },
+        {
+          "description": "Direct commits to main branch (single developer workflow)",
+          "name": "trunk-based",
+          "steps": [
+            "develop",
+            "commit",
+            "push to main"
+          ],
+          "triggers": [
+            "development-complete"
+          ]
+        }
+      ]
+    },
+    "sourcesUsed": [
+      "repo-structure-analysis",
+      "tools-services-analysis",
+      "git-history-mining",
+      "user-interview",
+      "existing-profile: none (first run)"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:28:43.167Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ65D8RYY2QME2E62MX23C5F",
+    "invocationKey": "project-install-fotoderp:S000003:analyze-tools-services",
+    "invocationHash": "935234df58502a41833145734c9a190555d3b0342e16cab0c28485ddd1863d7d",
+    "stepId": "S000003",
+    "taskId": "analyze-tools-services",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ65D8RYY2QME2E62MX23C5F/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "analysis",
+      "tools"
+    ]
+  },
+  "checksum": "5ad35a69b9ce5b95e8ebc78c23c6e5ca4dcda602914f7ef966f2d0b9017d3c73"
+}

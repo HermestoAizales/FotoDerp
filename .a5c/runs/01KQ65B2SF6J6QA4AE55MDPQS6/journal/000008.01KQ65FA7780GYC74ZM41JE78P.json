@@ -1,0 +1,22 @@
+{
+  "type": "EFFECT_REQUESTED",
+  "recordedAt": "2026-04-27T00:29:50.183Z",
+  "data": {
+    "harness": "pi",
+    "effectId": "01KQ65FA6ZC1MHXYQ9VRFTKTR0",
+    "invocationKey": "project-install-fotoderp:S000004:process-mining",
+    "invocationHash": "87294038bc828f0a677fd308f5551f48e3224c4f2b0eb71e5a19992a0538f071",
+    "stepId": "S000004",
+    "taskId": "process-mining",
+    "kind": "agent",
+    "label": "agent",
+    "taskDefRef": "tasks/01KQ65FA6ZC1MHXYQ9VRFTKTR0/task.json",
+    "labels": [
+      "agent",
+      "cradle",
+      "mining",
+      "git-history"
+    ]
+  },
+  "checksum": "53576e732d0b4acc4e2f450ca91958310c9475cbf4c2e3e3cc5f74e07a8e0ce0"
+}

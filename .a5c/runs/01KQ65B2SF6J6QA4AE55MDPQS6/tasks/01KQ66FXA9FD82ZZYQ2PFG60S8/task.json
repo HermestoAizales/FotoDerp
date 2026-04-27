@@ -1,0 +1,63 @@
+{
+  "kind": "breakpoint",
+  "metadata": {
+    "label": "breakpoint",
+    "payload": {
+      "context": {
+        "files": [
+          {
+            "format": "json",
+            "label": "Full Profile JSON",
+            "path": "artifacts/project-profile-preview.json"
+          },
+          {
+            "format": "json",
+            "label": "Tool Recommendations",
+            "path": "artifacts/tool-recommendations.json"
+          },
+          {
+            "format": "markdown",
+            "label": "CLAUDE.md Additions",
+            "path": "artifacts/claude-md-additions.md"
+          }
+        ]
+      },
+      "question": "Please review the complete project profile before we save it.\n\n**Project**: FotoDerp\n**Description**: Open-source AI-powered photo management for professional photographers. Desktop application with Electron frontend and Python/FastAPI backend. Features AI auto-tagging, face recognition, semantic search, culling workflow, and aesthetic rating. UX inspired by professional photo management tools with improved workflow.\n**Tech Stack**: Python, JavaScript, HTML/CSS | FastAPI, Electron, electron-builder\n**Architecture**: Desktop application with separate backend service (Electron + Python FastAPI)\n**Team Members**: pi agent (Babysitter)\n**Goals**: Erstellung und Verbesserung von FotoDerp - erste Testversion für Windows; Vollständiger Feature-Set: AI-Tagging, Face Recognition, Semantic Search, Similarity Search, Culling Workflow, Aesthetic Rating, OCR, Collections, Analytics; Sauberer Code, Tests, Profi-Standards (wie von einem professionellen Entwickler erwartet); CUDA/Vulkan Unterstützung für AI-Inference optimieren; Multi-Platform Support (Linux, macOS, Windows) mit stabilen Builds; UX orientiert an professionellen Foto-Verwaltungs-Tools, aber besser - intuitive Bedienung für Profi-Fotografen\n\n**Recommended Skills**: codebase-analyzer, ui-ux-reviewer, test-generator, doc-generator\n**Recommended Processes**: gsd/new-project, gsd/plan, gsd/execute, gsd/verify, gsd/iterative-convergence, methodologies/TDD, cradle/project-install, specializations/ux-ui-design\n**CI/CD Configured**: Yes\n**CLAUDE.md Updated**: Yes\n**Gitignore Configured**: logs\n\n\n**Profile Path**: /home/hermes/FotoDerp/.a5c/project-profile.json\n\nApprove to save this profile, or provide corrections.",
+      "title": "Project Profile Review"
+    },
+    "requestedAt": "2026-04-27T00:47:38.312Z"
+  },
+  "title": "breakpoint",
+  "schemaVersion": "2026.01.tasks-v1",
+  "effectId": "01KQ66FXA9FD82ZZYQ2PFG60S8",
+  "taskId": "__sdk.breakpoint",
+  "invocationKey": "project-install-fotoderp:S000014:__sdk.breakpoint",
+  "stepId": "S000014",
+  "inputs": {
+    "label": "breakpoint",
+    "payload": {
+      "context": {
+        "files": [
+          {
+            "format": "json",
+            "label": "Full Profile JSON",
+            "path": "artifacts/project-profile-preview.json"
+          },
+          {
+            "format": "json",
+            "label": "Tool Recommendations",
+            "path": "artifacts/tool-recommendations.json"
+          },
+          {
+            "format": "markdown",
+            "label": "CLAUDE.md Additions",
+            "path": "artifacts/claude-md-additions.md"
+          }
+        ]
+      },
+      "question": "Please review the complete project profile before we save it.\n\n**Project**: FotoDerp\n**Description**: Open-source AI-powered photo management for professional photographers. Desktop application with Electron frontend and Python/FastAPI backend. Features AI auto-tagging, face recognition, semantic search, culling workflow, and aesthetic rating. UX inspired by professional photo management tools with improved workflow.\n**Tech Stack**: Python, JavaScript, HTML/CSS | FastAPI, Electron, electron-builder\n**Architecture**: Desktop application with separate backend service (Electron + Python FastAPI)\n**Team Members**: pi agent (Babysitter)\n**Goals**: Erstellung und Verbesserung von FotoDerp - erste Testversion für Windows; Vollständiger Feature-Set: AI-Tagging, Face Recognition, Semantic Search, Similarity Search, Culling Workflow, Aesthetic Rating, OCR, Collections, Analytics; Sauberer Code, Tests, Profi-Standards (wie von einem professionellen Entwickler erwartet); CUDA/Vulkan Unterstützung für AI-Inference optimieren; Multi-Platform Support (Linux, macOS, Windows) mit stabilen Builds; UX orientiert an professionellen Foto-Verwaltungs-Tools, aber besser - intuitive Bedienung für Profi-Fotografen\n\n**Recommended Skills**: codebase-analyzer, ui-ux-reviewer, test-generator, doc-generator\n**Recommended Processes**: gsd/new-project, gsd/plan, gsd/execute, gsd/verify, gsd/iterative-convergence, methodologies/TDD, cradle/project-install, specializations/ux-ui-design\n**CI/CD Configured**: Yes\n**CLAUDE.md Updated**: Yes\n**Gitignore Configured**: logs\n\n\n**Profile Path**: /home/hermes/FotoDerp/.a5c/project-profile.json\n\nApprove to save this profile, or provide corrections.",
+      "title": "Project Profile Review"
+    },
+    "requestedAt": "2026-04-27T00:47:38.312Z"
+  }
+}
