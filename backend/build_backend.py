@@ -122,11 +122,13 @@ def build(target_platform: str):
     ]
 
     if target_platform == "windows":
-        icon_path = Path(__file__).parent.parent / "icons" / "icon.ico"
-        if icon_path.exists():
-            nuitka_opts.append(f"--windows-icon-from-ico={icon_path}")
-        else:
-            print(f"WARNING: Icon not found at {icon_path}, building without icon")
+        # Icon disabled - causes issues with paths in CI
+        # icon_path = Path(__file__).parent.parent / "icons" / "icon.ico"
+        # if icon_path.exists():
+        #     nuitka_opts.append(f"--windows-icon-from-ico={icon_path}")
+        # else:
+        #     print(f"WARNING: Icon not found at {icon_path}, building without icon")
+        print("Building Windows backend without icon (icon path issues in CI)")
         # Tell Nuitka to auto-download dependencies
         os.environ["NUITKA_ASSUME_YES"] = "1"
 

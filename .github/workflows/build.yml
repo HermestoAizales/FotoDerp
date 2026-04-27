@@ -66,7 +66,7 @@ jobs:
       - name: Install npm packages
         run: npm ci || npm install
       
-      - name: Install Nuitka globaly
+      - name: Install Nuitka globally
         shell: pwsh
         run: python3 -m pip install nuitka
       
@@ -96,18 +96,9 @@ jobs:
             Write-Host "depends.exe already exists"
           }
       
-      - name: Build Electron (includes backend build)
+      - name: Build with npm (includes backend and Electron)
         shell: pwsh
-        run: |
-          npm run build:win
-      
-      - name: Temporarily move icons dir
-        shell: pwsh
-        run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
-      
-      - name: Restore icons dir
-        shell: pwsh
-        run: git checkout -- icons/ 2>$null; if (-not (Test-Path icons)) { git restore icons/ }
+        run: npm run build:win
       
       - name: Upload artifact
         uses: actions/upload-artifact@v4
