@@ -1,0 +1,15 @@
+{
+  "runId": "01KQ67NGKN7S3AQHGYJN169QVV",
+  "request": "fotoderp-ai-tagging-tdd-v2",
+  "processId": "fotoderp-ai-tagging-tdd-v2",
+  "harness": "pi",
+  "entrypoint": {
+    "importPath": "../../processes/fotoderp-ai-tagging-tdd.js",
+    "exportName": "process"
+  },
+  "processPath": "../../processes/fotoderp-ai-tagging-tdd.js",
+  "layoutVersion": "2026.01-storage-preview",
+  "createdAt": "2026-04-27T01:08:10.489Z",
+  "prompt": "Implementiere das AI Auto-Tagging Feature für FotoDerp mit TDD (Red-Green-Refactor). Das Feature umfasst: KI-Analyse von Fotos, automatische Tag-Generierung, Face Recognition Integration, und API-Endpoint Verbindung. Verwende den existierenden Code in backend/fotoerp_backend/services/analysis.py als Basis.",
+  "completionProof": "98adba20b90e4a705f2a5779fb2b908c"
+}

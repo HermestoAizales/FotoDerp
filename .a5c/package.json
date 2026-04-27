@@ -4,6 +4,6 @@
   "type": "module",
   "description": "Babysitter infrastructure for FotoDerp project",
   "dependencies": {
-    "@a5c-ai/babysitter-sdk": "latest"
+    "@a5c-ai/babysitter-sdk": "^0.0.187"
   }
 }

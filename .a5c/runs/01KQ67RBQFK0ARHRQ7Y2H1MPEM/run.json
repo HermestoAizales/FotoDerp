@@ -1,0 +1,15 @@
+{
+  "runId": "01KQ67RBQFK0ARHRQ7Y2H1MPEM",
+  "request": "fotoderp-direct",
+  "processId": "fotoderp-direct",
+  "harness": "pi",
+  "entrypoint": {
+    "importPath": "../../processes/fotoderp-direct.js",
+    "exportName": "process"
+  },
+  "processPath": "../../processes/fotoderp-direct.js",
+  "layoutVersion": "2026.01-storage-preview",
+  "createdAt": "2026-04-27T01:09:43.795Z",
+  "prompt": "Fahre mit der Implementierung von FotoDerp fort. Fokus: AI-Tagging vervollständigen, Tests schreiben, Backend-Services verbessern.",
+  "completionProof": "315007401dec9386213509acaa208e00"
+}

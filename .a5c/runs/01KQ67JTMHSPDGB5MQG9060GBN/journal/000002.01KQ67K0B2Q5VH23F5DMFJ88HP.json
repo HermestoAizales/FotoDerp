@@ -1,0 +1,13 @@
+{
+  "type": "RUN_FAILED",
+  "recordedAt": "2026-04-27T01:06:48.290Z",
+  "data": {
+    "harness": "pi",
+    "error": {
+      "name": "TypeError",
+      "message": "Cannot destructure property 'args' of 'ctx' as it is undefined.",
+      "stack": "TypeError: Cannot destructure property 'args' of 'ctx' as it is undefined.\n    at process (file:///home/hermes/FotoDerp/.a5c/processes/fotoderp-ai-tagging-tdd.js:211:11)\n    at /home/hermes/.hermes/node/lib/node_modules/@a5c-ai/babysitter-pi/node_modules/@a5c-ai/babysitter-sdk/dist/runtime/orchestrateIteration.js:87:105\n    at async /home/hermes/.hermes/node/lib/node_modules/@a5c-ai/babysitter-pi/node_modules/@a5c-ai/babysitter-sdk/dist/runtime/orchestrateIteration.js:87:28\n    at async withRunLock (/home/hermes/.hermes/node/lib/node_modules/@a5c-ai/babysitter-pi/node_modules/@a5c-ai/babysitter-sdk/dist/storage/lock.js:80:16)\n    at async orchestrateIteration (/home/hermes/.hermes/node/lib/node_modules/@a5c-ai/babysitter-pi/node_modules/@a5c-ai/babysitter-sdk/dist/runtime/orchestrateIteration.js:62:12)\n    at async runIterate (/home/hermes/.hermes/node/lib/node_modules/@a5c-ai/babysitter-pi/node_modules/@a5c-ai/babysitter-sdk/dist/cli/commands/runIterate.js:69:29)\n    at async handleRunIterate (/home/hermes/.hermes/node/lib/node_modules/@a5c-ai/babysitter-pi/node_modules/@a5c-ai/babysitter-sdk/dist/cli/main.js:1215:24)\n    at async Object.run (/home/hermes/.hermes/node/lib/node_modules/@a5c-ai/babysitter-pi/node_modules/@a5c-ai/babysitter-sdk/dist/cli/main.js:2333:28)"
+    }
+  },
+  "checksum": "5f06fbec47b283a66dc2377490d89af385a4d1d4febb16ba8a2598dc91526572"
+}

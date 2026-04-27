@@ -1,0 +1,15 @@
+{
+  "runId": "01KQ67Q4KSGBK8V3YXMRF0R6EA",
+  "request": "fotoderp-simple",
+  "processId": "fotoderp-simple",
+  "harness": "pi",
+  "entrypoint": {
+    "importPath": "../../processes/fotoderp-simple.js",
+    "exportName": "process"
+  },
+  "processPath": "../../processes/fotoderp-simple.js",
+  "layoutVersion": "2026.01-storage-preview",
+  "createdAt": "2026-04-27T01:09:03.741Z",
+  "prompt": "Implementiere das AI Auto-Tagging Feature für FotoDerp mit TDD. Fokus auf Backend-Services.",
+  "completionProof": "a0685706cf498bd87f8ce1b33eea2d00"
+}

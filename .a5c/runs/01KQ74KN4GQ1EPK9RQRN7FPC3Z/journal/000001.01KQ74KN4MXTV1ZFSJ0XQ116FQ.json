@@ -1,0 +1,15 @@
+{
+  "type": "RUN_CREATED",
+  "recordedAt": "2026-04-27T09:33:58.292Z",
+  "data": {
+    "runId": "01KQ74KN4GQ1EPK9RQRN7FPC3Z",
+    "processId": "windows-build-test",
+    "entrypoint": {
+      "importPath": "../../processes/windows-build-test.js",
+      "exportName": "process"
+    },
+    "harness": "pi",
+    "prompt": "Erstelle erfolgreich den Windows Build via GitHub Actions und teste ihn - Hauptziel ist die Lauffähigkeit unter Windows und Test der UI unter Windows. Nutze die Windows-VM (192.168.1.223) für Tests."
+  },
+  "checksum": "93b92d3c7663d235d0aa29cc3c199fa5d144cc3f95adb83ec876d4fa2b91f925"
+}
