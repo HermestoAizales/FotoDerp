@@ -102,7 +102,7 @@ jobs:
           fi
           
           # Build with Nuitka
-          cd ${{ github.workspace }}/backend
+          cd backend
           python3 -m nuitka --onefile --assume-yes-for-downloads --nofollow-import-to=tkinter --nofollow-import-to=pytest fotoerp_backend/main.py
       - name: Temporarily move icons dir
         shell: pwsh
