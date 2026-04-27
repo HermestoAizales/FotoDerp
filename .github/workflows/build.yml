@@ -237,8 +237,6 @@ jobs:
         run: npm ci || npm install
       - name: Build backend with Nuitka
         shell: bash
-        env:
-          NUITKA_ASSUME_YES: "1"
         run: |
           cd backend
           pip install nuitka
@@ -253,7 +251,7 @@ jobs:
           fi
           echo "Using dependency tool: $DEPS_EXE"
           # Build with Nuitka
-          python3 -m nuitka --onefile --nofollow-import-to=tkinter --nofollow-import-to=pytest --dependency-tool-path="$DEPS_EXE" fotoerp_backend/main.py
+          python3 -m nuitka --onefile --assume-yes-for-downloads --nofollow-import-to=tkinter --nofollow-import-to=pytest --dependency-tool-path="$DEPS_EXE" fotoerp_backend/main.py
       - name: Temporarily move icons dir
         shell: pwsh
         run: Remove-Item icons -Force -Recurse -ErrorAction SilentlyContinue
